@@ -18,6 +18,8 @@
   "homepage": "https://github.com/nguyenmelissa23/CBC-Project2#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-slider": "^9.8.0",
     "express": "^4.15.2",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.4"
