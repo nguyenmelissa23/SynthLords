@@ -23,18 +23,18 @@
                     <div class="row">
                         <div class="col-md-6 text-center">
                             <p class="setting-label">Waveform</p>
-                            <select class="selectpicker" data-style="btn-inverse">
-                                <option>Sine</option>
-                                <option>Saw</option>
-                                <option>Square</option>
-                                <option>Triangle</option>
+                            <select id="osc1-source" class="selectpicker" data-style="btn-inverse">
+                                <option selected="selected">sine</option>
+                                <option>sawtooth</option>
+                                <option>square</option>
+                                <option>triangle</option>
                             </select>
                             <br>
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Detune
-        </label>
+                                <input class="vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Detune
+                            </label>
                         </div>
                         <div class="col-md-6 text-center" id="interval-group">
                             <p class="setting-label">Interval</p>
@@ -46,10 +46,10 @@
                             </select>
                             <br>
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="osc1_gain" data-update="update_osc1_gain" id="osc1-gain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Gain
-        </label>
+                                <input class="vertical-slider" data-program="osc1_gain" data-update="update_osc1_gain" id="osc1-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.5">
+                                <br>
+                                Gain
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -61,19 +61,18 @@
                     <div class="row">
                         <div class="col-md-6 text-center">
                             <p class="setting-label">Waveform</p>
-                            <select class="selectpicker" data-style="btn-inverse">
-                                <option>Sine</option>
-                                <option>Saw</option>
-                                <option>Square</option>
-                                <option>Triangle</option>
+                            <select id="osc2-source" class="selectpicker" data-style="btn-inverse">
+                                <option>sine</option>
+                                <option selected="selected">sawtooth</option>
+                                <option>square</option>
+                                <option>triangle</option>
                             </select>
                             <br>
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="osc2-detune" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Detune
-        </label>
-
+                                <input class="vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="osc2-detune" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Detune
+                            </label>
                         </div>
 
                         <div class="col-md-6 text-center">
@@ -86,139 +85,168 @@
                             </select>
                             <br>
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="osc2_gain" data-update="update_osc2_gain" id="osc2-gain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Gain
-        </label>
+                                <input class="vertical-slider" data-program="osc2_gain" data-update="update_osc2_gain" id="osc2-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.5">
+                                <br>
+                                Gain
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-             <!--Contains settings for filter-->
+            <!--Contains settings for filter-->
             <div class="col-md-3">
                 <div class="setting-group" id="filter">
                     <h3>Filter</h3>
-                    <select class="selectpicker" data-style="btn-inverse">
-                                <option>High-pass</option>
-                                <option>Low-pass</option>
-                            </select>
+                    <select id="filter-type" class="selectpicker" data-style="btn-inverse">
+                        <option selected="selected">highpass</option>
+                        <option>lowpass</option>
+                    </select>
                     <div class="row">
-
                         <div class="col-md-4 text-center">
-
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_cutoff" data-update="update_filter_cutoff" id="filter-cutoff" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Cutoff
-        </label>
+                                <input class="vertical-slider" data-program="filter_frequency" data-update="update_filter_frequency" id="filter-frequency" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Freq
+                            </label>
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_res" data-update="update_filter_res" id="filter-res" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Res
-        </label>
+                                <input class="vertical-slider" data-program="filter_q" data-update="update_filter_q" id="filter-q" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Q
+                            </label>
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_env" data-update="update_filter_env" id="filter-env" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Env
-        </label>
+                                <input class="vertical-slider" data-program="filter_env" data-update="update_filter_env" id="filter-env" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Env
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-             <!--Contains settings for filter envelope-->
+            <!--Contains settings for filter envelope-->
             <div class="col-md-4">
                 <div class="setting-group" id="filter-env-container">
                     <h3>Filter Env.</h3>
                     <div class="row">
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_attack" data-update="update_filter_attack" id="filter-attack" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Attack
-        </label>
+                                <input class="vertical-slider" data-program="filter_attack" data-update="update_filter_attack" id="filter-attack" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Attack
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_decay" data-update="update_filter_decay" id="filter-decay" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Decay
-        </label>
+                                <input class="vertical-slider" data-program="filter_decay" data-update="update_filter_decay" id="filter-decay" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Decay
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_sustain" data-update="update_filter_sustain" id="filter-sustain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Sustain
-        </label>
+                                <input class="vertical-slider" data-program="filter_sustain" data-update="update_filter_sustain" id="filter-sustain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Sustain
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="filter_release" data-update="update_filter_release" id="filter-release" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Release
-        </label>
+                                <input class="vertical-slider" data-program="filter_release" data-update="update_filter_release" id="filter-release" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Release
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-             <!--Contains settings for volume envelope-->
+            <!--Contains settings for volume envelope-->
             <div class="col-md-4">
                 <div class="setting-group" id="volume-env">
                     <h3>Volume Env.</h3>
                     <div class="row">
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="volume_attack" data-update="update_volume_attack" id="volume-attack" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Attack
-        </label>
+                                <input class="vertical-slider" data-program="volume_attack" data-update="update_volume_attack" id="volume-attack" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Attack
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="volume_decay" data-update="update_volume_decay" id="volume-decay" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Decay
-        </label>
+                                <input class="vertical-slider" data-program="volume_decay" data-update="update_volume_decay" id="volume-decay" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Decay
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="volume_sustain" data-update="update_volume_sustain" id="volume-sustain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Sustain
-        </label>
+                                <input class="vertical-slider" data-program="volume_sustain" data-update="update_volume_sustain" id="volume-sustain" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Sustain
+                            </label>
                         </div>
                         <div class="col-md-3 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="volume_release" data-update="update_volume_release" id="volume-release" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Release
-        </label>
+                                <input class="vertical-slider" data-program="volume_release" data-update="update_volume_release" id="volume-release" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Release
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-             <!--Contains settings for master-->
+            <!--Contains settings for Delay-->
+            <div class="col-md-4">
+                <div class="setting-group" id="delay-container">
+                    <h3>Delay</h3>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <label class="slider-label text-center">
+                                <input class="vertical-slider" data-program="delay_rate" data-update="update_delay_rate" id="delay-rate" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Rate
+                            </label>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <label class="slider-label text-center">
+                                <input class="vertical-slider" data-program="delay_wet" data-update="update_delay_wet" id="delay-wet" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Wet
+                            </label>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <label class="slider-label text-center">
+                                <input class="vertical-slider" data-program="delay_feedback" data-update="update_delay_feedback" id="delay-feedback" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Feedback
+                            </label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!--Contains settings for master-->
             <div class="col-md-10">
                 <div class="setting-group" id="master">
                     <h3>Master</h3>
                     <div class="row">
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Volume
-        </label>
+                                <input class="vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Volume
+                            </label>
                         </div>
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="master_drive" data-update="update_master_drive" id="master-drive" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Drive
-        </label>
+                                <input class="vertical-slider" data-program="master_drive" data-update="update_master_drive" id="master-drive" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Drive
+                            </label>
                         </div>
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
@@ -229,29 +257,10 @@
                         </div>
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="master_tremolo" data-update="update_master_tremolo" id="master-tremolo" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Tremolo
-        </label>
-                        </div>
-                        <div class="col-md-2 text-center delay">
-                            Delay
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="delay_rate" data-update="update_delay_rate" id="delay-rate" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Rate
-        </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="delay_amount" data-update="update_delay_amount" id="delay-amount" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Amount
-        </label>
-                                </div>
-                            </div>
+                                <input class="vertical-slider" data-program="master_tremolo" data-update="update_master_tremolo" id="master-tremolo" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Tremolo
+                            </label>
                         </div>
                         <div class="col-md-2 text-center">
                             midi
@@ -271,8 +280,23 @@
                 </div>
             </div>
         </div>
+
+
+        <!--KEYBOARD GOES HERE-->
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="text-center" id="keyboard"></div>
+            </div>
+        </div>
+
+
     </div>
 
+    <!--keyboard-->
+    <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
+    <script src="./source-files/qwerty-hancock.min.js"></script>
+    <script type="text/javascript" src="./javascript/keyboard.js"></script>
+    <!--jquery-->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
@@ -280,7 +304,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
-    <script type="text/javascript" src="./app/js/dom-manipulation.js"></script>
+    <script type="text/javascript" src="./app/js/app.js"></script>
 </body>
 
 </html>
