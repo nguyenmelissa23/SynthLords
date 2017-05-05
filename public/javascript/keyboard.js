@@ -24,7 +24,7 @@ var keyboard = new QwertyHancock({
 });
 
 //execute when key is pressed
-keyboard.keyDown = function (note, frequency) {
+keyboard.keyDown = function (note, frequency){
     //create new oscillators with synth settings
     var currentSettings = getSettings();
     var osc1 = new Wad(currentSettings.osc1Settings);
