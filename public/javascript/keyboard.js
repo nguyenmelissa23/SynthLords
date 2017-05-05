@@ -9,7 +9,7 @@
  * Change input value range in html for elements that do not range btwn 0.0 - 1.0 (eg: detune).
  * Set max and min input values in html to be decimals rather than integers.
  * FIXME: 
- * The volume is fidgety - sometimes if you have the volume down on both oscillators you will hit a note that is much louder.
+ * The volume is fidgety - sometimes if you have the volume down on both oscillators you will randomly hit a note that is much louder.
  * The reverb setting gives an error.
  */
 
@@ -31,6 +31,8 @@ keyboard.keyDown = function (note, frequency){
     var osc2 = new Wad(currentSettings.osc2Settings);
     //combine the oscillators, add them to the object of sounds, and play the note
     var doubleOsc = new Wad.Poly(currentSettings.masterSettings);
+    //set master volume
+    doubleOsc.setVolume(parseFloat($("#master-volume").val()));
     doubleOsc.add(osc1).add(osc2);
     sounds[note] = doubleOsc;
     sounds[note].play({ pitch: note });
@@ -49,14 +51,14 @@ function getSettings() {
             source: $("#osc1-source").val().toLowerCase(),
             volume: $("#osc1-gain").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
             //TODO: may need to change range on detune
-            detune: parseFloat($("#osc1-detune").val())*200,     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
+            detune: parseFloat($("#osc1-detune").val()),     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
         },
 
         osc2Settings: {
             source: $("#osc2-source").val().toLowerCase(),
             volume: $("#osc2-gain").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
             //TODO: may need to change range on detune
-            detune: parseFloat($("#osc2-detune").val())*200,     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
+            detune: parseFloat($("#osc2-detune").val()),     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
         },
 
         masterSettings: {
@@ -64,7 +66,9 @@ function getSettings() {
                 attack: parseFloat($("#filter-attack").val()),  // Time in seconds from onset to peak volume.  Common values for oscillators may range from 0.05 to 0.3.
                 decay: parseFloat($("#filter-decay").val()),  // Time in seconds from peak volume to sustain volume.
                 sustain: parseFloat($("#filter-sustain").val()),  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
-                release: parseFloat($("#filter-release").val())     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
+                release: parseFloat($("#filter-release").val()),     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
+                hold: 3.14, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
+
             },
             filter: {
                 type: $("#filter-type").val().toLowerCase(), // What type of filter is applied.
