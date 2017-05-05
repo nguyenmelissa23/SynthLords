@@ -35,7 +35,7 @@
                                 <br>
                                 Detune
                             </label>
-<<<<<<< HEAD
+
                         </div>
                         <div class="col-md-6 text-center" id="interval-group">
                             <p class="setting-label">Interval</p>
@@ -46,8 +46,7 @@
                                 <option>4'</option>
                             </select>
                             <br>
-=======
->>>>>>> 1d13e91a9f9855a34ce9734788583293bdcbdd1f
+
                             <label class="slider-label text-center">
                                 <input id="osc1-gain" class="vertical-slider" data-program="osc1_gain" data-update="update_osc1_gain"  max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.5">
                                 <br>
@@ -206,10 +205,10 @@
                         </div>
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
-          <input class="vertical-slider" data-program="master_reverb" data-update="update_master_reverb" id="master-reverb" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
-          <br>
-          Reverb
-        </label>
+                                <input class="vertical-slider" data-program="master_reverb" data-update="update_master_reverb" id="master-reverb" max="1" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                <br>
+                                Reverb
+                            </label>
                         </div>
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
@@ -235,8 +234,38 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+             <!--DRUM MACHINE-->
+            <div class="col-md-3">
+                <div class="setting-group" id="drum-machine">
+                    <h3>Drum Machine</h3>
+                    <div class="row">
+                        <p class="setting-label">Drum Type</p>
+                        <select id="drum-source" class="selectpicker" data-style="btn-inverse">
+                            <option data-filename="./drum_tracks/ENtam1o-140.wav">Track 1</option>
+                            <option data-filename="./drum_tracks/Eamb1e-120.wav " selected="selected">Track 2</option>
+                            <!--<option data-filename=" ">Track 3</option>
+                            <option data-filename=" ">Track 4</option>-->
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <label class="slider-label text-center">
+                                <input class="vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="drum-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
+                                <br>
+                                Detune
+                            </label>
+                            <label class="slider-label text-center">
+                                <input class="vertical-slider" data-program="osc2_gain" data-update="update_osc2_gain" id="drum-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.5">
+                                <br>
+                                Gain
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <!--KEYBOARD GOES HERE-->
         <div class="row">
