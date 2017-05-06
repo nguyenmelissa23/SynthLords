@@ -10,9 +10,9 @@ function playDrumTrack(){
     $(".playDrum").on("click", function(){
         var drumLink = $("#drum-source").find(":selected").data("filename");
         console.log("drum track: ", drumLink);
-        var drum = new Wad({source: ("'" + drumLink + "'") });
+        var drum = new Wad({source: drumLink });
         drum.play();
-        // var bell = new Wad({source : 'http://www.myserver.com/audio/bell.wav'});
+        // var bell = new Wad({source : '../public/drum_tracks/ambient_120.wav'});
         // bell.play();
         
     });
@@ -23,6 +23,13 @@ function playDrumTrack(){
     });
 }
 
+drumSwitch();
+
+function drumSwitch(){
+    $("#drumSwitch").on("click", function(){
+        console.log(this.find("button"));
+    });
+}
 
 function getToggleData(){
     $('#drumOnOff').on('change', function() {

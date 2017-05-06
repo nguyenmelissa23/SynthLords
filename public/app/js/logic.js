@@ -7,6 +7,6 @@ var drumTrackArr = [
 
 
 // TOGGLE
-$(function() {
-    $('#toggle-one').bootstrapToggle();
-});
+// $(function() {
+//     $('#toggle-one').bootstrapToggle();
+// });
