@@ -82,11 +82,11 @@ function getSettings() {
                     attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
                 }
             },
-            reverb: {
-                wet: parseFloat($("#master-reverb").val()), // Volume of the reverberations.
-                impulse: '../source-files/source1domefareceiver2domelabinaural.wav' // A URL for an impulse response file, if you do not want to use the default impulse response.
+            // reverb: {
+            //     wet: parseFloat($("#master-reverb").val()), // Volume of the reverberations.
+            //     impulse: '../source-files/source1domefareceiver2domelabinaural.wav' // A URL for an impulse response file, if you do not want to use the default impulse response.
 
-            },
+            // },
             delay: {
                 delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
                 wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.
