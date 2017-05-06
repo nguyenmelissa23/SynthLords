@@ -102,7 +102,7 @@ input:checked + .slider::after {
     left: 3px;
 }
 
-/*Content ON when checked:*/
+/*Content OFF when checked:*/
 .slider::after{
     content: "OFF";
     color: black;
