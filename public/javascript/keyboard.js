@@ -3,6 +3,9 @@
  * The PolyWad is stopped when the key is released.
  * 
  * TODO:
+ * STORE SETTINGS IN GLOBAL OBJECT AND UPDATE DYNAMICALLY WHEN SETTING CHANGES INSTEAD OF USING getSettings()
+ * Define global WADs and update when key is pressed
+ * 
  * Set default values in html based on the github library.
  * Consider adding other settings listed in github (eg: vibrato, tuna).
  * Remove unused settings in html (eg: interval).
@@ -78,14 +81,6 @@ function getSettings() {
         },
 
         masterSettings: {
-            env: {      // This is the ADSR envelope.
-                attack: parseFloat($("#filter-attack").val()),  // Time in seconds from onset to peak volume.  Common values for oscillators may range from 0.05 to 0.3.
-                decay: parseFloat($("#filter-decay").val()),  // Time in seconds from peak volume to sustain volume.
-                sustain: parseFloat($("#filter-sustain").val()),  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
-                release: parseFloat($("#filter-release").val()),     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
-                hold: 3.14, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
-
-            },
             filter: {
                 type: $("#filter-type").val().toLowerCase(), // What type of filter is applied.
                 frequency: parseFloat($("#filter-frequency").val()),       // The frequency, in hertz, to which the filter is applied.
@@ -96,62 +91,62 @@ function getSettings() {
                 }
             },
 
-            delay: {
-                delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
-                wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.
-                feedback: parseFloat($("#delay-feedback").val()), // Relative volume change between each delayed playback and the next. 
-            },
-            tuna: {
-                Filter: {
-                    frequency: parseFloat($("#filter-frequency").val()), //20 to 22050
-                    Q: parseFloat($("#filter-q").val()), //0.001 to 100
-                    gain: parseFloat($("#filter-gain").val()), //-40 to 40 (in decibels)
-                    filterType: $("#filter-type").val().toLowerCase(), //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
-                    bypass: parseInt($("#filter-bypass").val())
-                },
-                Chorus: {
-                    rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
-                    feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
-                    delay: parseFloat($("#chorus-delay").val()),     //0 to 1
-                    bypass: parseInt($("#chorus-bypass").val())          //the value 1 starts the effect as bypassed, 0 or 1
-                },
-                Phaser: {
-                    rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
-                    depth: parseFloat($("#phaser-depth").val()), //0 to 1
-                    feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
-                    stereoPhase: 30, //0 to 180
-                    baseModulationFrequency: 700, //500 to 1500
-                    bypass: parseInt($("#phaser-bypass").val())
-                },
-                Overdrive: {
-                    outputGain: 1, //0 to 1+
-                    drive: 1, //0 to 1
-                    curveAmount: parseFloat($("#master-drive").val()), //0 to 1
-                    algorithmIndex: 0, //0 to 5, selects one of our drive algorithms
-                    bypass: 0
-                },
-                Tremolo: {
-                    intensity: parseFloat($("#tremolo-intensity").val()), //0 to 1
-                    rate: parseFloat($("#tremolo-rate").val()), //0.001 to 8
-                    stereoPhase: parseFloat($("#tremolo-phase").val()), //0 to 180
-                    bypass: parseInt($("#tremolo-bypass").val())
-                },
-                Bitcrusher: {
-                    bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16
-                    normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
-                    bufferSize: 0,  //256 to 16384
-                    bypass: parseInt($("#bitcrusher-bypass").val())
-                }
-                // Convolver: {
-                //     highCut: parseFloat($("#convolver-high").val()), //20 to 22050
-                //     lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
-                //     dryLevel: parseFloat($("#convolver-dry").val()), //0 to 1+
-                //     wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
-                //     level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
-                //     impulse: "http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
-                //     bypass: parseInt($("#convolver-bypass").val())
-                // }
-            }
+            // delay: {
+            //     delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
+            //     wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.
+            //     feedback: parseFloat($("#delay-feedback").val()), // Relative volume change between each delayed playback and the next. 
+            // },
+            // tuna: {
+            //     Filter: {
+            //         frequency: parseFloat($("#filter-frequency").val()), //20 to 22050
+            //         Q: parseFloat($("#filter-q").val()), //0.001 to 100
+            //         gain: parseFloat($("#filter-gain").val()), //-40 to 40 (in decibels)
+            //         filterType: $("#filter-type").val().toLowerCase(), //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
+            //         bypass: parseInt($("#filter-bypass").val())
+            //     },
+            //     Chorus: {
+            //         rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
+            //         feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
+            //         delay: parseFloat($("#chorus-delay").val()),     //0 to 1
+            //         bypass: parseInt($("#chorus-bypass").val())          //the value 1 starts the effect as bypassed, 0 or 1
+            //     },
+            //     Phaser: {
+            //         rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
+            //         depth: parseFloat($("#phaser-depth").val()), //0 to 1
+            //         feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
+            //         stereoPhase: 30, //0 to 180
+            //         baseModulationFrequency: 700, //500 to 1500
+            //         bypass: parseInt($("#phaser-bypass").val())
+            //     },
+            //     Overdrive: {
+            //         outputGain: 1, //0 to 1+
+            //         drive: 1, //0 to 1
+            //         curveAmount: parseFloat($("#master-drive").val()), //0 to 1
+            //         algorithmIndex: 0, //0 to 5, selects one of our drive algorithms
+            //         bypass: 0
+            //     },
+            //     Tremolo: {
+            //         intensity: parseFloat($("#tremolo-intensity").val()), //0 to 1
+            //         rate: parseFloat($("#tremolo-rate").val()), //0.001 to 8
+            //         stereoPhase: parseFloat($("#tremolo-phase").val()), //0 to 180
+            //         bypass: parseInt($("#tremolo-bypass").val())
+            //     },
+            //     Bitcrusher: {
+            //         bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16
+            //         normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
+            //         bufferSize: 0,  //256 to 16384
+            //         bypass: parseInt($("#bitcrusher-bypass").val())
+            //     }
+            // //     // Convolver: {
+            // //     //     highCut: parseFloat($("#convolver-high").val()), //20 to 22050
+            // //     //     lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
+            // //     //     dryLevel: parseFloat($("#convolver-dry").val()), //0 to 1+
+            // //     //     wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
+            // //     //     level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
+            // //     //     impulse: "http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
+            // //     //     bypass: parseInt($("#convolver-bypass").val())
+            // //     // }
+            // }
         }
     };
     return result;

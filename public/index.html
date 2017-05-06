@@ -26,7 +26,7 @@
                         <h3>Oscillator 1</h3>
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <select id="osc1-source" class="selectpicker" data-style="btn-inverse">
+                                <select id="osc1-source" class="setting selectpicker" data-style="btn-inverse">
                                     <option selected="selected">sine</option>
                                     <option>sawtooth</option>
                                     <option>square</option>
@@ -34,12 +34,12 @@
                                 </select>
                                 <br>
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
+                                    <input class="setting vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
                                     <br>
                                     Detune
                                 </label>
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="osc1_gain" data-update="update_osc1_gain" id="osc1-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="1.0">
+                                    <input class="setting vertical-slider" data-program="osc1_gain" data-update="update_osc1_gain" id="osc1-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="1.0">
                                     <br>
                                     Gain
                                 </label>
@@ -53,7 +53,7 @@
                         <h3>Oscillator 2</h3>
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <select id="osc2-source" class="selectpicker" data-style="btn-inverse">
+                                <select id="osc2-source" class="setting selectpicker" data-style="btn-inverse">
                                     <option>sine</option>
                                     <option selected="selected">sawtooth</option>
                                     <option>square</option>
@@ -61,12 +61,12 @@
                                 </select>
                                 <br>
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="osc2-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
+                                    <input class="setting vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="osc2-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
                                     <br>
                                     Detune
                                 </label>
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="osc2_gain" data-update="update_osc2_gain" id="osc2-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="1.0">
+                                    <input class="setting vertical-slider" data-program="osc2_gain" data-update="update_osc2_gain" id="osc2-gain" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="1.0">
                                     <br>
                                     Gain
                                 </label>
@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h3 style="float: left; margin-right: 15px;">Filter</h3>
-                                <select id="filter-bypass" class="selectpicker" data-style="btn-inverse">
+                                <select id="filter-bypass" class="setting selectpicker" data-style="btn-inverse">
                                     <option value="0">On</option>
                                     <option selected="selected" value="1">Off</option>
                                 </select>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <select id="filter-type" class="selectpicker" data-style="btn-inverse">
+                                <select id="filter-type" class="setting selectpicker" data-style="btn-inverse">
                                     <option selected="selected">highpass</option>
                                     <option>lowpass</option>
                                     <option>bandpass</option>
@@ -98,21 +98,21 @@
                         <div class="row">
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="filter_frequency" data-update="update_filter_frequency" id="filter-frequency" max="2200" min="20" orient="vertical" step="0.01" type="range" value="440">
+                                    <input class="setting vertical-slider" data-program="filter_frequency" data-update="update_filter_frequency" id="filter-frequency" max="2200" min="20" orient="vertical" step="0.01" type="range" value="440">
                                     <br>
                                     Freq
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="filter_q" data-update="update_filter_q" id="filter-q" max="100" min="0.001" orient="vertical" step="0.001" type="range" value="1">
+                                    <input class="setting vertical-slider" data-program="filter_q" data-update="update_filter_q" id="filter-q" max="100" min="0.001" orient="vertical" step="0.001" type="range" value="1">
                                     <br>
                                     Q
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="filter_gain" data-update="update_filter_gain" id="filter-gain" max="40.0" min="-40.0" orient="vertical" step="0.0001" type="range" value="0.0">
+                                    <input class="setting vertical-slider" data-program="filter_gain" data-update="update_filter_gain" id="filter-gain" max="40.0" min="-40.0" orient="vertical" step="0.0001" type="range" value="0.0">
                                     <br>
                                     Gain
                                 </label>
@@ -130,14 +130,14 @@
                         <div class="row">
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.5" min="0.0" orient="vertical" step="0.0001" type="range" value="0.1">
+                                    <input class="setting vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.5" min="0.0" orient="vertical" step="0.0001" type="range" value="0.1">
                                     <br>
                                     Volume
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="vertical-slider" data-program="master_drive" data-update="update_master_drive" id="master-drive" max="0.95" min="0" orient="vertical" step="0.0001" type="range" value="0">
+                                    <input class="setting vertical-slider" data-program="master_drive" data-update="update_master_drive" id="master-drive" max="0.95" min="0" orient="vertical" step="0.0001" type="range" value="0">
                                     <br>
                                     Drive
                                 </label>
