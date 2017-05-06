@@ -25,6 +25,7 @@ var keyboard = new QwertyHancock({
 
 //execute when key is pressed
 keyboard.keyDown = function (note, frequency) {
+    console.log(parseFloat($("#filter-release").val()));
     //create new oscillators with synth settings
     var currentSettings = getSettings();
     var osc1 = new Wad(currentSettings.osc1Settings);
@@ -75,8 +76,8 @@ function getSettings() {
                 frequency: parseFloat($("#filter-frequency").val()),       // The frequency, in hertz, to which the filter is applied.
                 q: parseFloat($("#filter-q").val()),         // Q-factor.  No one knows what this does. The default value is 1. Sensible values are from 0 to 10.
                 env: {          // Filter envelope.
-                    frequency: 800, // If this is set, filter frequency will slide from filter.frequency to filter.env.frequency when a note is triggered.
-                    attack: 0.5  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
+                    frequency: parseFloat($("#filter-env-freq").val()), // If this is set, filter frequency will slide from filter.frequency to filter.env.frequency when a note is triggered.
+                    attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
                 }
             },
             // reverb: {
