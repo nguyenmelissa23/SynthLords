@@ -9,8 +9,9 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
     <link rel="stylesheet" type="text/css" href="../public/source-files/toggle-switch.css" />
+    <link rel="stylesheet" href="assets/css/jquery-ui.theme.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <link rel="stylesheet" href="./app/css/main.css">
-
 </head>
 
 <body>
@@ -224,10 +225,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Chorus</h4>
-                                            <select id="chorus-bypass" class="selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                                <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                                </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -261,10 +261,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Phaser</h4>
-                                            <select id="phaser-bypass" class="selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -295,7 +294,14 @@
                             <!--DELAY-->
                             <div class="col-md-3">
                                 <div class="setting-group" id="delay-container">
-                                    <h3>Delay</h3>
+                                   <div class="row">
+                                        <div class="col-md-12">
+                                            <h4 style="float: left; margin-right: 15px;">Delay</h4>
+                                            <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4 text-center">
                                             <label class="slider-label text-center">
@@ -327,10 +333,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Reverb</h4>
-                                            <select id="convolver-bypass" class="selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                             <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -378,10 +383,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Tremolo</h4>
-                                            <select id="tremolo-bypass" class="selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                             <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -415,10 +419,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Bitcrusher</h4>
-                                            <select id="bitcrusher-bypass" class="selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                    <div class = "led-red" value = "off"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -459,8 +462,7 @@
     <!--MIDI-->
     <script type="text/javascript" src="./javascript/midi.js"></script>
 
-    <!--Drum Machine-->
-    <script type="text/javascript" src="./javascript/drummachine.js"></script>
+    
 
     <!--keyboard-->
     <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
@@ -487,6 +489,9 @@
     <!--JS Files-->
     <script type="text/javascript" src="./javascript/keyboard.js"></script>
     <script type="text/javascript" src="./app/js/logic.js"></script>
+
+    <!--Drum Machine-->
+    <script type="text/javascript" src="./javascript/drummachine.js"></script>
 </body>
 
 </html>
