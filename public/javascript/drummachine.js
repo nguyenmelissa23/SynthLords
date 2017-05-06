@@ -1,49 +1,75 @@
 (function() {
     $(document).ready(function() {
-        //getToggleData();
-        playDrumTrack();
+        toffleOnOff();
     });
 })();
     //FIXME: HOST WAV FILES ON A SERVER 
+var drum;
 
-function playDrumTrack(){
-    $(".playDrum").on("click", function(){
-        var drumLink = $("#drum-source").find(":selected").data("filename");
-        console.log("drum track: ", drumLink);
-        var drum = new Wad({source: drumLink });
-        drum.play();
-        // var bell = new Wad({source : '../public/drum_tracks/ambient_120.wav'});
-        // bell.play();
-        
-    });
-
-    $(".stopDrum").on("click", function(){
-        drum.stop();
-        // bell.stop();
-    });
+function playDrumTrack(){   
+    console.log("playing...")
+    var drumLink = $("#drum-source").find(":selected").data("filename");
+    console.log("drum track: ", drumLink);
+    drum = new Wad({source: drumLink });
+    drum.play();
+    // var bell = new Wad({source : '../public/drum_tracks/ambient_120.wav'});
+    // bell.play();
 }
 
-drumSwitch();
-
-function drumSwitch(){
-    $("#drumSwitch").on("click", function(){
-        console.log(this.find("button"));
-    });
+function stopDrumTrack(){
+    console.log("stopping...");
+    drum.stop();
+    // bell.stop();
 }
 
-function getToggleData(){
-    $('#drumOnOff').on('change', function() {
-        var isChecked = $(this).is(':checked');
-        var selectedData;
-        var switchLabel = $('.switch-label');
-        console.log('isChecked: ' + isChecked); 
+// drumSwitch();
 
-        if(isChecked) {
-            selectedData = $switchLabel.attr('data-on');
-        } else {
-            selectedData = $switchLabel.attr('data-off');
+// function drumSwitch(){
+//     $("#drumSwitch").on("click", function(){
+//         console.log(this.find("button"));
+//     });
+// }
+
+// function getToggleData(){
+//     $('#drumOnOff').on('change', function() {
+//         var isChecked = $(this).is(':checked');
+//         var selectedData;
+//         var switchLabel = $('.switch-label');
+//         console.log('isChecked: ' + isChecked); 
+
+//         if(isChecked) {
+//             selectedData = $switchLabel.attr('data-on');
+//         } else {
+//             selectedData = $switchLabel.attr('data-off');
+//         }
+
+//         console.log('Selected data: ' + selectedData);
+//     });
+// }
+
+// TOGGLE
+function toffleOnOff(){
+    $("input[type=checkbox]").on("click",function(){
+        var content = $('input:checked').css("content");
+        console.log(content);
+        var drumSwitch = checkSwitch(content);
+        console.log(drumSwitch);
+        switch(drumSwitch){
+            case ("ON"):
+                playDrumTrack();
+                break;
+            case ("OFF"):
+                stopDrumTrack();
+                break;
         }
-
-        console.log('Selected data: ' + selectedData);
     });
+}
+
+//Check swith is on or off
+function checkSwitch(content){
+    if (content === undefined){
+        return "OFF";
+    } else {
+        return "ON";
+    }
 }
