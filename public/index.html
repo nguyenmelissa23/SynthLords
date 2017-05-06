@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Synth Lord</title>
+    <link rel="shortcut icon" href="https://d30y9cdsu7xlg0.cloudfront.net/png/27637-200.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
@@ -84,7 +85,7 @@
                     <div class="row">
                         <div class="col-md-4 text-center">
                             <label class="slider-label text-center">
-                                <input class="vertical-slider" data-program="filter_frequency" data-update="update_filter_frequency" id="filter-frequency" max="1200" min="0" orient="vertical" step="0.01" type="range" value="600">
+                                <input class="vertical-slider" data-program="filter_frequency" data-update="update_filter_frequency" id="filter-frequency" max="1200" min="20" orient="vertical" step="0.01" type="range" value="600">
                                 <br>
                                 Freq
                             </label>
@@ -168,8 +169,6 @@
                                 Feedback
                             </label>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -180,7 +179,7 @@
                     <div class="row">
                         <div class="col-md-2 text-center">
                             <label class="slider-label text-center">
-                                <input class="vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.3" min="0.0" orient="vertical" step="0.0001" type="range" value="0.1">
+                                <input class="vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.5" min="0.0" orient="vertical" step="0.0001" type="range" value="0.1">
                                 <br>
                                 Volume
                             </label>
@@ -226,8 +225,8 @@
         </div>
 
         <!--ROW 4-->
-            <div class="row">
-                <!--DRUM MACHINE-->
+        <div class="row">
+            <!--DRUM MACHINE-->
             <div class="col-md-6">
                 <div class="setting-group" id="drum-machine">
                     <h3>Drum Machine</h3>
@@ -241,7 +240,7 @@
                                 	<div class="slider round"></div>
                                 </label>
                             </label>
-                        </div> 
+                        </div>
 
                         <div class="col-md-4 playstopbtn">
                             <button class="btn btn-primary playDrum">PLAY</button>
@@ -256,8 +255,8 @@
                                 <!--<option data-filename=" ">Track 3</option>
                                 <option data-filename=" ">Track 4</option>-->
                             </select>
-                        </div>  
-                    </div> 
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-12 text-center">
@@ -274,9 +273,102 @@
                         </div>
                     </div>
                 </div>
-            </div> <!--END DRUM MACHINE -->
+            </div>
+            <!--END DRUM MACHINE -->
+        </div>
+        <!--END OF ROW 4-->
 
-        </div><!--END OF ROW 4-->
+
+        <!--ROW 5-->
+        <div class="row">
+            <!--TUNA-->
+            <div class="col-md-12">
+                <div id="tuna-container">
+                    <h3>TUNA</h3>
+                    <div class="row">
+                        <!--CHORUS-->
+                        <div class="col-md-3">
+                            <div class="setting-group" id="chorus-container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="float: left; margin-right: 15px;">Chorus</h4>
+                                        <select id="chorus-bypass" class="selectpicker" data-style="btn-inverse">
+                                            <option selected="selected" value="0">On</option>
+                                            <option value="1">Off</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="chorus_rate" data-update="update_chorus_rate" id="chorus-rate" max="8.0" min="0.1" orient="vertical" step="0.0001" type="range" value="1.5">
+                                            <br>
+                                            Rate
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="chorus_feedback" data-update="update_chorus_feedback" id="chorus-feedback" max="0.9" min="0" orient="vertical" step="0.0001" type="range" value="0.2">
+                                            <br>
+                                            Feedback
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="chorus_delay" data-update="update_chorus_delay" id="chorus-delay" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.0045">
+                                            <br>
+                                            Delay
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--PHASER-->
+                        <div class="col-md-3">
+                            <div class="setting-group" id="phaser-container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="float: left; margin-right: 15px;">Phaser</h4>
+                                        <select id="phaser-bypass" class="selectpicker" data-style="btn-inverse">
+                                            <option selected="selected" value="0">On</option>
+                                            <option value="1">Off</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="phaser_rate" data-update="update_phaser_rate" id="phaser-rate" max="8.0" min="0.1" orient="vertical" step="0.0001" type="range" value="1.2">
+                                            <br>
+                                            Rate
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="phaser_feedback" data-update="update_phaser_feedback" id="phaser-feedback" max="0.9" min="0" orient="vertical" step="0.0001" type="range" value="0.2">
+                                            <br>
+                                            Feedback
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <label class="slider-label text-center">
+                                            <input class="vertical-slider" data-program="phaser_depth" data-update="update_phaser_depth" id="phaser-depth" max="1.0" min="0.0" orient="vertical" step="0.0001" type="range" value="0.3">
+                                            <br>
+                                            Depth
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END CHORUS-->
+                    </div>
+                </div>
+            </div>
+            <!--END TUNA -->
+        </div>
+        <!--END OF ROW 5-->
+
+
 
         <!--KEYBOARD GOES HERE-->
         <div class="row">
@@ -304,7 +396,7 @@
     <!--<script type="text/javascript" src="./app/js/app.js"></script>-->
 
     <!--Jquery for tether, bootstrap, bootstrap-slider -->
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"

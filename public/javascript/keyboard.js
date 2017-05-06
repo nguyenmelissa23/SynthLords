@@ -25,7 +25,9 @@ var keyboard = new QwertyHancock({
 
 //execute when key is pressed
 
-keyboard.keyDown = function (note, frequency){
+keyboard.keyDown = function (note, frequency) {
+
+
     //create new oscillators with synth settings
     var currentSettings = getSettings();
     var osc1 = new Wad(currentSettings.osc1Settings);
@@ -80,9 +82,11 @@ function getSettings() {
                     attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
                 }
             },
-            // reverb: {
-            //     wet: parseFloat($("#master-reverb").val())                                            // Volume of the reverberations.
-            // },
+            reverb: {
+                wet: parseFloat($("#master-reverb").val()), // Volume of the reverberations.
+                impulse: '../source-files/source1domefareceiver2domelabinaural.wav' // A URL for an impulse response file, if you do not want to use the default impulse response.
+
+            },
             delay: {
                 delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
                 wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.
@@ -99,6 +103,22 @@ function getSettings() {
                 magnitude: 3,      // how much the volume changes. Sensible values are from 1 to 10.
                 speed: 4,      // How quickly the volume changes, in cycles per second.  Sensible values are from 0.1 to 10.
                 attack: 0       // Time in seconds for the tremolo effect to reach peak magnitude.
+            },
+            tuna: {
+                Chorus: {
+                    rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
+                    feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
+                    delay: parseFloat($("#chorus-delay").val()),     //0 to 1
+                    bypass: parseInt($("#chorus-bypass").val())          //the value 1 starts the effect as bypassed, 0 or 1
+                },
+                Phaser: {
+                    rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
+                    depth: parseFloat($("#phaser-depth").val()), //0 to 1
+                    feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
+                    stereoPhase: 30, //0 to 180
+                    baseModulationFrequency: 700, //500 to 1500
+                    bypass: parseInt($("#phaser-bypass").val())
+                }
             }
         }
     };
