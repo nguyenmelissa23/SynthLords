@@ -34,6 +34,7 @@ $("#octave").change(function() {
 
 //execute when key is pressed
 keyboard.keyDown = function (note, frequency) {
+    console.log(sounds);
     //Adjust the current note to the octave setting
     var currentNote = note.replace(/.$/,currentOctave);
     //create new oscillators with synth settings
@@ -54,6 +55,7 @@ keyboard.keyUp = function (note, frequency) {
     var currentNote = note.replace(/.$/,currentOctave);
     //stop the given note on keyUp
     sounds[currentNote].stop();
+    sounds[currentNote] = null;
 };
 
 /** Get the settings from the index.html elements */
