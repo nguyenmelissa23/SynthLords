@@ -23,24 +23,6 @@ var keyboard = new QwertyHancock({
     octaves: 2
 });
 
-//execute when key is pressed
-
-keyboard.keyDown = function (note, frequency) {
-
-
-    //create new oscillators with synth settings
-    var currentSettings = getSettings();
-    var osc1 = new Wad(currentSettings.osc1Settings);
-    var osc2 = new Wad(currentSettings.osc2Settings);
-    //combine the oscillators, add them to the object of sounds, and play the note
-    var doubleOsc = new Wad.Poly(currentSettings.masterSettings);
-    //set master volume
-    doubleOsc.setVolume(parseFloat($("#master-volume").val()));
-    doubleOsc.add(osc1).add(osc2);
-    sounds[note] = doubleOsc;
-    sounds[note].play({ pitch: note });
-};
-
 //execute when key is released
 keyboard.keyUp = function (note, frequency) {
     //stop the given note on keyUp
@@ -82,11 +64,6 @@ function getSettings() {
                     attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
                 }
             },
-            // reverb: {
-            //     wet: parseFloat($("#master-reverb").val()), // Volume of the reverberations.
-            //     impulse: '../source-files/source1domefareceiver2domelabinaural.wav' // A URL for an impulse response file, if you do not want to use the default impulse response.
-
-            // },
             delay: {
                 delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
                 wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.

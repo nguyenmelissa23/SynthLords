@@ -1,34 +1,49 @@
-// request MIDI access
-if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-        sysex: false // this defaults to 'false' and we won't be covering sysex in this article. 
-    }).then(onMIDISuccess, onMIDIFailure);
-} else {
-    alert("No MIDI support in your browser.");
-}
+midiMap = function (event) {
 
-// midi functions
-function onMIDISuccess(midiAccess) {
-    // when we get a succesful response, run this code
-    console.log('MIDI Access Object', midiAccess);
-     // when we get a succesful response, run this code
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
+    console.log('hi');
+    //create new oscillators with synth settings
+    var currentSettings = getSettings();
+    var osc1 = new Wad(currentSettings.osc1Settings);
+    var osc2 = new Wad(currentSettings.osc2Settings);
+    //combine the oscillators, add them to the object of sounds, and play the note
+    Wad.midiInstrument = new Wad.Poly(currentSettings.masterSettings);
+    //set master volume
+    Wad.midiInstrument.add(osc1).add(osc2);
+    Wad.midiInstrument.setVolume(parseFloat($("#master-volume").val()));
 
-    var inputs = midi.inputs.values();
-    // loop over all available inputs and listen for any MIDI input
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-        // each time there is a midi message call the onMIDIMessage function
-        input.value.onmidimessage = onMIDIMessage;
+    console.log(event.receivedTime, event.data);
+
+
+    if (event.data[0] === 144) { // 144 means the midi message has note data
+        // console.log('note')
+        if (event.data[2] === 0) { // noteOn velocity of 0 means this is actually a noteOff message
+    var notePressed = Wad.pitchesArray[event.data[1] - 12];
+            console.log('|| stopping note: ', notePressed);
+            Wad.midiInstrument.stop();
+        }
+        else if (event.data[2] > 0) {
+            var notePressed = Wad.pitchesArray[event.data[1] - 12];
+            console.log('> playing note: ', notePressed);
+            Wad.midiInstrument.play({
+                pitch: notePressed, label: notePressed
+            });
+        }
     }
-}
+    if (event.data[0] === 128) {
+        console.log('|| stopping note: ', Wad.pitchesArray[event.data[1] - 12]);
+        Wad.midiInstrument.stop();
+    }
+    if (event.data[0] === 176) { // 176 means the midi message has controller data
+        console.log('controller');
+        if (event.data[1] == 46) {
+            if (event.data[2] == 127) { Wad.midiInstrument.pedalMod = true; }
+            else if (event.data[2] == 0) { Wad.midiInstrument.pedalMod = false; }
+        }
+    }
+    if (event.data[0] === 224) { // 224 means the midi message has pitch bend data
+        console.log('pitch bend');
+    }
 
-function onMIDIFailure(e) {
-    // when we get a failed response, run this code
-    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + e);
-}
+};
 
-
-function onMIDIMessage(message) {
-    data = message.data; // this gives us our [command/channel, note, velocity] data.
-    console.log('MIDI data', data); // MIDI data [144, 63, 73]
-}
+Wad.midiInputs[0].onmidimessage = midiMap;
