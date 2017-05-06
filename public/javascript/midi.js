@@ -1,70 +1,34 @@
-function midiMessageReceived( ev ) {
-  var cmd = ev.data[0] >> 4;
-  var channel = ev.data[0] & 0xf;
-  var noteNumber = ev.data[1];
-  var velocity = ev.data[2];
-
-  if ( cmd==8 || ((cmd==9)&&(velocity==0)) ) { // with MIDI, note on with velocity zero is the same as note off
-    // note off
-    noteOff( noteNumber );
-  } else if (cmd == 9) {
-    // note on
-    noteOn( noteNumber, velocity/127.0);
-  } else if (cmd == 11) {
-    controller( noteNumber, velocity/127.0);
-  } else if (cmd == 14) {
-    // pitch wheel
-    pitchWheel( ((velocity * 128.0 + noteNumber)-8192)/8192.0 );
-  }
+// request MIDI access
+if (navigator.requestMIDIAccess) {
+    navigator.requestMIDIAccess({
+        sysex: false // this defaults to 'false' and we won't be covering sysex in this article. 
+    }).then(onMIDISuccess, onMIDIFailure);
+} else {
+    alert("No MIDI support in your browser.");
 }
 
-var selectMIDI = null;
-var midiAccess = null;
-var midiIn = null;
+// midi functions
+function onMIDISuccess(midiAccess) {
+    // when we get a succesful response, run this code
+    console.log('MIDI Access Object', midiAccess);
+     // when we get a succesful response, run this code
+    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
 
-function changeMIDIPort() {
-  midiIn = midiAccess.inputs()[ selectMIDI.selectedIndex ] ;
-  midiIn.onmidimessage = midiMessageReceived;
-}
-
-function selectMIDIIn( ev ) {
-  var list=midiAccess.inputs();
-  var selectedIndex = ev.target.selectedIndex;
-
-  if (list.length >= selectedIndex) {
-    midiIn = list[selectedIndex];
-    midiIn.onmessage = midiMessageReceived;
-  }
-}
-
-function onMIDIStarted( midi ) {
-  midiAccess = midi;
-
-  document.getElementById("synthbox").className = "loaded";
-
-  selectMIDI=document.getElementById("midiIn");
-  var list=midiAccess.inputs();
-
-  // clear the MIDI input select
-  selectMIDI.options.length = 0;
-
-  if (list.length) {
-    for (var i=0; i<list.length; i++) {
-      selectMIDI.options[i]=new Option(list[i].name,list[i].fingerprint,i==0,i==0);
+    var inputs = midi.inputs.values();
+    // loop over all available inputs and listen for any MIDI input
+    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+        // each time there is a midi message call the onMIDIMessage function
+        input.value.onmidimessage = onMIDIMessage;
     }
-    midiIn = list[0];
-    midiIn.onmidimessage = midiMessageReceived;
-
-    selectMIDI.onchange = selectMIDIIn;
-  }
 }
 
-function onMIDISystemError( msg ) {
-  document.getElementById("synthbox").className = "error";
-  console.log( "Error encountered:" + msg );
+function onMIDIFailure(e) {
+    // when we get a failed response, run this code
+    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + e);
 }
-//init: start up MIDI
-window.addEventListener('load', function() {   
-  navigator.requestMIDIAccess().then( onMIDIStarted, onMIDISystemError );
 
-});
+
+function onMIDIMessage(message) {
+    data = message.data; // this gives us our [command/channel, note, velocity] data.
+    console.log('MIDI data', data); // MIDI data [144, 63, 73]
+}
