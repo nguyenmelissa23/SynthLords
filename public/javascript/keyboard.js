@@ -204,7 +204,7 @@ function getSettings() {
             // //     //     bypass: parseInt($("#convolver-bypass").val())
             // //     // }
             // }
->>>>>>> cdeb1ac2c5ee9b758370fc99c03d740e8fd3f21e
+
         }
     };
     return result;
