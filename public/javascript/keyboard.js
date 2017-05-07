@@ -32,7 +32,6 @@ $("#octave").change(function() {
   currentOctave = $( this ).val().toString();
 });
 
-
 //execute when key is pressed
 keyboard.keyDown = function (note, frequency) {
     //Adjust the current note to the octave setting
@@ -49,7 +48,6 @@ keyboard.keyDown = function (note, frequency) {
     sounds[currentNote] = doubleOsc;
     sounds[currentNote].play({ pitch: currentNote });
 };
-
 
 //execute when key is released
 keyboard.keyUp = function (note, frequency) {
@@ -76,28 +74,11 @@ function getSettings() {
         },
 
         masterSettings: {
-            env: {      // This is the ADSR envelope.
-                attack: parseFloat($("#filter-attack").val()),  // Time in seconds from onset to peak volume.  Common values for oscillators may range from 0.05 to 0.3.
-                decay: parseFloat($("#filter-decay").val()),  // Time in seconds from peak volume to sustain volume.
-                sustain: parseFloat($("#filter-sustain").val()),  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
-                release: parseFloat($("#filter-release").val()),     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
-                hold: 3.14, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
-
-            },
-            filter: {
-                type: $("#filter-type").val().toLowerCase(), // What type of filter is applied.
-                frequency: parseFloat($("#filter-frequency").val()),       // The frequency, in hertz, to which the filter is applied.
-                q: parseFloat($("#filter-q").val()),         // Q-factor.  No one knows what this does. The default value is 1. Sensible values are from 0 to 10.
-                env: {          // Filter envelope.
-                    frequency: parseFloat($("#filter-env-freq").val()), // If this is set, filter frequency will slide from filter.frequency to filter.env.frequency when a note is triggered.
-                    attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
-                }
-            },
-
             delay: {
                 delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
                 wet: parseFloat($("#delay-wet").val()), // Relative volume change between the original sound and the first delayed playback.
                 feedback: parseFloat($("#delay-feedback").val()), // Relative volume change between each delayed playback and the next. 
+                bypass: parseInt($("delayLED").val())
             },
             tuna: {
                 Filter: {
@@ -105,13 +86,13 @@ function getSettings() {
                     Q: parseFloat($("#filter-q").val()), //0.001 to 100
                     gain: parseFloat($("#filter-gain").val()), //-40 to 40 (in decibels)
                     filterType: $("#filter-type").val().toLowerCase(), //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
-                    bypass: parseInt($("#filter-bypass").val())
+                    bypass: parseInt($("#filterLED").val())
                 },
                 Chorus: {
                     rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
                     feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
                     delay: parseFloat($("#chorus-delay").val()),     //0 to 1
-                    bypass: parseInt($("#chorus-bypass").val())          //the value 1 starts the effect as bypassed, 0 or 1
+                    bypass: parseInt($("#chorusLED").val())          //the value 1 starts the effect as bypassed, 0 or 1
                 },
                 Phaser: {
                     rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
@@ -119,7 +100,7 @@ function getSettings() {
                     feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
                     stereoPhase: 30, //0 to 180
                     baseModulationFrequency: 700, //500 to 1500
-                    bypass: parseInt($("#phaser-bypass").val())
+                    bypass: parseInt($("#phaserLED").val())
                 },
                 Overdrive: {
                     outputGain: 1, //0 to 1+
@@ -132,7 +113,7 @@ function getSettings() {
                     intensity: parseFloat($("#tremolo-intensity").val()), //0 to 1
                     rate: parseFloat($("#tremolo-rate").val()), //0.001 to 8
                     stereoPhase: parseFloat($("#tremolo-phase").val()), //0 to 180
-                    bypass: parseInt($("#tremolo-bypass").val())
+                    bypass: parseInt($("#tremoloLED").val())
                 },
                 Bitcrusher: {
                     bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16

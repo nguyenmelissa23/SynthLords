@@ -1,39 +1,8 @@
 // https://dev.opera.com/articles/drum-sounds-webaudio/
 
+console.log("loading drum_sound.js");
 
-var context = new AudioContext;
-// console.log(context.sampleRate);
-// console.log(context.destination.channelCount);
-
-// var oscillator = context.createOscillator();
-// oscillator.frequency = 261.6;
-
-// oscillator.connect(context.destination);
-
-// oscillator.start(0);
-
-// var oscillator = context.createOscillator();
-// oscillator.frequency=150;
-
-// var gain = context.createGain();
-
-// oscillator.connect(gain);
-// gain.connect(context.destination);
-
-// var now = context.currentTime;
-
-// gain.gain.setValueAtTime(1,now);
-// gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-
-// oscillator.start(now);
-// oscillator.stop(now + 0.5);
-
-// oscillator.frequency.setValueAtTime(150, now);
-
-// oscillator.frequency.exponentialRampToValueAtTime(0.001, now + 0.5);
-
-
-// KICK 
+// ================= KICK ==================== 
 function Kick(context){
     this.context = context;
 }
@@ -59,15 +28,15 @@ Kick.prototype.trigger = function(time){
     this.osc.stop(time + 0.5);
 };
 
-var kick = new Kick(context);
-var now = context.currentTime;
-kick.trigger(now);
-kick.trigger(now + 0.5);
-kick.trigger(now + 1);
+// var kick = new Kick(context);
+// var now = context.currentTime;
+// kick.trigger(now);
+// kick.trigger(now + 0.5);
+// kick.trigger(now + 1);
 
 
 
-//SNARE
+// ============== SNARE ================================
 
 function Snare(context){
     this.context = context;
@@ -132,8 +101,74 @@ Snare.prototype.trigger = function(time){
 }; 
 
 
-// HIHAT
+//======== HIHAT ===================
 
 function HiHat(context, buffer){
-    
+    this.context = context; 
+    this.buffer = buffer; 
 }
+
+//CREATE BUFFER SOURCE and CONNECTION
+HiHat.prototype.setup = function(){
+    this.source = this.context.createBufferSource();
+    this.source.buffer = this.buffer;
+    this.source.connect(this.connect.destination);
+};
+
+HiHat.prototype.trigger = function(time){
+    this.setup();
+    
+    this.source.start(time);
+}; 
+
+
+//================SAMPLE LOADER ======================
+var sampleLoader = function(url, context, callback){
+    var request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.responseType = "arraybuffer";
+
+    request.onload = function(){
+        context.decodeAudioData(request.response, function(buffer){
+            window.buffer = buffer;
+            callback();
+        });
+    };
+    request.send();
+};
+
+//=========CREATE AUDIO CONTEXT =========
+var context = new AudioContext();
+
+var setup = function(){
+    var kick = new Kick(context);
+    var snare = new Snare(context);
+    var hihat = new HiHat(context, window.buffer);
+
+    Tone.Transport.bpm.value = 120;
+
+    Tone.Transport.setInverval(function(time){kick.trigger(time);}, "4n");
+    Tone.Transport.setInteval(function(time){snare.trigger(time);}, "2n");
+    Tone.Transport.setInteval(function(time){snare.trigger(time);}, "8t");
+
+    //$("#play").removeClass('pure-button-disabled');
+};
+
+$("#stopDrum").on("click", function() {
+    console.log("Stop...");
+  if (window.playing == true) {
+    window.playing = false;
+    Tone.Transport.stop();
+  }
+});
+
+$("#playDrum").on("click", function() {
+	console.log("Play....")
+  if (window.playing == false) {
+    window.playing = true;
+    Tone.Transport.start();
+  }
+});
+
+window.playing = false;
+sampleLoader('http://www.drumslive.com/shop_loops/ambient-acoustic/wav-abmient-140bpm/ENtam1o-140.wav', context, setup);

@@ -2,12 +2,14 @@
 
 $(".led-red").on("click", function(){
     $(this).toggleClass("led-red-on");
-    if (this.getAttribute("value") == "off"){
-   this.setAttribute("value", "on");
-   console.log("On: " + this);
-    }
-    else if (this.getAttribute("value") == "on"){
-        this.setAttribute("value", "off");
+    switch (this.getAttribute("value")){
+        case ("0"):
+        this.setAttribute("value", 1);
+        console.log("On: " + this);
+        break;
+        case ("1"):
+        this.setAttribute("value", 0);
         console.log("Off: " + this);
+        break;
     }
 });
