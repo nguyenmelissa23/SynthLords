@@ -81,7 +81,7 @@ function getSettings() {
                 decay: parseFloat($("#filter-decay").val()),  // Time in seconds from peak volume to sustain volume.
                 sustain: parseFloat($("#filter-sustain").val()),  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
                 release: parseFloat($("#filter-release").val()),     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
-                hold: 3.14, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
+                hold: 0, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
 
             },
             filter: {
