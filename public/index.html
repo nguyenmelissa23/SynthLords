@@ -167,6 +167,7 @@
                 <div class="col-md-6">
                     <div class="setting-group" id="drum-machine">
                         <h3>Drum Machine</h3>
+
                         <div class="row"> <!--JUST ADDED THIS -->
                             <button class="btn btn-primary" id="startTrack">Play</button>
                             <button class="btn btn-danger" id="stopTrack">Stop</button>
@@ -177,8 +178,12 @@
                                 </select>
                             </div>
                         </div> <!--END ADDING-->
-
-                        <div class="row">
+                        
+                        <!--Dynamically generate drum sounds buttons-->
+                        <div class="drumSoundBtns row">
+                            
+                        </div>
+                        <!--<div class="row">
                             <div class="col-md-12 text-center">
                                 <label class="slider-label text-center">
                                     <input class="vertical-slider" data-program="osc2_detune" data-update="update_osc2_detune" id="drum-detune" max="200" min="-200" orient="vertical" step="0.01" type="range" value="0">
@@ -191,7 +196,7 @@
                                     Gain
                                 </label>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -483,8 +488,16 @@
     <script src="./source-files/Tone.js"></script>
     <!--Buffer-loader.js-->
     <script type="text/javascript" src="./source-files/buffer-loader.js"></script>
+    
+    <!--Load all media files-->
+    <script type="text/javascript" src="./javascript/drum_machine/loadMediaFiles.js"></script>
+    <script type="text/javascript" src="./javascript/drum_machine/testGlobalVar.js"></script>
+    
+    <!--Play Drum Sounds-->
+    <!--<script type="text/javascript" src="./javascript/drum_machine/playDrumSounds.js"></script>-->
+    
     <!--Play Drum Track-->
-    <script type="text/javascript" src="./javascript/drum_machine/playDrumTrack.js"></script>
+    <!--<script type="text/javascript" src="./javascript/drum_machine/playDrumTrack.js"></script>-->
     <!--Drum Machine using Tone.js-->
     <!--<script type="text/javascript" src="./javascript/drum_machine/drum_sound.js"></script>-->
     

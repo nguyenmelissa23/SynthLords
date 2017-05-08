@@ -27,7 +27,8 @@
     "tone": "^0.10.0",
     "web-audio-daw": "^2.3.1"
   }
+  // ,
 
-    "sequelize": "^3.30.4"
+  //   "sequelize": "^3.30.4"
 
 }

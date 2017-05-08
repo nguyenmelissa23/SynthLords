@@ -1,32 +1,44 @@
-console.log("loading tone_player.js");
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//SOLVED CORS PROBLEM BY UPLOADING FILES TO AWS S3 AND GIVE CORS PERMISSION
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//=========== Links for Drum MP3 ===============
+console.log("loading playDrumTrack.js");
+
+//=========== Links for Drum Tracks MP3 ===============
 // http://audiosoundclips.com/audio-sound-clips-drums/
+
+//==========Links for codes======================
+//https://www.html5rocks.com/en/tutorials/webaudio/intro/
+
+//===========Links for sample drum sounds=========
+//http://freewavesamples.com/sample-type/cymbals/hi-hat
 
 var context;
 var _isPlaying=false;
 var currentSource;
+var context;
+var bufferLoader;
+var bufferList;
+var sourceArray = [];
 
+//===Check browser support====
 window.addEventListener('load', checkBrowserSupport, false);
 function checkBrowserSupport() {
 	console.log("checkBrowserSupport");
 	try {
-	// Fix up for prefixing
-	window.AudioContext = window.AudioContext||window.webkitAudioContext;
-	context = new AudioContext();
+		// Fix up for prefixing
+		window.AudioContext = window.AudioContext||window.webkitAudioContext;
+		context = new AudioContext();
 	}
 	catch(e) {
-	alert('Web Audio API is not supported in this browser');
+		alert('Web Audio API is not supported in this browser');
 	}
 }
 
 
 //====LOADING BUFFER FILES============
 window.onload = init;
-var context;
-var bufferLoader;
-var bufferList;
-var sourceArray = [];
+
 
 function init() {
 	console.log("window.init()");
@@ -100,6 +112,9 @@ $("#stopTrack").on("click", function(){
 });
 //=======================================================
 
+
+
+//==============FUNCTIONS=====================
 function startTrack(){
 	console.log("_isPlaying", _isPlaying)
 	var trackName = $("#trackDropBar").val();
@@ -123,7 +138,7 @@ function startTrack(){
 
 function stopTrack(){
 	console.log("stopTrack()");
-	if (_isPlaying == true){
+	if (_isPlaying === true){
 		currentSource.stop(2);
 		_isPlaying = false;
 	}
@@ -133,16 +148,6 @@ function stopTrack(){
 // Append option elements from the sourceArray:
 function createOptionElement(){
 	console.log("createOptionElement");
-	// for (var i = 0; i < bufferList.length; i++){
-	// 	var newSource = context.createBufferSource();
-	// 	newSource.buffer = bufferList[i];
-	// 	var trackNum = i+1;
-	// 	var sourceObj = {
-	// 		name: ("Drum" + trackNum), 
-	// 		source: newSource
-	// 	};
-	// 	sourceArray.push(sourceObj);
-	// }
 	for ( var i = 0; i < sourceArray.length; i++){
 		var optionHTML = "<option>"+ sourceArray[i].name +"</option>";
 		//console.log(optionHTML);
