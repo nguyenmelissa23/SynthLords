@@ -160,40 +160,23 @@
                     </div>
                 </div>
             </div>
+
             <!--ROW 3-->
             <div class="row">
-                <!--DRUM MACHINE-->
+                <!--DRUM MACHINE--> 
                 <div class="col-md-6">
                     <div class="setting-group" id="drum-machine">
                         <h3>Drum Machine</h3>
-                        <div class="row">
-                            <!--TODO ============================================FIXME -->
-                            <div class="col-md-4 drum-toggle">
-                                <label for="">
-                                    Drum <br>
-                                <label class="switch">
-                                        <input type="checkbox">
-                                        <div class="slider round"></div>
-                                    </label>
-                                </label>
-                            </div>
-
-                            <div class="col-md-4 playstopbtn">
-                                <button class="btn btn-primary" id="playDrum">PLAY</button>
-                                <button class="btn btn-danger" id="stopDrum">STOP</button>
-                            </div>
-
-                            <br>
-                            <div class="col-md-4 drum-setting">
-                                <p class="setting-label">Drum Type</p>
-                                <select id="drum-source" class="selectpicker" data-style="btn-inverse">
-                                    <option data-filename="../public/drum_tracks/ambient_120.wav" selected="selected">Ambient 120 BPM</option>
-                                    <option data-filename="../public/drum_tracks/ambient_140.wav">Ambient 140 BPM</option>
-                                    <!--<option data-filename=" ">Track 3</option>
-                                    <option data-filename=" ">Track 4</option>-->
+                        <div class="row"> <!--JUST ADDED THIS -->
+                            <button class="btn btn-primary" id="startTrack">Play</button>
+                            <button class="btn btn-danger" id="stopTrack">Stop</button>
+                            <div class="trackList">
+                                <label for="trackList">Drum Loop</label>
+                                <select id="trackDropBar">
+                                    <option selected="selected" disabled value="0">Select a Drum Loop</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> <!--END ADDING-->
 
                         <div class="row">
                             <div class="col-md-12 text-center">
@@ -212,6 +195,7 @@
                     </div>
                 </div>
             </div>
+
             <!--ROW 4-->
             <div class="row">
                 <!--TUNA-->
@@ -464,7 +448,7 @@
 
     <!--keyboard-->
     <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
-    <script src="./source-files/qwerty-hancock.min.js"></script>
+    <script src="./source-files/qwerty-hancock.min.js"></script>    
 
     <!--jquery-->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
@@ -488,10 +472,18 @@
     <script type="text/javascript" src="./javascript/keyboard.js"></script>
     <script type="text/javascript" src="./app/js/logic.js"></script>
 
-    <!--Drum Machine-->
-    <script type="text/javascript" src="./javascript/drummachine.js"></script>
+    <!--DRUM MACHINE-->
+    <!--<script type="text/javascript" src="./javascript/drummachine.js"></script>-->
+    <!--Tone.js source file-->
     <script src="./source-files/Tone.min.js"></script>
-    <script type="text/javascript" src="./javascript/drum_sound.js"></script>
+    <script src="./source-files/Tone.js"></script>
+    <!--Buffer-loader.js-->
+    <script type="text/javascript" src="./source-files/buffer-loader.js"></script>
+    <!--Play Drum Track-->
+    <script type="text/javascript" src="./javascript/drum_machine/playDrumTrack.js"></script>
+    <!--Drum Machine using Tone.js-->
+    <!--<script type="text/javascript" src="./javascript/drum_machine/drum_sound.js"></script>-->
+    
 </body>
 
 </html>
