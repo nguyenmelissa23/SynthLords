@@ -27,7 +27,7 @@ var keyboard = new QwertyHancock({
     startNote: 'C3',
     whiteNotesColour: 'white',
     blackNotesColour: 'black',
-    hoverColour: '#f3e939'
+    hoverColour: '#'
 });
 //store the current octave setting (default to 3)
 var currentOctave = '3';
@@ -79,6 +79,25 @@ function getSettings() {
         },
 
         masterSettings: {
+
+            env: {      // This is the ADSR envelope.
+                attack: parseFloat($("#filter-attack").val()),  // Time in seconds from onset to peak volume.  Common values for oscillators may range from 0.05 to 0.3.
+                decay: parseFloat($("#filter-decay").val()),  // Time in seconds from peak volume to sustain volume.
+                sustain: parseFloat($("#filter-sustain").val()),  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
+                release: parseFloat($("#filter-release").val()),     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
+                hold: 0, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
+
+            },
+            filter: {
+                type: $("#filter-type").val().toLowerCase(), // What type of filter is applied.
+                frequency: parseFloat($("#filter-frequency").val()),       // The frequency, in hertz, to which the filter is applied.
+                q: parseFloat($("#filter-q").val()),         // Q-factor.  No one knows what this does. The default value is 1. Sensible values are from 0 to 10.
+                env: {          // Filter envelope.
+                    frequency: parseFloat($("#filter-env-freq").val()), // If this is set, filter frequency will slide from filter.frequency to filter.env.frequency when a note is triggered.
+                    attack: parseFloat($("#filter-env-atk").val())  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
+                }
+            },
+
 
             delay: {
                 delayTime: parseFloat($("#delay-rate").val()),  // Time in seconds between each delayed playback.
