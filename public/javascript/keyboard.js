@@ -27,7 +27,7 @@ var keyboard = new QwertyHancock({
     startNote: 'C3',
     whiteNotesColour: 'white',
     blackNotesColour: 'black',
-    hoverColour: '#f3e939'
+    hoverColour: '#'
 });
 //store the current octave setting (default to 3)
 var currentOctave = '3';

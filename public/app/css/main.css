@@ -1,13 +1,15 @@
-body{
-    background: rgb(35.9%, 35.9%, 35.9%);
+body {
+  background-image: url('http://www.homedepot.com/catalog/productImages/1000/4c/4ca85dba-9792-4438-b892-0aeb67208667_1000.jpg');
 }
 
-.setting-group{
-    background: rgb(89%, 84.7%, 100%);
+div.setting-group{
+    background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
     padding: 10px;
-    margin-top: 15px;
-    border-radius: 25px;
-    color: black;
+    margin-top: 10px;
+    margin-left: -10px;
+    border: 5px  solid silver;
+    box-shadow: 0px 3px 10px 0px black;
+    color: white;
 }
 
 .setting-label{
@@ -114,10 +116,12 @@ input:checked + .slider::after {
 /*END OF TOGGLE BUTTON*/
 
 #tuna-container{
-  background: black;
-  color: white;
-  padding: 15px;
-  margin: 15px;
+   background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
+    padding: 25px;
+    margin-top: 10px;
+    border: 5px  solid silver;
+    box-shadow: 0px 3px 10px 0px black;
+    color: white;
 }
 
 .led-red-on{
@@ -205,4 +209,9 @@ input:checked + .slider::after {
   box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
 
 }
+
+li {
+        box-shadow: 0px 1px 6px 0px black; 
+}
+
 
