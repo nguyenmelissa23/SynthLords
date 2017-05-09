@@ -11,28 +11,22 @@ Kick.prototype.setup = function(){
     this.osc = this.context.createOscillator();
     this.gain = this.context.createGain();
     this.osc.connect(this.gain);
-    this.gain.connect(this.context.destination)
+    this.gain.connect(this.context.destination);
 };
 
-Kick.prototype.trigger = function(time){
-    this.setup();
-    
-    this.osc.frequency.setValueAtTime(150, time); 
-    this.gain.gain.setValueAtTime(1, time);
+Kick.prototype.trigger = function(time) {
+  this.setup();
 
-    this.osc.frequency.exponentialRampToValueAtTime(0.01, time+0.5);
-    this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+  this.osc.frequency.setValueAtTime(150, time);
+  this.gain.gain.setValueAtTime(1, time);
 
-    this.osc.start(time);
-    
-    this.osc.stop(time + 0.5);
+  this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+  this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+
+  this.osc.start(time);
+
+  this.osc.stop(time + 0.5);
 };
-
-// var kick = new Kick(context);
-// var now = context.currentTime;
-// kick.trigger(now);
-// kick.trigger(now + 0.5);
-// kick.trigger(now + 1);
 
 
 
@@ -94,10 +88,10 @@ Snare.prototype.trigger = function(time){
     this.noiseEnvelope.gain.setValueAtTime(1,time);
     //decrease or increase to value of 0.01 at "time + 0.2"
     this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time  + 0.2);
-    this.noiseBuffer.start(time);
+    this.buffer.start(time);
 
     this.osc.stop(time + 0.2);
-    this.noiseBuffer.stop(time + 0.2)
+    this.buffer.stop(time + 0.2)
 }; 
 
 
@@ -147,9 +141,9 @@ var setup = function(){
 
     Tone.Transport.bpm.value = 120;
 
-    Tone.Transport.setInverval(function(time){kick.trigger(time);}, "4n");
-    Tone.Transport.setInteval(function(time){snare.trigger(time);}, "2n");
-    Tone.Transport.setInteval(function(time){snare.trigger(time);}, "8t");
+    Tone.Transport.scheduleRepeat(function(time){kick.trigger(time);}, "4n");
+    Tone.Transport.scheduleRepeat(function(time){snare.trigger(time);}, "2n");
+    Tone.Transport.scheduleRepeat(function(time){snare.trigger(time);}, "8t");
 
     //$("#play").removeClass('pure-button-disabled');
 };
