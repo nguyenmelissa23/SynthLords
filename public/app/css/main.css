@@ -10,16 +10,49 @@ body {
   background-image: url('http://www.homedepot.com/catalog/productImages/1000/4c/4ca85dba-9792-4438-b892-0aeb67208667_1000.jpg');
 }
 
-div.setting-group{
+h3, h4  {
+
+  color:	#D5AD6D; /*if no support for background-clip*/
+	
+	background: -webkit-linear-gradient(transparent, transparent),
+             -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
+	background: -o-linear-gradient(transparent, transparent);
+	-webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+div.setting-group {
     background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: -10px;
     border: 5px  solid silver;
     box-shadow: 0px 3px 10px 0px black;
     color: white;
+    width: 100%;
+    text-align: center;
+    min-height: 225px;
+    
 }
 
+div#master.setting-group {
+  min-width: 350px;
+  background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
+    padding: 10px;
+    border: 5px  solid silver;
+    box-shadow: 0px 3px 10px 0px black;
+    color: white;
+    width: 100%;
+    text-align: center;
+    height: 225px;
+}
+
+div#drum-machine.setting-group {
+ width: 100%
+}
+
+div#
 .setting-label{
     margin: 0;
 }
@@ -40,11 +73,91 @@ div.setting-group{
 #tuna-container{
    background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
     padding: 25px;
-    margin-top: 10px;
+    margin-top: 20px;
     border: 5px  solid silver;
     box-shadow: 0px 3px 10px 0px black;
     color: white;
+    width: 100%;
+    margin-left: -10px;
 }
+
+div.col-md-12.text-center {
+  margin-left: -10px;
+}
+
+/*=====knobby knobs======*/
+
+
+input[type='range'] {
+    margin-top: 60px;
+    writing-mode: bt-lr;
+    width: 80px;
+    height: 240px;
+    padding: 0;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input[type='range'] {
+        -webkit-appearance: none;
+        -webkit-transform: rotate(-90deg);
+        width: 140px;
+        height: 10px;
+        margin-top: 160px;
+        outline: 0;
+        border-radius: 5px;
+        background-color: #0b0b0b ;
+        box-shadow: inset 1px 1px 0 1px #6d6d6d ;
+    }
+}
+
+input[type='range']::-ms-track {
+    width: 10px;
+    height: 240px;
+    border-radius: 5px;
+    background-color: #0b0b0b ;
+    box-shadow: inset 1px 1px 0 1px #6d6d6d ;
+    border: 0;
+}
+
+input[type='range']::-moz-range-track {
+    width: 10px;
+    height: 240px;
+    border-radius: 5px;
+    background-color: #0b0b0b ;
+    box-shadow: inset 1px 1px 0 1px #6d6d6d ;
+    border: 0;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    width: 42px;
+    height: 32px;
+    -webkit-appearance: none;
+    background-image: -webkit-linear-gradient(left, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
+    box-shadow: 5px -10px 20px 0 #1a1a1a ;
+}
+
+input[type='range']::-ms-thumb {
+    width: 32px;
+    height: 72px;
+    border: 0;
+    box-shadow: -10px -5px 20px 0 #1a1a1a ;
+    background-image: -ms-linear-gradient(bottom, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
+}
+
+input[type='range']::-ms-tooltip {
+    display: none;
+}
+
+input[type='range']::-moz-range-thumb {
+    width: 32px;
+    height: 72px;
+    border: 0;
+    box-shadow: -10px -5px 20px 0 #1a1a1a ;
+    background-image: -moz-linear-gradient(bottom, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
+    border-radius: 0;
+}
+
+/=============*/
 
 
 /*======RED LED CSS================*/

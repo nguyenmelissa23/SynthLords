@@ -41,8 +41,8 @@ else {
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
     id: 'keyboard',
-    width: 600,
-    height: 150,
+    width: 1873,
+    height: 350,
     octaves: 2,
     startNote: 'C3',
     whiteNotesColour: 'white',
