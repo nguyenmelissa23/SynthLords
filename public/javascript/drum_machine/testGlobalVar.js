@@ -1,1 +1,0 @@
-console.log("Testing Global Var, sourceArray", sourceArray);
