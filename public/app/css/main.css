@@ -1,3 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=Bitter:400,700);
+.visualizer {
+background: black;
+display: inline;
+border: white 2px solid;
+border-radius: 4px;
+}
+
 body {
   background-image: url('http://www.homedepot.com/catalog/productImages/1000/4c/4ca85dba-9792-4438-b892-0aeb67208667_1000.jpg');
 }
