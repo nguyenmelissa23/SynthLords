@@ -1,3 +1,19 @@
+console.log("running loadMediaFiles.js");
+//==========Links for codes======================
+//https://www.html5rocks.com/en/tutorials/webaudio/intro/
+
+// https://dev.opera.com/articles/drum-sounds-webaudio/
+
+//=========== Links for Drum Tracks MP3 ===============
+// http://audiosoundclips.com/audio-sound-clips-drums/
+
+
+//===========Links for sample drum sounds=========
+//http://freewavesamples.com/sample-type/cymbals/hi-hat
+
+//===========Links for sample drum sounds=========
+// http://freewavesamples.com/
+
 var context;
 var bufferLoader;
 var bufferList;
@@ -143,6 +159,7 @@ function startTrack(){
 				if (sourceArray[i].name === trackName){
 					currentSource = sourceArray[i].source;
 					currentSource.connect(context.destination);
+					currentSource.loop = true;
 					currentSource.start();
 					_isPlaying = true;
 				}
@@ -163,7 +180,7 @@ function stopTrack(){
 //==============================================
 
 
-//TODO: ======== DRUM SOUNDS KEY EVENTS =====================
+//======== DRUM SOUNDS KEY EVENTS =====================
 $(".drumSoundBtns").on("click", ".drumBtn", function(){
     console.log("Click on sound button....");
     _isPlayingDS = $(this).attr("data-playing");
@@ -174,6 +191,10 @@ $(".drumSoundBtns").on("click", ".drumBtn", function(){
         stopSound(this);
     }
 });
+
+//TODO: Create key events
+
+
 
 //============= DRUM SOUND FUNCTIONS ====================
 
