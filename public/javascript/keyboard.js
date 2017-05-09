@@ -41,8 +41,8 @@ else {
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
     id: 'keyboard',
-    width: 1873,
-    height: 350,
+    width: 600,
+    height: 150,
     octaves: 2,
     startNote: 'C3',
     whiteNotesColour: 'white',
@@ -354,65 +354,19 @@ $(".tuna-setting").change(function () {
 
 /**** VISUALIZER ****/
 
-// var WIDTH = 640;
-// var HEIGHT = 100;
-// var canvas = document.querySelector('#myCanvas');
-// var myCanvas = canvas.getContext("2d");
-
-// myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
-
-// function connectVisualizer(wad) {
-//     console.log(wad);
-//     wad.prototype.setUpExternalFxOnPlay = function (arg, context) {
-
-//         var analyser = context.createAnalyser();
-//         analyser.fftSize = 2048;
-//         var bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
-//         var dataArray = new Uint8Array(bufferLength);
-
-//         drawVisual = requestAnimationFrame(draw);
-//         analyser.getByteTimeDomainData(dataArray);
-
-//         myCanvas.fillStyle = 'rgb(0, 0, 0)';
-//         myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
-//         myCanvas.lineWidth = 2;
-//         myCanvas.strokeStyle = 'rgb(0, 255, 0)';
-
-//         myCanvas.beginPath();
-//         var sliceWidth = WIDTH * 1.0 / bufferLength;
-//         var x = 0;
-
-//         for (var i = 0; i < bufferLength; i++) {
-
-//             var v = dataArray[i] / 128.0;
-//             var y = v * HEIGHT / 2;
-
-//             if (i === 0) {
-//                 myCanvas.moveTo(x, y);
-//             } else {
-//                 myCanvas.lineTo(x, y);
-//             }
-
-//             x += sliceWidth;
-//         }
-//         myCanvas.stroke();
-//     };
-// }
-
-
 // var tuna;
-// Wad.prototype.constructExternalFx = function(arg, context){
-//     this.tuna   = new Tuna(context);
+// Wad.prototype.constructExternalFx = function (arg, context) {
+//     this.tuna = new Tuna(context);
 //     this.chorus = arg.chorus;
 //     this.analyser = context.createAnalyser();
 // };
 
-// Wad.prototype.setUpExternalFxOnPlay = function(arg, context){
+// Wad.prototype.setUpExternalFxOnPlay = function (arg, context) {
 //     var chorus = new tuna.Chorus({
-//         rate     : arg.chorus.rate     || this.chorus.rate,
-//         feedback : arg.chorus.feedback || this.chorus.feedback,
-//         delay    : arg.chorus.delay    || this.chorus.delay,
-//         bypass   : arg.chorus.bypass   || this.chorus.bypass
+//         rate: arg.chorus.rate || this.chorus.rate,
+//         feedback: arg.chorus.feedback || this.chorus.feedback,
+//         delay: arg.chorus.delay || this.chorus.delay,
+//         bypass: arg.chorus.bypass || this.chorus.bypass
 //     });
 //     chorus.input.connect = chorus.connect.bind(chorus); // we do this dance because tuna exposes its input differently.
 //     this.nodes.push(chorus.input); // you would generally want to do this at the end unless you are working with something that does not modulate the sound (i.e, a visualizer)
