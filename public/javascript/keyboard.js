@@ -6,7 +6,6 @@
  * --- Must Have ---
  * Upload to hosting service with database (heroku/cleardb).
  * CSS.
- * STORE SETTINGS IN GLOBAL OBJECT AND UPDATE DYNAMICALLY WHEN SETTING CHANGES INSTEAD OF USING getSettings().
  * Store presets in MYSQL database.
  * Drum Machine.
  * Remove unused settings in html (eg: interval).
@@ -15,10 +14,29 @@
  * Record and download tracks.
  * Upload your own audio files to play in drum machine.
  * Arpeggiator.
- * 
- * FIXME: 
- * Tuna Convolver error
+ * Tuna Convolver.
  */
+
+// localStorage.clear();
+//if first time page is loaded then use default settings
+var settings = localStorage.getItem("settings");
+if (!settings) {
+    console.log("First time loading page - loading default settings");
+    //Initialize wadContainer
+    var defaultSettings = getSettings();
+    var wadContainer = createWadContainers(defaultSettings);
+    //store settings in local storage
+    localStorage.setItem("settings", JSON.stringify(defaultSettings));
+}
+//if settings saved in local storage then use those
+else {
+    console.log("Using settings from localstorage");
+    var storedSettings = localStorage.getItem("settings");
+    storedSettings = JSON.parse(storedSettings);
+    var wadContainer = createWadContainers(storedSettings);
+    //TODO: update html corresponding to stored settings
+    updateHtml(storedSettings);
+}
 
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
@@ -32,83 +50,121 @@ var keyboard = new QwertyHancock({
     hoverColour: '#f3e939'
 });
 
-//Initialize WADS
-var WADS = createWads();
-//execute when key is pressed
+//execute when piano key is pressed
 keyboard.keyDown = function (note, frequency) {
-    console.log(WADS[note]);
-    console.log(WADS[note].wads[0].source);
     //Adjust the current note to the octave setting
     var keyboardNoteOctave = parseInt(note[note.length - 1]);
     var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
     var currentNote = note.replace(/.$/, adjustedOctave);
     //play WAD corresponding to note
-    WADS[note].play({ pitch: currentNote });
+    var myWad = getWadStart();
+    myWad.note = note;
+    myWad.inUse = true;
+    // console.log(myWad.obj);
+    myWad.obj.play({ pitch: currentNote });
 };
 
 //Stop playing note when key is released
 keyboard.keyUp = function (note, frequency) {
-    WADS[note].stop();
+    //find the WAD that's in use with the given note
+    var myWad = getWadStop(note);
+    myWad.obj.stop();
+    myWad.note = null;
+    myWad.inUse = false;
 };
 
-function createWads() {
-    var wads = {
-        'C3': null,
-        'C#3': null,
-        'D3': null,
-        'D#3': null,
-        'E3': null,
-        'F3': null,
-        'F#3': null,
-        'G3': null,
-        'G#3': null,
-        'A3': null,
-        'A#3': null,
-        'B3': null,
-        'C4': null,
-        'C#4': null,
-        'D4': null,
-        'D#4': null,
-        'E4': null,
-        'F4': null,
-        'F#4': null,
-        'G4': null,
-        'G#4': null,
-        'A4': null,
-        'A#4': null,
-        'B4': null,
-    };
-    var currentSettings = initializeSettings();
-    for (var note in wads) {
-        if (wads.hasOwnProperty(note)) {
-            var osc1 = new Wad(currentSettings.osc1Settings);
-            var osc2 = new Wad(currentSettings.osc2Settings);
-            //combine the oscillators
-            var doubleOsc = new Wad.Poly(currentSettings.masterSettings);
-            //set master volume
-            doubleOsc.setVolume(parseFloat($("#master-volume").val()));
-            doubleOsc.add(osc1).add(osc2);
-            wads[note] = doubleOsc;
+/** return a WAD that is not being used */
+function getWadStart() {
+    for (var i in wadContainer) {
+        if (wadContainer[i].inUse === false) {
+            return wadContainer[i];
         }
     }
-    console.log("Done creating wads.");
-    return wads;
+    return "Error: Can only press 6 keys at once";
+}
+
+/**
+ * Return the WAD with the given note
+ * @param note - identifies the WAD we're trying to find
+ */
+function getWadStop(note) {
+    for (var i in wadContainer) {
+        if (wadContainer[i].note === note) {
+            return wadContainer[i];
+        }
+    }
+}
+
+/**
+ * Creates an object to store 6 wadContainer initialized with the default settings.
+ * This allows us to only play 6 notes at once since the WAD objects consume
+ * a large amount of processing power.
+ */
+function createWadContainers(settings) {
+    var wadContainer = {
+        one: {
+            note: null,
+            obj: null,
+            inUse: false
+        },
+        two: {
+            note: null,
+            obj: null,
+            inUse: false
+        },
+        three: {
+            note: null,
+            obj: null,
+            inUse: false
+        },
+        four: {
+            note: null,
+            obj: null,
+            inUse: false
+        },
+        five: {
+            note: null,
+            obj: null,
+            inUse: false
+        },
+        six: {
+            note: null,
+            obj: null,
+            inUse: false
+        }
+    };
+    // var initialSettings = getSettings();
+    for (var property in wadContainer) {
+        if (wadContainer.hasOwnProperty(property)) {
+            var osc1 = new Wad(settings.osc1Settings);
+            var osc2 = new Wad(settings.osc2Settings);
+            //combine the oscillators
+            var doubleOsc = new Wad.Poly(settings.masterSettings);
+            //set master volume
+            doubleOsc.setVolume(parseFloat(settings.volume));
+            doubleOsc.add(osc1).add(osc2);
+
+            wadContainer[property].obj = doubleOsc;
+        }
+    }
+    console.log("Finished loading page.");
+    return wadContainer;
 }
 
 /** Get the settings from the index.html elements */
-function initializeSettings() {
+function getSettings() {
     var result = {
+        volume: parseFloat($("#master-volume").val()),
+        octave: parseInt($("#octave").val()),
         osc1Settings: {
             source: $("#osc1-source").val().toLowerCase(),
-            volume: $("#osc1-gain").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
-            //TODO: may need to change range on detune
+            volume: $("#osc1-volume").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
             detune: parseFloat($("#osc1-detune").val()),     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
         },
 
         osc2Settings: {
             source: $("#osc2-source").val().toLowerCase(),
-            volume: $("#osc2-gain").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
-            //TODO: may need to change range on detune
+            volume: $("#osc2-volume").val().toLowerCase(),   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
             detune: parseFloat($("#osc2-detune").val()),     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
         },
 
@@ -156,9 +212,10 @@ function initializeSettings() {
                 Bitcrusher: {
                     bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16
                     normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
-                    bufferSize: 0,  //256 to 16384
+                    bufferSize: 256,  //256 to 16384
                     bypass: parseInt($("#bitcrusher-bypass").val())
                 }
+                //FIXME: Error loading impulse
                 //     Convolver: {
                 //     highCut: parseFloat($("#convolver-high").val()), //20 to 22050
                 //     lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
@@ -174,37 +231,124 @@ function initializeSettings() {
     return result;
 }
 
+/**
+ * Updates the html synth setting elements to reflect the given settings.
+ * Called when the page loads with stored settings
+ * @param settings - the settings that the html will reflect
+ */
+function updateHtml(settings) {
+    $("#master-volume").val(settings.volume);
+    $("#octave").val(settings.octave);
+
+    //osc1
+    $("#osc1-source").val(settings.osc1Settings.source);
+    $("#osc1-volume").val(settings.osc1Settings.volume);
+    $("#osc1-detune").val(settings.osc1Settings.detune);
+
+    //osc2
+    $("#osc2-source").val(settings.osc2Settings.source);
+    $("#osc2-volume").val(settings.osc2Settings.volume);
+    $("#osc2-detune").val(settings.osc2Settings.detune);
+
+    //delay
+    $("#delay-rate").val(settings.masterSettings.delay.delayTime);
+    $("#delay-wet").val(settings.masterSettings.delay.wet);
+    $("#delay-feedback").val(settings.masterSettings.delay.feedback);
+
+    //TUNA
+    //filter
+    $("#filter-frequency").val(settings.masterSettings.tuna.Filter.frequency);
+    $("#filter-q").val(settings.masterSettings.tuna.Filter.Q);
+    $("#filter-gain").val(settings.masterSettings.tuna.Filter.gain);
+    $("#filter-type").val(settings.masterSettings.tuna.Filter.filterType);
+    $("#filter-bypass").val(settings.masterSettings.tuna.Filter.bypass);
+    //chorus
+    $("#chorus-rate").val(settings.masterSettings.tuna.Chorus.rate);
+    $("#chorus-feedback").val(settings.masterSettings.tuna.Chorus.feedback);
+    $("#chorus-delay").val(settings.masterSettings.tuna.Chorus.delay);
+    $("#chorus-bypass").val(settings.masterSettings.tuna.Chorus.bypass);
+    //phaser
+    $("#phaser-rate").val(settings.masterSettings.tuna.Phaser.rate);
+    $("#phaser-depth").val(settings.masterSettings.tuna.Phaser.depth);
+    $("#phaser-feedback").val(settings.masterSettings.tuna.Phaser.feedback);
+    $("#phaser-bypass").val(settings.masterSettings.tuna.Phaser.bypass);
+    //overdrive
+    $("#master-drive").val(settings.masterSettings.tuna.Overdrive.curveAmount);
+    //tremolo
+    $("#tremolo-intensity").val(settings.masterSettings.tuna.Tremolo.intensity);
+    $("#tremolo-rate").val(settings.masterSettings.tuna.Tremolo.rate);
+    $("#tremolo-phase").val(settings.masterSettings.tuna.Tremolo.stereoPhase);
+    $("#tremolo-bypass").val(settings.masterSettings.tuna.Tremolo.bypass);
+    //bitcrusher
+    $("#bitcrusher-bits").val(settings.masterSettings.tuna.Bitcrusher.bits);
+    $("#bitcrusher-normfreq").val(settings.masterSettings.tuna.Bitcrusher.normfreq);
+    $("#bitcrusher-bypass").val(settings.masterSettings.tuna.Bitcrusher.bypass);
+}
+
 
 /************ EVENT LISTENERS FOR CHANGING SETTINGS ************/
 
 // //store the current octave setting (default to 3)
-// var octaveSetting = 0;
-// $("#octave").change(function () {
-//     octaveSetting = parseInt($(this).val());
-// });
+var octaveSetting = parseInt($("#octave").val());
 
-// $(".setting").change(function () {
-//     var id = $(this).attr('id');
-//     console.log("---------\n");
-//     console.log("id: " + id);
-//     console.log("value: " + $(this).val() + " | type: " + typeof $(this).val());
+/**
+ * Detects when a synth setting is changed and updates the wadContainer objects.
+ * If the changed setting was from tuna then the wads must be recreated
+ */
+$(".setting").change(function () {
+    var id = $(this).attr('id');
+    switch (id) {
+        case 'octave':
+            octaveSetting = parseInt($(this).val());
+            break;
+        case 'osc1-source':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[0].source = $(this).val().toString();
+            }
+            break;
+        case 'osc2-source':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[1].source = $(this).val().toString();
+            }
+            break;
+        case 'osc1-detune':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[0].detune = parseFloat($(this).val());
+            }
+            break;
+        case 'osc2-detune':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[1].detune = parseFloat($(this).val());
+            }
+            break;
+        case 'osc1-volume':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[0].setVolume($(this).val().toString());
+                wadContainer[property].obj.wads[0].stop();
+            }
+            break;
+        case 'osc2-volume':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.wads[1].setVolume($(this).val().toString());
+                wadContainer[property].obj.wads[1].stop();
+            }
+            break;
+        case 'master-volume':
+            for (let property in wadContainer) {
+                wadContainer[property].obj.setVolume($(this).val().toString());
+            }
+            break;
+        default:
+            console.log("Error: setting id not found in switch");
+    }
+});
 
-//     switch (id) {
-//         case 'osc1-source':
-//             console.log($(this).val());
-//             break;
-//         case 'osc2-source':
-//             console.log($(this).val());
-//             break;
-//         default:
-//             // console.log("Error: setting id not found in switch");
-//     }
-// });
+/** Stores settings in localstorage and reloads the page
+ * This is necessary because some settings such as TUNA requires the 
+ * WADs to be recreated, which spikes the CPU usage unless the page is reloaded.
+ */
+$(".tuna-setting").change(function () {
+    localStorage.setItem("settings", JSON.stringify(getSettings()));
+    location.reload();
+});
 
-// function updateWads(setting, newValue){
-//     for(var note in WADS){
-//         console.log(WADS[note].wads[0].source);
-//     }
-// }
-
-// updateWads();
