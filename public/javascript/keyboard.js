@@ -144,9 +144,6 @@ function createWadContainers(settings) {
             doubleOsc.setVolume(parseFloat(settings.volume));
             doubleOsc.add(osc1).add(osc2);
 
-            //add visualizer
-            connectVisualizer(osc1);
-
             wadContainer[property].obj = doubleOsc;
         }
     }
