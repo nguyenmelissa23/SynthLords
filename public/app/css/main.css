@@ -4,6 +4,9 @@ background: black;
 display: inline;
 border: white 2px solid;
 border-radius: 4px;
+min-width: 894px;
+max-height: 300px;
+margin: 20px 37px 0px 20px
 }
 
 body {
@@ -36,8 +39,10 @@ div.setting-group {
     
 }
 
+
 label.slider-label {
-  margin-top: 75px;
+      margin-top: 40px;
+      margin-right: 30px;
 }
 
 div#master.setting-group {
@@ -49,29 +54,38 @@ div#master.setting-group {
     color: white;
     width: 100%;
     text-align: center;
-    
+    margin-left: 0px;
 }
+
+div#osc1.setting-group {
+  margin-left: 0px;
+  
+}
+div#osc2.setting-group {
+  margin-left: 0px;
+  
+}
+
 
 div#drum-machine.setting-group {
- width: 100%
+ width: 100%;
+ margin-left: 0px;
 }
 
-div#
-.setting-label{
-    margin: 0;
-}
+
 
 slider-label {
   margin-top: 100px;
 }
 
-/*.vertical-slider {
+.vertical-slider {
   -webkit-appearance: slider-vertical;
   height: 80px;
   margin-top: 15px;
   padding: 0;
   width: 15px;
-}*/
+}
+
 
 .delay{
     border: 2px solid black;
@@ -86,86 +100,12 @@ slider-label {
     box-shadow: 0px 3px 10px 0px black;
     color: white;
     width: 100%;
-    margin-left: -10px;
+    margin-left: 0px;
 }
 
 div.col-md-12.text-center {
-  margin-left: -10px;
+  margin-left: 0px;
 }
-
-/*=====knobby knobs======*/
-
-
-input[type='range'] {
-    margin-top: 60px;
-    writing-mode: bt-lr;
-    width: 80px;
-    height: 240px;
-    padding: 0;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    input[type='range'] {
-        -webkit-appearance: none;
-        -webkit-transform: rotate(-90deg);
-        width: 140px;
-        height: 10px;
-       margin-top:100px;
-        outline: 0;
-        border-radius: 5px;
-        background-color: #0b0b0b ;
-        box-shadow: inset 1px 1px 0 1px #6d6d6d ;
-    }
-}
-
-input[type='range']::-ms-track {
-    width: 10px;
-    height: 240px;
-    border-radius: 5px;
-    background-color: #0b0b0b ;
-    box-shadow: inset 1px 1px 0 1px #6d6d6d ;
-    border: 0;
-}
-
-input[type='range']::-moz-range-track {
-    width: 10px;
-    height: 240px;
-    border-radius: 5px;
-    background-color: #0b0b0b ;
-    box-shadow: inset 1px 1px 0 1px #6d6d6d ;
-    border: 0;
-}
-
-input[type='range']::-webkit-slider-thumb {
-    width: 32px;
-    height: 32px;
-    -webkit-appearance: none;
-    background-image: -webkit-linear-gradient(left, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
-    box-shadow: 5px -10px 20px 0 #1a1a1a ;
-}
-
-input[type='range']::-ms-thumb {
-    width: 32px;
-    height: 72px;
-    border: 0;
-    box-shadow: -10px -5px 20px 0 #1a1a1a ;
-    background-image: -ms-linear-gradient(bottom, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
-}
-
-input[type='range']::-ms-tooltip {
-    display: none;
-}
-
-input[type='range']::-moz-range-thumb {
-    width: 32px;
-    height: 72px;
-    border: 0;
-    box-shadow: -10px -5px 20px 0 #1a1a1a ;
-    background-image: -moz-linear-gradient(bottom, #0f0f0f , #2e2e2e 4%, #0f0f0f 8%, #000 47%, #808080 48%, #808080 52%, #000 53%, #1a1a1a 96%, #2e2e2e );
-    border-radius: 0;
-}
-
-
 
 
 /*======RED LED CSS================*/
@@ -265,4 +205,3 @@ li {
 }
 
 
-/*==============DRUM MACHINE========================*/

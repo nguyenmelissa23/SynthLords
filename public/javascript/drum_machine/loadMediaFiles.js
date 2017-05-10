@@ -14,6 +14,10 @@ console.log("running loadMediaFiles.js");
 //===========Links for sample drum sounds=========
 // http://freewavesamples.com/
 
+//TODO: Looking into overlay multiple canvases: 
+//http://html5.litten.com/using-multiple-html5-canvases-as-layers/
+
+
 
 var bufferLoader;
 var bufferList = [
@@ -177,7 +181,8 @@ function startTrack(){
 			for (var i = 0; i < sourceArray.length; i ++){
 				if (sourceArray[i].name === trackName){
 					currentSource = sourceArray[i].source;
-					currentSource.connect(context.destination);
+					currentSource.connect(gain);
+					gain.connect(context.destination);
 					currentSource.loop = true;
 					currentSource.start();
 					startVis();
