@@ -141,7 +141,7 @@ function createWadContainers(settings) {
             //combine the oscillators
             var doubleOsc = new Wad.Poly(settings.masterSettings);
             //set master volume
-            doubleOsc.setVolume(parseFloat(settings.volume));
+            // doubleOsc.setVolume(parseFloat(settings.volume));
             doubleOsc.add(osc1).add(osc2);
             wadContainer[property].obj = doubleOsc;
         }
