@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-    <link rel="stylesheet" type="text/css" href="../public/source-files/toggle-switch.css" />
     <link rel="stylesheet" href="./app/css/main.css">
 
 </head>
@@ -105,6 +104,12 @@
                                     <option value="1">+1</option>
                                     <option value="2">+2</option>
                                 </select>
+                                <br> presets
+                                <select id="preset-picker" class="setting selectpicker" data-style="btn-inverse">
+                                    <option value="" disabled selected>Select</option>
+                                </select>
+                                <br>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#preset-modal">Save Preset</button>
                             </div>
                         </div>
                     </div>
@@ -136,9 +141,17 @@
 
                         </div>
 
+                        <div class="row">
+                            <label class="slider-label text-center">
+                                    <input class=" vertical-slider" data-program="drum-track-volume" data-update="update-drum-track-volume" id="drum-track-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
+                                    <br>
+                                    Vol
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <!--ROW 4-->
             <div class="row">
                 <!--TUNA-->
@@ -434,14 +447,45 @@
             </div>
         </div>
 
+
+        <!--PRESET MODAL-->
+        <!-- Modal -->
+        <div id="preset-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">Save current settings as preset</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your preset will be saved in our database so that others can try out your settings!</p>
+                        <div class="form-group">
+                            <label for="usr">Preset Name:</label>
+                            <input type="text" class="form-control" id="preset-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Your Name (optional):</label>
+                            <input type="text" class="form-control" id="preset-creator">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="preset-save" data-dismiss="modal">Save Preset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
+
 
     <!--audio libraries-->
     <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
     <script src="./source-files/qwerty-hancock.min.js"></script>
 
     <!--jquery/bootstrap-->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" 
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>

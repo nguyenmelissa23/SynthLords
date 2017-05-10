@@ -52,7 +52,7 @@ var _isPlayingDS;
 let context;
 var currentSource;
 var currentSourceDS;
-var gain;
+// var gainDrum;
 
 //===Check browser support====
 window.addEventListener('load', checkBrowserSupport, false);
@@ -78,7 +78,7 @@ function init() {
     
     //=======Drum Tracks ========
     context = new AudioContext();
-    gain  	= context.createGain();
+    // gainDrum = context.createGain();
 	analyser = context.createAnalyser();
 	
     bufferLoader = new BufferLoader(
@@ -166,9 +166,18 @@ $("#stopTrack").on("click", function(){
 });
 //=======================================================
 
-
-
-
+//TODO:
+$("#drum-track-volume").change(function () {
+	location.reload();
+	
+	currentSource.connect(context.destination);
+	currentSource.volume = $("#drum-track-volume").val();
+	console.log("currentSource.volume", currentSource.volume);
+	currentSource.loop = true;
+	currentSource.start();
+	startVis();
+	_isPlaying = true;
+});
 //==============TRACKS FUNCTIONS=====================
 function startTrack(){
 	console.log("_isPlaying", _isPlaying)
@@ -181,8 +190,14 @@ function startTrack(){
 			for (var i = 0; i < sourceArray.length; i ++){
 				if (sourceArray[i].name === trackName){
 					currentSource = sourceArray[i].source;
-					currentSource.connect(gain);
-					gain.connect(context.destination);
+					// gainDrum.gain.value = $("#drum-track-volume").val();
+					// console.log("gainDrum", gainDrum.gain.value);
+					// currentSource.connect(gainDrum);
+					
+					// console.log("gainDrum", gainDrum.gain.value);
+					currentSource.connect(context.destination);
+					currentSource.volume = $("#drum-track-volume").val();
+					console.log("currentSource.volume", currentSource.volume);
 					currentSource.loop = true;
 					currentSource.start();
 					startVis();
@@ -282,7 +297,7 @@ function playSound(soundName, i){
 		// currentDrumSound.loop = true;
 		currentSourceDS.start();
 		// _isPlayingDS = "true";
-		currentSourceDS.stop(3);
+		currentSourceDS.stop(2);
 	}
 }
 
