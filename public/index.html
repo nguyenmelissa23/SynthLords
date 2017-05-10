@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-    <link rel="stylesheet" type="text/css" href="../public/source-files/toggle-switch.css" />
     <link rel="stylesheet" href="./app/css/main.css">
 
 </head>
@@ -139,12 +138,19 @@
 
                         <!--Dynamically generate drum sounds buttons-->
                         <div class="drumSoundBtns row">
-
                         </div>
 
+                        <div class="row">
+                            <label class="slider-label text-center">
+                                    <input class=" vertical-slider" data-program="drum-track-volume" data-update="update-drum-track-volume" id="drum-track-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
+                                    <br>
+                                    Vol
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <!--ROW 4-->
             <div class="row">
                 <!--TUNA-->
@@ -390,6 +396,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--Canvas-->
+                            <div class="row">
+                                <canvas class="visualizer" id="myCanvas" width="640" height="100"></canvas>
+                            </div>
                             <!--BITCRUSHER-->
                             <div class="col-md-3">
                                 <div class="setting-group" id="bitcrusher-container">
@@ -428,9 +438,7 @@
 
 
         <!--Visualizer-->
-        <div class="row">
-            <canvas class="visualizer" id="myCanvas" width="640" height="100"></canvas>
-        </div>
+
 
 
         <!--KEYBOARD GOES HERE-->
@@ -439,6 +447,7 @@
                 <div class="text-center" id="keyboard"></div>
             </div>
         </div>
+
 
         <!--PRESET MODAL-->
         <!-- Modal -->
@@ -468,15 +477,16 @@
             </div>
         </div>
 
+
     </div>
+
 
     <!--audio libraries-->
     <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
     <script src="./source-files/qwerty-hancock.min.js"></script>
 
     <!--jquery/bootstrap-->
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js" 
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
@@ -495,7 +505,8 @@
     <script src="./source-files/Tone.min.js"></script>
     <script src="./source-files/Tone.js"></script>
     <!--Drum Machine using Tone.js-->
-    <script type="text/javascript" src="./javascript/drum_machine/drum_sound.js"></script>
+    <!--<script type="text/javascript" src="./javascript/drum_machine/drum_sound.js"></script>-->
+
 
 
 </body>

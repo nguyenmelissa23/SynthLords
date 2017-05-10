@@ -14,39 +14,13 @@ console.log("running loadMediaFiles.js");
 //===========Links for sample drum sounds=========
 // http://freewavesamples.com/
 
-var context;
+//TODO: Looking into overlay multiple canvases: 
+//http://html5.litten.com/using-multiple-html5-canvases-as-layers/
+
+
+
 var bufferLoader;
-var bufferList;
-
-var sourceArray = [];
-var sourceArrayDS = [];
-var _isPlaying = false;
-var _isPlayingDS;
-//===Check browser support====
-window.addEventListener('load', checkBrowserSupport, false);
-function checkBrowserSupport() {
-	console.log("checkBrowserSupport");
-	try {
-        // Fix up for prefixing
-        window.Audiocontext = window.Audiocontext||window.webkitAudiocontext;
-        contextDS = new AudioContext();
-	}
-	catch(e) {
-	    alert('Web Audio API is not supported in this browser');
-	}
-}
-
-//====LOADING BUFFER FILES============
-window.onload = init;
-
-function init() {
-	console.log("window.init()");
-
-	window.Audiocontext = window.Audiocontext || window.webkitAudiocontext;
-    
-    //=======Drum Tracks ========
-    context = new AudioContext();
-    bufferList = [
+var bufferList = [
 		'https://s3.amazonaws.com/drumtracks/Drum1.mp3',
 		'https://s3.amazonaws.com/drumtracks/Drum2.mp3', 
 		'https://s3.amazonaws.com/drumtracks/Drum3.mp3',
@@ -67,7 +41,46 @@ function init() {
         'https://s3.amazonaws.com/drumsounds/open_hihat.wav',
         'https://s3.amazonaws.com/drumsounds/snare.wav',
         'https://s3.amazonaws.com/drumsounds/tom.wav'
+		// ,'https://firebasestorage.googleapis.com/v0/b/synthlords-d67d0.appspot.com/o/drum%2Fdrum.wav?alt=media&token=1b836b7f-eef5-4503-bbaa-fd92b06cb3b3'
 	];
+
+var sourceArray = [];
+var sourceArrayDS = [];
+var _isPlaying = false;
+var _isPlayingDS;
+
+let context;
+var currentSource;
+var currentSourceDS;
+// var gainDrum;
+
+//===Check browser support====
+window.addEventListener('load', checkBrowserSupport, false);
+function checkBrowserSupport() {
+	console.log("checkBrowserSupport");
+	try {
+        // Fix up for prefixing
+        window.Audiocontext = window.Audiocontext||window.webkitAudiocontext;
+        context = new AudioContext();
+	}
+	catch(e) {
+	    alert('Web Audio API is not supported in this browser');
+	}
+}
+
+//====LOADING BUFFER FILES============
+window.onload = init;
+
+function init() {
+	console.log("window.init()");
+
+	window.Audiocontext = window.Audiocontext || window.webkitAudiocontext;
+    
+    //=======Drum Tracks ========
+    context = new AudioContext();
+    // gainDrum = context.createGain();
+	analyser = context.createAnalyser();
+	
     bufferLoader = new BufferLoader(
 	context,
 	bufferList,
@@ -94,14 +107,24 @@ function finishedLoading(bufferList) {
 		};
 		sourceArray.push(sourceObj);
 	}
+	
+	// (function(){
+	// 	var newSource = context.createBufferSource();
+	// 	newSource.buffer = bufferList[20];
+	// 	var sourceObj = {
+	// 		name: ("User File"), 
+	// 		source: newSource
+	// 	};
+	// 	sourceArray.push(sourceObj);
+	// })();
     
 
     //===============Drum Sounds==========================
-    closed_hihat = contextDS.createBufferSource();
-    kick = contextDS.createBufferSource();
-    open_hihat = contextDS.createBufferSource();
-    snare = contextDS.createBufferSource();
-    tom = contextDS.createBufferSource();
+    var closed_hihat = context.createBufferSource();
+    var kick = context.createBufferSource();
+    var open_hihat = context.createBufferSource();
+    var snare = context.createBufferSource();
+    var tom = context.createBufferSource();
 
 	closed_hihat.buffer = bufferList[15];
     kick.buffer = bufferList[16];
@@ -143,9 +166,18 @@ $("#stopTrack").on("click", function(){
 });
 //=======================================================
 
-
-
-
+//TODO:
+$("#drum-track-volume").change(function () {
+	location.reload();
+	
+	currentSource.connect(context.destination);
+	currentSource.volume = $("#drum-track-volume").val();
+	console.log("currentSource.volume", currentSource.volume);
+	currentSource.loop = true;
+	currentSource.start();
+	startVis();
+	_isPlaying = true;
+});
 //==============TRACKS FUNCTIONS=====================
 function startTrack(){
 	console.log("_isPlaying", _isPlaying)
@@ -158,9 +190,17 @@ function startTrack(){
 			for (var i = 0; i < sourceArray.length; i ++){
 				if (sourceArray[i].name === trackName){
 					currentSource = sourceArray[i].source;
+					// gainDrum.gain.value = $("#drum-track-volume").val();
+					// console.log("gainDrum", gainDrum.gain.value);
+					// currentSource.connect(gainDrum);
+					
+					// console.log("gainDrum", gainDrum.gain.value);
 					currentSource.connect(context.destination);
+					currentSource.volume = $("#drum-track-volume").val();
+					console.log("currentSource.volume", currentSource.volume);
 					currentSource.loop = true;
 					currentSource.start();
+					startVis();
 					_isPlaying = true;
 				}
 			}
@@ -182,40 +222,107 @@ function stopTrack(){
 
 //======== DRUM SOUNDS KEY EVENTS =====================
 $(".drumSoundBtns").on("click", ".drumBtn", function(){
-    console.log("Click on sound button....");
-    _isPlayingDS = $(this).attr("data-playing");
+	startSound(this);
+    // console.log("Click on sound button....");
+    // _isPlayingDS = $(this).attr("data-playing");
     
-    if(_isPlayingDS === 'false'){
-        startSound(this);
-    } else if (_isPlayingDS === 'true') {
-        stopSound(this);
-    }
+    // if(_isPlayingDS === 'false'){
+    //     startSound(this);
+    // } else if (_isPlayingDS === 'true') {
+    //     stopSound(this);
+    // }
 });
 
 //TODO: Create key events
+document.addEventListener("keydown", function(event) {
+  //console.log("Keydown",event.which);
+  switch (event.which){
+	  case 52:
+	  	console.log("Closed Hihat");
+		playSound("Closed Hihat", 0);
+		break;
+	  case 53: 
+	  	console.log("Kick");
+		playSound("Kick", 1);
+		break;
+	  case 54:
+	  	console.log("Open Hihat");
+		playSound("Open Hihat", 2);
+		break;
+	  case 55:
+	  	console.log("Snare");
+		playSound("Snare", 3);
+		break;
+	  case 56: 
+	  	console.log("Tom");
+		playSound("Tom", 4);
+		break;
+  }
+});
 
+
+
+// var drum_sound  = {
+// 	keyDown : function(keyPressed){
+// 		console.log(keyPressed);
+// 		// if (_isPlayingDS === 'false'){
+//         for (var i = 0; i < sourceArrayDS.length; i ++){
+//             if (keyPressed === ""){
+// 				console.log("check for the name of the sound");
+//                 currentSourceDS = sourceArrayDS[i].source;
+//                 currentSourceDS.connect(context.destination);
+// 				// currentDrumSound.loop = true;
+//                 currentSourceDS.start();
+//                 // _isPlayingDS = "true";
+// 				// currentSourceDS.stop(3);
+//             }
+//         }
+// 	}, 
+// 	keyUp : function(){
+// 		currentSourceDS.start();
+// 	}
+// }
 
 
 //============= DRUM SOUND FUNCTIONS ====================
 
 //PLAYING/STOPING
+function playSound(soundName, i){
+	console.log("playing sound....");
+	var drumSoundObj = sourceArrayDS[i];
+	if (drumSoundObj.name === soundName){
+		console.log("sound is", drumSoundObj.name);
+		currentSourceDS = drumSoundObj.source;
+		currentSourceDS.connect(context.destination);
+		// currentDrumSound.loop = true;
+		currentSourceDS.start();
+		// _isPlayingDS = "true";
+		currentSourceDS.stop(2);
+	}
+}
+
 function startSound(soundBtn){
+	
     console.log("start sound....");
-    console.log(soundBtn);
+    // console.log(soundBtn);
 	var soundName = $(soundBtn).attr("data-btn-val");
     console.log(soundName);
-    if (_isPlayingDS === 'false'){
+    // if (_isPlayingDS === 'false'){
         for (var i = 0; i < sourceArrayDS.length; i ++){
             if (sourceArrayDS[i].name === soundName){
+				console.log("check for the name of the sound, index",i);
                 currentSourceDS = sourceArrayDS[i].source;
-                currentSourceDS.connect(contextDS.destination);
+                currentSourceDS.connect(context.destination);
+				// currentDrumSound.loop = true;
                 currentSourceDS.start();
-                _isPlayingDS = "true";
+                // _isPlayingDS = "true";
+				// currentSourceDS.stop(3);
             }
         }
-    }
-    $(soundBtn).attr("data-playing", _isPlayingDS);
-	console.log("_isPlayingDS", _isPlayingDS);
+		currentSourceDS.stop(3);
+    // }
+    // $(soundBtn).attr("data-playing", _isPlayingDS);
+	// console.log("_isPlayingDS", _isPlayingDS);
 }
 
 function stopSound(soundBtn){
@@ -265,3 +372,61 @@ function pushSoundtoArray(soundName, buffer){
 		};
     sourceArrayDS.push(sourceObj);
 };
+
+
+/**** VISUALIZER ****/
+
+var WIDTH = 640;
+var HEIGHT = 100;
+var canvas = document.querySelector('#myCanvas');
+var myCanvas = canvas.getContext("2d");
+var dataArray, bufferLength;
+
+
+startVis();
+
+// startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
+
+function startVis(){
+	if (currentSource != undefined){
+		myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+		currentSource.connect(analyser);
+		analyser.fftSize = 2048;
+		bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+		dataArray = new Uint8Array(bufferLength);
+
+		draw();
+
+	} else {
+		console.log("no current source yet");
+	}
+}
+
+function draw(){
+	var drawVisual = requestAnimationFrame(draw);
+	analyser.getByteTimeDomainData(dataArray);
+
+	myCanvas.fillStyle = 'rgb(0, 0, 0)';
+	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+	myCanvas.lineWidth = 2;
+	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+
+	myCanvas.beginPath();
+	var sliceWidth = WIDTH * 1.0 / bufferLength;
+	var x = 0;
+
+	for (var i = 0; i < bufferLength; i++) {
+
+	var v = dataArray[i] / 128.0;
+	var y = v * HEIGHT / 2;
+
+	if (i === 0) {
+		myCanvas.moveTo(x, y);
+	} else {
+		myCanvas.lineTo(x, y);
+	}
+
+	x += sliceWidth;
+	}
+	myCanvas.stroke();
+}
