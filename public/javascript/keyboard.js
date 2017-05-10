@@ -10,7 +10,9 @@
  * Drum Machine.
  * Remove unused settings in html (eg: interval).
  * 
+ * 
  * --- Nice To Have ---
+ * Validation for preset name input
  * Record and download tracks.
  * Upload your own audio files to play in drum machine.
  * Arpeggiator.
@@ -38,6 +40,21 @@ else {
     updateHtml(storedSettings);
 }
 
+$(document).ready(function () {
+    //when page loads get presets from synth db and add them to presets selector
+    $.get("/api/preset/all", function (data) {
+        for (var preset in data) {
+            console.log(data[preset].name);
+
+            $('#preset-picker').append($('<option>', {
+                value: data[preset].name,
+                text: data[preset].name
+            }));
+        }
+    });
+
+});
+
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
     id: 'keyboard',
@@ -60,7 +77,7 @@ keyboard.keyDown = function (note, frequency) {
     var myWad = getWadStart();
     myWad.note = note;
     myWad.inUse = true;
-    // console.log(myWad.obj);
+    console.log(myWad.obj);
     myWad.obj.play({ pitch: currentNote });
 };
 
@@ -338,6 +355,15 @@ $(".setting").change(function () {
                 wadContainer[property].obj.setVolume($(this).val().toString());
             }
             break;
+        /** when a new preset is selected get it's settings from db and reload page */
+        case 'preset-picker':
+            var presetName = $(this).val().toString();
+            var query = "/api/preset/" + presetName;
+            $.get(query, function (preset) {
+                localStorage.setItem("settings", preset.settings);
+                location.reload();
+            });
+            break;
         default:
             console.log("Error: setting id not found in switch");
     }
@@ -352,23 +378,31 @@ $(".tuna-setting").change(function () {
     location.reload();
 });
 
+/** Create new preset with current settings and post to synth db */
+$("#preset-save").click(function () {
+    var settings = getSettings();
+    var currentSettings = JSON.stringify(settings);
+    var newPreset = {
+        name: $("#preset-name").val().toString().trim(),
+        settings: currentSettings,
+        creator: $("#preset-creator").val().toString().trim()
+    };
+    $.post("/api/preset", newPreset, function (preset) {
+        //add preset to dropdown when done posting
+        $('#preset-picker').append($("<option></option>")
+            .attr("value", preset.name)
+            .attr("id", preset.name)
+            .text(preset.name));
+    });
+
+});
+
 /**** VISUALIZER ****/
 
-// var tuna;
-// Wad.prototype.constructExternalFx = function (arg, context) {
-//     this.tuna = new Tuna(context);
-//     this.chorus = arg.chorus;
-//     this.analyser = context.createAnalyser();
-// };
+Wad.prototype.constructExternalFx = function (arg, context) {
 
-// Wad.prototype.setUpExternalFxOnPlay = function (arg, context) {
-//     var chorus = new tuna.Chorus({
-//         rate: arg.chorus.rate || this.chorus.rate,
-//         feedback: arg.chorus.feedback || this.chorus.feedback,
-//         delay: arg.chorus.delay || this.chorus.delay,
-//         bypass: arg.chorus.bypass || this.chorus.bypass
-//     });
-//     chorus.input.connect = chorus.connect.bind(chorus); // we do this dance because tuna exposes its input differently.
-//     this.nodes.push(chorus.input); // you would generally want to do this at the end unless you are working with something that does not modulate the sound (i.e, a visualizer)
-// };
+};
 
+Wad.prototype.setUpExternalFxOnPlay = function (arg, context) {
+
+};
