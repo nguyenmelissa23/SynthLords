@@ -1,4 +1,4 @@
-console.log("running loadMediaFiles.js");
+// console.log("running loadMediaFiles.js");
 //==========Links for codes======================
 //https://www.html5rocks.com/en/tutorials/webaudio/intro/
 
@@ -57,7 +57,7 @@ var currentSourceDS;
 //===Check browser support====
 window.addEventListener('load', checkBrowserSupport, false);
 function checkBrowserSupport() {
-	console.log("checkBrowserSupport");
+	// console.log("checkBrowserSupport");
 	try {
         // Fix up for prefixing
         window.Audiocontext = window.Audiocontext||window.webkitAudiocontext;
@@ -72,7 +72,7 @@ function checkBrowserSupport() {
 window.onload = init;
 
 function init() {
-	console.log("window.init()");
+	// console.log("window.init()");
 
 	window.Audiocontext = window.Audiocontext || window.webkitAudiocontext;
     
@@ -94,7 +94,7 @@ function init() {
 
 function finishedLoading(bufferList) {
   // Create two sources and play them both together
-  	console.log("finishedLoading()");
+  	// console.log("finishedLoading()");
 
     //===============Drum Tracks =======================
 	for (var i = 0; i < 15; i++){
@@ -138,8 +138,8 @@ function finishedLoading(bufferList) {
     pushSoundtoArray("Snare", snare);
     pushSoundtoArray("Tom", tom);
 
-	console.log("sourceArray", sourceArray);
-    console.log("sourceArrayDS", sourceArrayDS);
+	// console.log("sourceArray", sourceArray);
+    // console.log("sourceArrayDS", sourceArrayDS);
     createDrumSoundBtns();
     createOptionElement();
 	// createOptionElement();
@@ -150,7 +150,7 @@ function finishedLoading(bufferList) {
 // ======== START/STOP TRACKS=========================
 //if change track, stop current and play the new one
 $("#trackDropBar").on("input", function(){
-	console.log("changing track to", $("#trackDropBar").val());
+	// console.log("changing track to", $("#trackDropBar").val());
 	if (_isPlaying === true){
 		stopTrack();
 		startTrack();
@@ -172,7 +172,7 @@ $("#drum-track-volume").change(function () {
 	
 	currentSource.connect(context.destination);
 	currentSource.volume = $("#drum-track-volume").val();
-	console.log("currentSource.volume", currentSource.volume);
+	// console.log("currentSource.volume", currentSource.volume);
 	currentSource.loop = true;
 	currentSource.start();
 	startVis();
@@ -180,7 +180,7 @@ $("#drum-track-volume").change(function () {
 });
 //==============TRACKS FUNCTIONS=====================
 function startTrack(){
-	console.log("_isPlaying", _isPlaying)
+	// console.log("_isPlaying", _isPlaying)
 	var trackName = $("#trackDropBar").val();
 	if (trackName === 0){
 		alert("Pick a drum track to start playing");
@@ -197,7 +197,7 @@ function startTrack(){
 					// console.log("gainDrum", gainDrum.gain.value);
 					currentSource.connect(context.destination);
 					currentSource.volume = $("#drum-track-volume").val();
-					console.log("currentSource.volume", currentSource.volume);
+					// console.log("currentSource.volume", currentSource.volume);
 					currentSource.loop = true;
 					currentSource.start();
 					startVis();
@@ -206,16 +206,16 @@ function startTrack(){
 			}
 		}
 	}
-	console.log("_isPlaying", _isPlaying);
+	// console.log("_isPlaying", _isPlaying);
 }
 
 function stopTrack(){
-	console.log("stopTrack()");
+	// console.log("stopTrack()");
 	if (_isPlaying === true){
 		currentSource.stop(2);
 		_isPlaying = false;
 	}
-	console.log("_isPlaying", _isPlaying);
+	// console.log("_isPlaying", _isPlaying);
 }
 //==============================================
 
@@ -238,23 +238,23 @@ document.addEventListener("keydown", function(event) {
   //console.log("Keydown",event.which);
   switch (event.which){
 	  case 52:
-	  	console.log("Closed Hihat");
+	  	// console.log("Closed Hihat");
 		playSound("Closed Hihat", 0);
 		break;
 	  case 53: 
-	  	console.log("Kick");
+	  	// console.log("Kick");
 		playSound("Kick", 1);
 		break;
 	  case 54:
-	  	console.log("Open Hihat");
+	  	// console.log("Open Hihat");
 		playSound("Open Hihat", 2);
 		break;
 	  case 55:
-	  	console.log("Snare");
+	  	// console.log("Snare");
 		playSound("Snare", 3);
 		break;
 	  case 56: 
-	  	console.log("Tom");
+	  	// console.log("Tom");
 		playSound("Tom", 4);
 		break;
   }
@@ -288,10 +288,10 @@ document.addEventListener("keydown", function(event) {
 
 //PLAYING/STOPING
 function playSound(soundName, i){
-	console.log("playing sound....");
+	// console.log("playing sound....");
 	var drumSoundObj = sourceArrayDS[i];
 	if (drumSoundObj.name === soundName){
-		console.log("sound is", drumSoundObj.name);
+		// console.log("sound is", drumSoundObj.name);
 		currentSourceDS = drumSoundObj.source;
 		currentSourceDS.connect(context.destination);
 		// currentDrumSound.loop = true;
@@ -303,14 +303,14 @@ function playSound(soundName, i){
 
 function startSound(soundBtn){
 	
-    console.log("start sound....");
+    // console.log("start sound....");
     // console.log(soundBtn);
 	var soundName = $(soundBtn).attr("data-btn-val");
-    console.log(soundName);
+    // console.log(soundName);
     // if (_isPlayingDS === 'false'){
         for (var i = 0; i < sourceArrayDS.length; i ++){
             if (sourceArrayDS[i].name === soundName){
-				console.log("check for the name of the sound, index",i);
+				// console.log("check for the name of the sound, index",i);
                 currentSourceDS = sourceArrayDS[i].source;
                 currentSourceDS.connect(context.destination);
 				// currentDrumSound.loop = true;
@@ -327,20 +327,20 @@ function startSound(soundBtn){
 
 function stopSound(soundBtn){
     _isPlayingDS = $(soundBtn).attr("data-playing");
-    console.log("stopSound()");
+    // console.log("stopSound()");
 	if (_isPlayingDS === 'true'){
 		currentSourceDS.stop(2);
 		_isPlayingDS = 'false';
 	}
     $(soundBtn).attr("data-playing", _isPlayingDS)
-	console.log("_isPlayingDS", _isPlayingDS);
+	// console.log("_isPlayingDS", _isPlayingDS);
 }
 
 
 
 // =====DYNAMICALLY GENERATED ELEMENTS
 function createOptionElement(){
-	console.log("createOptionElement");
+	// console.log("createOptionElement");
 	for ( var i = 0; i < sourceArray.length; i++){
 		var optionHTML = "<option>"+ sourceArray[i].name +"</option>";
 		//console.log(optionHTML);
@@ -349,7 +349,7 @@ function createOptionElement(){
 }
 
 function createDrumSoundBtns(){
-    console.log('createDrumSoundBtns');
+    // console.log('createDrumSoundBtns');
     for (var i = 0; i < sourceArrayDS.length; i++){
         var currentDrumSound = sourceArrayDS[i];
         var htmlDSBtn  = "<div class='drumBtnDiv'>";
@@ -398,7 +398,7 @@ function startVis(){
 		draw();
 
 	} else {
-		console.log("no current source yet");
+		// console.log("no current source yet");
 	}
 }
 

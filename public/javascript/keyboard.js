@@ -5,8 +5,6 @@
  * TODO:
  * --- Must Have ---
  * Upload to hosting service with database (heroku/cleardb).
- * CSS.
- * Store presets in MYSQL database.
  * Drum Machine.
  * Remove unused settings in html (eg: interval).
  * 
@@ -17,13 +15,14 @@
  * Upload your own audio files to play in drum machine.
  * Arpeggiator.
  * Tuna Convolver.
+ * Add link to github and copyright at bottom or top of page
  */
 
 // localStorage.clear();
 //if first time page is loaded then use default settings
 var settings = localStorage.getItem("settings");
 if (!settings) {
-    console.log("First time loading page - loading default settings");
+    // console.log("First time loading page - loading default settings");
     //Initialize wadContainer
     var defaultSettings = getSettings();
     var wadContainer = createWadContainers(defaultSettings);
@@ -32,7 +31,7 @@ if (!settings) {
 }
 //if settings saved in local storage then use those
 else {
-    console.log("Using settings from localstorage");
+    // console.log("Using settings from localstorage");
     var storedSettings = localStorage.getItem("settings");
     storedSettings = JSON.parse(storedSettings);
     var wadContainer = createWadContainers(storedSettings);
@@ -44,8 +43,6 @@ $(document).ready(function () {
     //when page loads get presets from synth db and add them to presets selector
     $.get("/api/preset/all", function (data) {
         for (var preset in data) {
-            console.log(data[preset].name);
-
             $('#preset-picker').append($('<option>', {
                 value: data[preset].name,
                 text: data[preset].name
@@ -67,28 +64,36 @@ var keyboard = new QwertyHancock({
     hoverColour: '#f3e939'
 });
 
+//Only play notes when modals are closed
+var modalOpen = false;
 //execute when piano key is pressed
 keyboard.keyDown = function (note, frequency) {
-    //Adjust the current note to the octave setting
-    var keyboardNoteOctave = parseInt(note[note.length - 1]);
-    var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
-    var currentNote = note.replace(/.$/, adjustedOctave);
-    //play WAD corresponding to note
-    var myWad = getWadStart();
-    myWad.note = note;
-    myWad.inUse = true;
-    console.log(myWad.obj);
-    myWad.obj.play({ pitch: currentNote });
+    if (!modalOpen) {
+        //Adjust the current note to the octave setting
+        var keyboardNoteOctave = parseInt(note[note.length - 1]);
+        var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
+        var currentNote = note.replace(/.$/, adjustedOctave);
+        //play WAD corresponding to note
+        var myWad = getWadStart();
+        myWad.note = note;
+        myWad.inUse = true;
+        // console.log(myWad.obj);
+        myWad.obj.play({ pitch: currentNote });
+    }
 };
 
 //Stop playing note when key is released
 keyboard.keyUp = function (note, frequency) {
-    //find the WAD that's in use with the given note
-    var myWad = getWadStop(note);
-    myWad.obj.stop();
-    myWad.note = null;
-    myWad.inUse = false;
+    if (!modalOpen) {
+        //find the WAD that's in use with the given note
+        var myWad = getWadStop(note);
+        myWad.obj.stop();
+        myWad.note = null;
+        myWad.inUse = false;
+    }
 };
+
+
 
 /** return a WAD that is not being used */
 function getWadStart() {
@@ -164,7 +169,6 @@ function createWadContainers(settings) {
             wadContainer[property].obj = doubleOsc;
         }
     }
-    console.log("Finished loading page.");
     return wadContainer;
 }
 
@@ -378,7 +382,15 @@ $(".tuna-setting").change(function () {
     location.reload();
 });
 
-/** Create new preset with current settings and post to synth db */
+/** Toggle modalOpen when the modal loads so that notes aren't played on key presses */
+$("#preset-modal").on('shown.bs.modal', function () {
+    modalOpen = true;
+});
+$('#preset-modal').on('hidden.bs.modal', function () {
+    modalOpen = false;
+});
+
+/** (in modal) Create new preset with current settings and post to synth db */
 $("#preset-save").click(function () {
     var settings = getSettings();
     var currentSettings = JSON.stringify(settings);
