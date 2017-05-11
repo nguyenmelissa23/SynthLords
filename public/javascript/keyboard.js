@@ -57,7 +57,7 @@ $(document).ready(function() {
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
     id: 'keyboard',
-    width: 1870,
+    width: $("#keyboard").width(),
     height: 450,
     octaves: 2,
     startNote: 'C3',
