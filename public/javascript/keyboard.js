@@ -76,7 +76,7 @@ keyboard.keyDown = function(note, frequency) {
         var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
         var currentNote = note.replace(/.$/, adjustedOctave);
         //play WAD corresponding to note
-        WAD.play({ pitch: currentNote, label : currentNote });
+        WAD.play({ pitch: currentNote, label: currentNote });
     }
 };
 
@@ -326,41 +326,50 @@ $("#preset-save").click(function() {
 
 
 /** MIDI */
+//connect midi to global WAD
+Wad.midiInstrument = WAD;
 
-// midiMap = function(event){
-//         console.log(event.receivedTime, event.data);
-//         if ( event.data[0] === 144 ) { // 144 means the midi message has note data
-//             // console.log('note')
-//             if ( event.data[2] === 0 ) { // noteOn velocity of 0 means this is actually a noteOff message
-//                 console.log('|| stopping note: ', Wad.pitchesArray[event.data[1]-12]);
-//                 Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1]-12]);
-//             }
-//             else if ( event.data[2] > 0 ) {
-//                 console.log('> playing note: ', Wad.pitchesArray[event.data[1]-12]);
-//                 Wad.midiInstrument.play({pitch : Wad.pitchesArray[event.data[1]-12], label : Wad.pitchesArray[event.data[1]-12], callback : function(that){
-//                 }});
-//             }
-//         }
-//         else if ( event.data[0] === 128 ) { // 144 means the midi message has note data
-//             // console.log('note')
-//             if ( event.data[2] === 0 ) { // noteOn velocity of 0 means this is actually a noteOff message
-//                 console.log('|| stopping note: ', Wad.pitchesArray[event.data[1]-12]);
-//                 Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1]-12]);
-//             }
-//             else if ( event.data[2] > 0 ) {
-//                 console.log('> playing note: ', Wad.pitchesArray[event.data[1]-12]);
-//                 Wad.midiInstrument.play({pitch : Wad.pitchesArray[event.data[1]-12], label : Wad.pitchesArray[event.data[1]-12], callback : function(that){
-//                 }});
-//             }
-//         }
-//         else if ( event.data[0] === 176 ) { // 176 means the midi message has controller data
-//             console.log('controller');
-//             if ( event.data[1] == 46 ) {
-//                 if ( event.data[2] == 127 ) { Wad.midiInstrument.pedalMod = true; }
-//                 else if ( event.data[2] == 0 ) { Wad.midiInstrument.pedalMod = false; }
-//             }
-//         }
-//         else if ( event.data[0] === 224 ) { // 224 means the midi message has pitch bend data
-//             console.log('pitch bend');
-//         }
-//     };
+/** This function is taken from wad.js source file and overwritten to include
+ * the if statement containing event.data[0] === 128 which is necessary for 
+ * detecting when a MIDI key has been released and stopping the note
+ */
+midiMap = function(event) {
+    console.log(event.receivedTime, event.data);
+    if (event.data[0] === 144) { // 144 means the midi message has note data
+        if (event.data[2] === 0) { // noteOn velocity of 0 means this is actually a noteOff message
+            // console.log('|| stopping note: ', Wad.pitchesArray[event.data[1] - 12]);
+            Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1] - 12]);
+        }
+        else if (event.data[2] > 0) {
+            // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
+            Wad.midiInstrument.play({
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                }
+            });
+        }
+    }
+    else if (event.data[0] === 128) { // 144 means the midi message has note data
+        // console.log('note')
+        if (event.data[2] === 0) { // noteOn velocity of 0 means this is actually a noteOff message
+            // console.log('|| stopping note: ', Wad.pitchesArray[event.data[1] - 12]);
+            Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1] - 12]);
+        }
+        else if (event.data[2] > 0) {
+            // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
+            Wad.midiInstrument.play({
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                }
+            });
+        }
+    }
+    else if (event.data[0] === 176) { // 176 means the midi message has controller data
+        console.log('controller');
+        if (event.data[1] == 46) {
+            if (event.data[2] == 127) { Wad.midiInstrument.pedalMod = true; }
+            else if (event.data[2] == 0) { Wad.midiInstrument.pedalMod = false; }
+        }
+    }
+    else if (event.data[0] === 224) { // 224 means the midi message has pitch bend data
+        console.log('pitch bend');
+    }
+};
