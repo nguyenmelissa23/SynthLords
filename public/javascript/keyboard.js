@@ -38,13 +38,15 @@ else {
     var storedSettings = localStorage.getItem("settings");
     storedSettings = JSON.parse(storedSettings);
     var WAD = createWAD(storedSettings);
+
+
     //TODO: update html corresponding to stored settings
     updateHtml(storedSettings);
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     //when page loads get presets from synth db and add them to presets selector
-    $.get("/api/preset/all", function(data) {
+    $.get("/api/preset/all", function (data) {
         for (var preset in data) {
             $('#preset-picker').append($('<option>', {
                 value: data[preset].name,
@@ -58,7 +60,7 @@ $(document).ready(function() {
 var keyboard = new QwertyHancock({
     id: 'keyboard',
     width: $("#keyboard").width(),
-    height: $("#keyboard").width()/5,
+    height: $("#keyboard").width() / 5,
     octaves: 2,
     startNote: 'C3',
     whiteNotesColour: 'white',
@@ -69,21 +71,20 @@ var keyboard = new QwertyHancock({
 //Only play notes when modals are closed
 var modalOpen = false;
 //execute when piano key is pressed
-keyboard.keyDown = function(note, frequency) {
+keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
-        //Adjust the current note to the octave setting
-        var keyboardNoteOctave = parseInt(note[note.length - 1]);
-        var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
-        var currentNote = note.replace(/.$/, adjustedOctave);
+
+        var currentNote = adjustToCurrentOctave(note);
         //play WAD corresponding to note
         WAD.play({ pitch: currentNote, label: currentNote });
     }
 };
 
 //Stop playing note when key is released
-keyboard.keyUp = function(note, frequency) {
+keyboard.keyUp = function (note, frequency) {
     if (!modalOpen) {
-        WAD.stop(note);
+        var currentNote = adjustToCurrentOctave(note);
+        WAD.stop(currentNote);
     }
 };
 
@@ -238,12 +239,19 @@ function updateHtml(settings) {
 
 // //store the current octave setting (default to 3)
 var octaveSetting = parseInt($("#octave").val());
+function adjustToCurrentOctave(note) {
+    //Adjust the current note to the octave setting
+    var keyboardNoteOctave = parseInt(note[note.length - 1]);
+    var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
+    var currentNote = note.replace(/.$/, adjustedOctave);
+    return currentNote;
+}
 
 /**
  * Detects when a synth setting is changed and updates the WAD settings.
  * If the changed setting was from tuna then the wads must be recreated
  */
-$(".setting").change(function() {
+$(".setting").change(function () {
     var id = $(this).attr('id');
     switch (id) {
         case 'octave':
@@ -276,7 +284,7 @@ $(".setting").change(function() {
         case 'preset-picker':
             var presetName = $(this).val().toString();
             var query = "/api/preset/" + presetName;
-            $.get(query, function(preset) {
+            $.get(query, function (preset) {
                 localStorage.setItem("settings", preset.settings);
                 location.reload();
             });
@@ -290,21 +298,21 @@ $(".setting").change(function() {
  * This is necessary because some settings such as TUNA requires the 
  * WADs to be recreated, which spikes the CPU usage unless the page is reloaded.
  */
-$(".tuna-setting").change(function() {
+$(".tuna-setting").change(function () {
     localStorage.setItem("settings", JSON.stringify(getSettings()));
     location.reload();
 });
 
 /** Toggle modalOpen when the modal loads so that notes aren't played on key presses */
-$("#preset-modal").on('shown.bs.modal', function() {
+$("#preset-modal").on('shown.bs.modal', function () {
     modalOpen = true;
 });
-$('#preset-modal').on('hidden.bs.modal', function() {
+$('#preset-modal').on('hidden.bs.modal', function () {
     modalOpen = false;
 });
 
 /** (in modal) Create new preset with current settings and post to synth db */
-$("#preset-save").click(function() {
+$("#preset-save").click(function () {
     var settings = getSettings();
     var currentSettings = JSON.stringify(settings);
     var newPreset = {
@@ -312,7 +320,7 @@ $("#preset-save").click(function() {
         settings: currentSettings,
         creator: $("#preset-creator").val().toString().trim()
     };
-    $.post("/api/preset", newPreset, function(preset) {
+    $.post("/api/preset", newPreset, function (preset) {
         //add preset to dropdown when done posting
         $('#preset-picker').append($("<option></option>")
             .attr("value", preset.name)
@@ -333,7 +341,7 @@ Wad.midiInstrument = WAD;
  * the if statement containing event.data[0] === 128 which is necessary for 
  * detecting when a MIDI key has been released and stopping the note
  */
-midiMap = function(event) {
+midiMap = function (event) {
     console.log(event.receivedTime, event.data);
     if (event.data[0] === 144) { // 144 means the midi message has note data
         if (event.data[2] === 0) { // noteOn velocity of 0 means this is actually a noteOff message
@@ -343,7 +351,7 @@ midiMap = function(event) {
         else if (event.data[2] > 0) {
             // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
             Wad.midiInstrument.play({
-                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function (that) {
                 }
             });
         }
@@ -357,7 +365,7 @@ midiMap = function(event) {
         else if (event.data[2] > 0) {
             // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
             Wad.midiInstrument.play({
-                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function (that) {
                 }
             });
         }
