@@ -164,11 +164,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h3 style="float: left; margin-right: 15px;">Filter</h3>
-                                            <select id="filter-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
-
+                                            <div class = "led-box">
+                                                <div id="filter-bypass" class="setting tuna-setting selectpicker led-red" value = "0"> 
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -211,10 +210,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Chorus</h4>
-                                            <select id="chorus-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="chorus-bypass" class="setting tuna-setting selectpicker led-red" value = "0">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -248,10 +247,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Phaser</h4>
-                                            <select id="phaser-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="phaser-bypass" class="setting tuna-setting selectpicker led-red" value = "0">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -308,67 +307,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--CONVOLVER-->
-                            <!--<div class="col-md-3">
-                                <div class="setting-group" id="convolver-container">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h4 style="float: left; margin-right: 15px;">Reverb</h4>
-                                            <select id="convolver-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3 text-center">
-                                            <label class="slider-label text-center">
-                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_high" data-update="update_convolver_high" id="convolver-high" max="22000.0" min="0.0" orient="vertical" step="0.01" type="range" value="22000">
-                                                <br>
-                                                High
-                                            </label>
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <label class="slider-label text-center">
-                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_low" data-update="update_convolver_low" id="convolver-low" max="22050" min="20" orient="vertical" step="0.01" type="range" value="20">
-                                                <br>
-                                                Low
-                                            </label>
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <label class="slider-label text-center">
-                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_dry" data-update="update_convolver_dry" id="convolver-dry" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
-                                                <br>
-                                                Dry
-                                            </label>
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <label class="slider-label text-center">
-                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_wet" data-update="update_convolver_wet" id="convolver-wet" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
-                                                <br>
-                                                Wet
-                                            </label>
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <label class="slider-label text-center">
-                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_level" data-update="update_convolver_level" id="convolver-level" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
-                                                <br>
-                                                Level
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
                             <!--Tremolo-->
                             <div class="col-md-3">
                                 <div class="setting-group" id="tremolo-container">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Tremolo</h4>
-                                            <select id="tremolo-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="tremolo-bypass" class="setting tuna-setting selectpicker led-red" value = "0">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -397,7 +345,7 @@
                                 </div>
                             </div>
                             <!--Canvas-->
-                            <div class="row">
+                            <div class="col-md-6">
                                 <canvas class="visualizer" id="myCanvas" width="640" height="100"></canvas>
                             </div>
                             <!--BITCRUSHER-->
@@ -406,10 +354,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Bitcrusher</h4>
-                                            <select id="bitcrusher-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="bitcrusher-bypass" class="setting tuna-setting selectpicker led-red" value = "0">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">

@@ -30,6 +30,7 @@ if (!settings) {
     var defaultSettings = getSettings();
     var WAD = createWAD(defaultSettings);
     //store settings in local storage
+    LEDChecker(defaultSettings.masterSettings.tuna);
     localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
 //if settings saved in local storage then use those
@@ -41,7 +42,9 @@ else {
 
 
     //TODO: update html corresponding to stored settings
+    console.log(storedSettings.masterSettings.tuna);
     updateHtml(storedSettings);
+    LEDChecker(storedSettings.masterSettings.tuna);
 }
 
 $(document).ready(function () {
@@ -73,7 +76,6 @@ var modalOpen = false;
 //execute when piano key is pressed
 keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
-
         var currentNote = adjustToCurrentOctave(note);
         //play WAD corresponding to note
         WAD.play({ pitch: currentNote, label: currentNote });
@@ -234,11 +236,58 @@ function updateHtml(settings) {
     $("#bitcrusher-bypass").val(settings.masterSettings.tuna.Bitcrusher.bypass);
 }
 
+function LEDChecker(tunaSettings){
+    console.log("Filter bypass : " + tunaSettings.Filter.bypass);
+    console.log("Phaser: " + tunaSettings.Phaser);
+    if(parseInt(tunaSettings.Filter.bypass) == 1) {
+        $("#filter-bypass").addClass("led-red-on");
+        $("#filter-bypass").attr("value", 1);
+    }
+    if(parseInt(tunaSettings.Chorus.bypass) == 1) {
+        $("#chorus-bypass").addClass("led-red-on");
+        $("#chorus-bypass").attr("value", 1);
+    }
+    if(parseInt(tunaSettings.Phaser.bypass) == 1) {
+        $("#phaser-bypass").addClass("led-red-on");
+        $("#phaser-bypass").attr("value", 1);
+    }
+    if(tunaSettings.Tremolo.bypass == 1) {
+        $("#tremolo-bypass").addClass("led-red-on");
+        $("#tremolo-bypass").attr("value", 1);
+    }
+    if(tunaSettings.Bitcrusher.bypass == 1) {
+        $("#bitcrusher-bypass").addClass("led-red-on");
+        $("#bitcrusher-bypass").attr("value", 1);
+    }
+}
+
+$(".led-red").on("click", function(){
+    $(this).toggleClass("led-red-on");
+    switch (this.getAttribute("value")){
+        case ("0"):
+        this.setAttribute("value", 1);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+        case (null):
+        this.setAttribute("value", 1);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+        case ("1"):
+        this.setAttribute("value", 0);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+    }
+});
+
 
 /************ EVENT LISTENERS FOR CHANGING SETTINGS ************/
 
 // //store the current octave setting (default to 3)
 var octaveSetting = parseInt($("#octave").val());
+/** Gets  */
 function adjustToCurrentOctave(note) {
     //Adjust the current note to the octave setting
     var keyboardNoteOctave = parseInt(note[note.length - 1]);

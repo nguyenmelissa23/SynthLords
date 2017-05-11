@@ -1,13 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Bitter:400,700);
-.visualizer {
-background: black;
-display: inline;
-border: white 2px solid;
-border-radius: 4px;
-min-width: 894px;
-max-height: 300px;
-margin: 20px 37px 0px 20px
-}
+.visualizer {background: black;border: white 2px solid;border-radius: 4px;height: 95%;max-width: 100%;margin-left: -10px;margin-top: 20px;}
 
 body {
   background-image: url('http://www.homedepot.com/catalog/productImages/1000/4c/4ca85dba-9792-4438-b892-0aeb67208667_1000.jpg');
@@ -37,6 +29,16 @@ div.setting-group {
     text-align: center;
     height: 300px;
     
+}
+
+.visualizer {
+    background: black;
+    border: white 2px solid;
+    border-radius: 4px;
+    height: 95%;
+    max-width: 100%;
+    margin-left: -10px;
+    margin-top: 20px;
 }
 
 
@@ -78,6 +80,8 @@ slider-label {
   margin-top: 100px;
 }
 
+
+
 .vertical-slider {
   -webkit-appearance: slider-vertical;
   height: 80px;
@@ -93,9 +97,7 @@ slider-label {
 
 /*Drum machine styles*/
 
-button.drumBtn.btn.btn-default {
-        margin: 40px 0px 0px 229px;
-}
+
 label#drumVolume {
     margin-left: 870px;
 }
@@ -114,6 +116,18 @@ button#startTrack {
 }
 div#samplePlayerRow {
     margin-top: 20px;
+}
+
+.drumSoundBtns.row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 30px;
+  margin-left: -100px;
+  }
+
+button.drumBtn.btn.btn-default {
+    margin-left: 70px;
 }
 
 #tuna-container{
