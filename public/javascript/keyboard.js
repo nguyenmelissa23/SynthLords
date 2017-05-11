@@ -57,8 +57,8 @@ $(document).ready(function() {
 //creates the keyboard that is displayed in the html
 var keyboard = new QwertyHancock({
     id: 'keyboard',
-    width: 1870,
-    height: 450,
+    width: $("#keyboard").width(),
+    height: $("#keyboard").width()/5,
     octaves: 2,
     startNote: 'C3',
     whiteNotesColour: 'white',
@@ -83,7 +83,11 @@ keyboard.keyDown = function(note, frequency) {
 //Stop playing note when key is released
 keyboard.keyUp = function(note, frequency) {
     if (!modalOpen) {
-        WAD.stop(note);
+        //Adjust the current note to the octave setting
+        var keyboardNoteOctave = parseInt(note[note.length - 1]);
+        var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
+        var currentNote = note.replace(/.$/, adjustedOctave);
+        WAD.stop(currentNote);
     }
 };
 
