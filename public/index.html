@@ -123,7 +123,7 @@
                     <div class="setting-group" id="drum-machine">
                         <h3>Drum Machine</h3>
 
-                        <div class="row">
+                        <div class="row" id="samplePlayerRow">
                             <!--JUST ADDED THIS -->
                             <button class="btn btn-primary" id="startTrack">Play</button>
                             <button class="btn btn-danger" id="stopTrack">Stop</button>
@@ -141,8 +141,8 @@
                         </div>
 
                         <div class="row">
-                            <label class="slider-label text-center">
-                                    <input class=" vertical-slider" data-program="drum-track-volume" data-update="update-drum-track-volume" id="drum-track-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
+                            <label id="drumVolume" class="slider-label text-center">
+                                    <input data-program="drum-track-volume" data-update="update-drum-track-volume" id="drum-track-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
                                     <br>
                                     Vol
                             </label>

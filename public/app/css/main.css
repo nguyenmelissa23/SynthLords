@@ -91,6 +91,30 @@ slider-label {
     border: 2px solid black;
 }
 
+/*Drum machine styles*/
+
+button.drumBtn.btn.btn-default {
+        margin: 40px 0px 0px 229px;
+}
+label#drumVolume {
+    margin-left: 870px;
+}
+
+.trackList {
+    margin-left: 110px;
+    margin-top: 10px;
+}
+
+button#stopTrack {
+    margin-left: 43px;
+}
+
+button#startTrack {
+    margin-left: 666px;
+}
+div#samplePlayerRow {
+    margin-top: 20px;
+}
 
 #tuna-container{
    background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
@@ -202,6 +226,7 @@ div.col-md-12.text-center {
 
 li {
         box-shadow: 0px 1px 6px 0px black; 
+   
 }
 
 
