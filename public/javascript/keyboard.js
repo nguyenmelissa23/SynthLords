@@ -6,10 +6,13 @@
  * --- Must Have ---
  * Upload to hosting service with database (heroku/cleardb).
  * Drum Machine.
- * Remove unused settings in html (eg: interval).
- * 
+ * Visualizer
+ * TEST TEST TEST TEST TEST
  * 
  * --- Nice To Have ---
+ * Documentation in README
+ * Unit Tests
+ * Sustain notes until key is lifted up
  * Validation for preset name input
  * Record and download tracks.
  * Upload your own audio files to play in drum machine.
@@ -23,9 +26,9 @@
 var settings = localStorage.getItem("settings");
 if (!settings) {
     // console.log("First time loading page - loading default settings");
-    //Initialize wadContainer
+    //Initialize WAD
     var defaultSettings = getSettings();
-    var wadContainer = createWadContainers(defaultSettings);
+    var WAD = createWAD(defaultSettings);
     //store settings in local storage
     localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
@@ -34,14 +37,14 @@ else {
     // console.log("Using settings from localstorage");
     var storedSettings = localStorage.getItem("settings");
     storedSettings = JSON.parse(storedSettings);
-    var wadContainer = createWadContainers(storedSettings);
+    var WAD = createWAD(storedSettings);
     //TODO: update html corresponding to stored settings
     updateHtml(storedSettings);
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     //when page loads get presets from synth db and add them to presets selector
-    $.get("/api/preset/all", function (data) {
+    $.get("/api/preset/all", function(data) {
         for (var preset in data) {
             $('#preset-picker').append($('<option>', {
                 value: data[preset].name,
@@ -49,7 +52,6 @@ $(document).ready(function () {
             }));
         }
     });
-
 });
 
 //creates the keyboard that is displayed in the html
@@ -67,109 +69,34 @@ var keyboard = new QwertyHancock({
 //Only play notes when modals are closed
 var modalOpen = false;
 //execute when piano key is pressed
-keyboard.keyDown = function (note, frequency) {
+keyboard.keyDown = function(note, frequency) {
     if (!modalOpen) {
         //Adjust the current note to the octave setting
         var keyboardNoteOctave = parseInt(note[note.length - 1]);
         var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
         var currentNote = note.replace(/.$/, adjustedOctave);
         //play WAD corresponding to note
-        var myWad = getWadStart();
-        myWad.note = note;
-        myWad.inUse = true;
-        // console.log(myWad.obj);
-        myWad.obj.play({ pitch: currentNote });
+        WAD.play({ pitch: currentNote, label : currentNote });
     }
 };
 
 //Stop playing note when key is released
-keyboard.keyUp = function (note, frequency) {
+keyboard.keyUp = function(note, frequency) {
     if (!modalOpen) {
-        //find the WAD that's in use with the given note
-        var myWad = getWadStop(note);
-        myWad.obj.stop();
-        myWad.note = null;
-        myWad.inUse = false;
+        WAD.stop(note);
     }
 };
 
-
-
-/** return a WAD that is not being used */
-function getWadStart() {
-    for (var i in wadContainer) {
-        if (wadContainer[i].inUse === false) {
-            return wadContainer[i];
-        }
-    }
-    return "Error: Can only press 6 keys at once";
-}
-
-/**
- * Return the WAD with the given note
- * @param note - identifies the WAD we're trying to find
- */
-function getWadStop(note) {
-    for (var i in wadContainer) {
-        if (wadContainer[i].note === note) {
-            return wadContainer[i];
-        }
-    }
-}
-
-/**
- * Creates an object to store 6 wadContainer initialized with the default settings.
- * This allows us to only play 6 notes at once since the WAD objects consume
- * a large amount of processing power.
- */
-function createWadContainers(settings) {
-    var wadContainer = {
-        one: {
-            note: null,
-            obj: null,
-            inUse: false
-        },
-        two: {
-            note: null,
-            obj: null,
-            inUse: false
-        },
-        three: {
-            note: null,
-            obj: null,
-            inUse: false
-        },
-        four: {
-            note: null,
-            obj: null,
-            inUse: false
-        },
-        five: {
-            note: null,
-            obj: null,
-            inUse: false
-        },
-        six: {
-            note: null,
-            obj: null,
-            inUse: false
-        }
-    };
-    // var initialSettings = getSettings();
-    for (var property in wadContainer) {
-        if (wadContainer.hasOwnProperty(property)) {
-            var osc1 = new Wad(settings.osc1Settings);
-            var osc2 = new Wad(settings.osc2Settings);
-            //combine the oscillators
-            var doubleOsc = new Wad.Poly(settings.masterSettings);
-            //set master volume
-            //TODO:
-            // doubleOsc.setVolume(parseFloat(settings.volume));
-            doubleOsc.add(osc1).add(osc2);
-            wadContainer[property].obj = doubleOsc;
-        }
-    }
-    return wadContainer;
+function createWAD(settings) {
+    var osc1 = new Wad(settings.osc1Settings);
+    var osc2 = new Wad(settings.osc2Settings);
+    //combine the oscillators
+    var doubleOsc = new Wad.Poly(settings.masterSettings);
+    //set master volume
+    //TODO:
+    // doubleOsc.setVolume(parseFloat(settings.volume));
+    doubleOsc.add(osc1).add(osc2);
+    return doubleOsc;
 }
 
 /** Get the settings from the index.html elements */
@@ -313,57 +240,43 @@ function updateHtml(settings) {
 var octaveSetting = parseInt($("#octave").val());
 
 /**
- * Detects when a synth setting is changed and updates the wadContainer objects.
+ * Detects when a synth setting is changed and updates the WAD settings.
  * If the changed setting was from tuna then the wads must be recreated
  */
-$(".setting").change(function () {
+$(".setting").change(function() {
     var id = $(this).attr('id');
     switch (id) {
         case 'octave':
             octaveSetting = parseInt($(this).val());
             break;
         case 'osc1-source':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[0].source = $(this).val().toString();
-            }
+            WAD.wads[0].source = $(this).val().toString();
             break;
         case 'osc2-source':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[1].source = $(this).val().toString();
-            }
+            WAD.wads[1].source = $(this).val().toString();
             break;
         case 'osc1-detune':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[0].detune = parseFloat($(this).val());
-            }
+            WAD.wads[0].detune = parseFloat($(this).val());
             break;
         case 'osc2-detune':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[1].detune = parseFloat($(this).val());
-            }
+            WAD.wads[1].detune = parseFloat($(this).val());
             break;
         case 'osc1-volume':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[0].setVolume($(this).val().toString());
-                wadContainer[property].obj.wads[0].stop();
-            }
+            WAD.wads[0].setVolume($(this).val().toString());
+            WAD.wads[0].stop();
             break;
         case 'osc2-volume':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.wads[1].setVolume($(this).val().toString());
-                wadContainer[property].obj.wads[1].stop();
-            }
+            WAD.wads[1].setVolume($(this).val().toString());
+            WAD.wads[1].stop();
             break;
         case 'master-volume':
-            for (let property in wadContainer) {
-                wadContainer[property].obj.setVolume($(this).val().toString());
-            }
+            WAD.setVolume($(this).val().toString());
             break;
         /** when a new preset is selected get it's settings from db and reload page */
         case 'preset-picker':
             var presetName = $(this).val().toString();
             var query = "/api/preset/" + presetName;
-            $.get(query, function (preset) {
+            $.get(query, function(preset) {
                 localStorage.setItem("settings", preset.settings);
                 location.reload();
             });
@@ -377,21 +290,21 @@ $(".setting").change(function () {
  * This is necessary because some settings such as TUNA requires the 
  * WADs to be recreated, which spikes the CPU usage unless the page is reloaded.
  */
-$(".tuna-setting").change(function () {
+$(".tuna-setting").change(function() {
     localStorage.setItem("settings", JSON.stringify(getSettings()));
     location.reload();
 });
 
 /** Toggle modalOpen when the modal loads so that notes aren't played on key presses */
-$("#preset-modal").on('shown.bs.modal', function () {
+$("#preset-modal").on('shown.bs.modal', function() {
     modalOpen = true;
 });
-$('#preset-modal').on('hidden.bs.modal', function () {
+$('#preset-modal').on('hidden.bs.modal', function() {
     modalOpen = false;
 });
 
 /** (in modal) Create new preset with current settings and post to synth db */
-$("#preset-save").click(function () {
+$("#preset-save").click(function() {
     var settings = getSettings();
     var currentSettings = JSON.stringify(settings);
     var newPreset = {
@@ -399,7 +312,7 @@ $("#preset-save").click(function () {
         settings: currentSettings,
         creator: $("#preset-creator").val().toString().trim()
     };
-    $.post("/api/preset", newPreset, function (preset) {
+    $.post("/api/preset", newPreset, function(preset) {
         //add preset to dropdown when done posting
         $('#preset-picker').append($("<option></option>")
             .attr("value", preset.name)
@@ -411,11 +324,43 @@ $("#preset-save").click(function () {
 
 /**** VISUALIZER ****/
 
-Wad.prototype.constructExternalFx = function (arg, context) {
 
+/** MIDI */
 
-};
-
-Wad.prototype.setUpExternalFxOnPlay = function (arg, context) {
-
-};
+// midiMap = function(event){
+//         console.log(event.receivedTime, event.data);
+//         if ( event.data[0] === 144 ) { // 144 means the midi message has note data
+//             // console.log('note')
+//             if ( event.data[2] === 0 ) { // noteOn velocity of 0 means this is actually a noteOff message
+//                 console.log('|| stopping note: ', Wad.pitchesArray[event.data[1]-12]);
+//                 Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1]-12]);
+//             }
+//             else if ( event.data[2] > 0 ) {
+//                 console.log('> playing note: ', Wad.pitchesArray[event.data[1]-12]);
+//                 Wad.midiInstrument.play({pitch : Wad.pitchesArray[event.data[1]-12], label : Wad.pitchesArray[event.data[1]-12], callback : function(that){
+//                 }});
+//             }
+//         }
+//         else if ( event.data[0] === 128 ) { // 144 means the midi message has note data
+//             // console.log('note')
+//             if ( event.data[2] === 0 ) { // noteOn velocity of 0 means this is actually a noteOff message
+//                 console.log('|| stopping note: ', Wad.pitchesArray[event.data[1]-12]);
+//                 Wad.midiInstrument.stop(Wad.pitchesArray[event.data[1]-12]);
+//             }
+//             else if ( event.data[2] > 0 ) {
+//                 console.log('> playing note: ', Wad.pitchesArray[event.data[1]-12]);
+//                 Wad.midiInstrument.play({pitch : Wad.pitchesArray[event.data[1]-12], label : Wad.pitchesArray[event.data[1]-12], callback : function(that){
+//                 }});
+//             }
+//         }
+//         else if ( event.data[0] === 176 ) { // 176 means the midi message has controller data
+//             console.log('controller');
+//             if ( event.data[1] == 46 ) {
+//                 if ( event.data[2] == 127 ) { Wad.midiInstrument.pedalMod = true; }
+//                 else if ( event.data[2] == 0 ) { Wad.midiInstrument.pedalMod = false; }
+//             }
+//         }
+//         else if ( event.data[0] === 224 ) { // 224 means the midi message has pitch bend data
+//             console.log('pitch bend');
+//         }
+//     };
