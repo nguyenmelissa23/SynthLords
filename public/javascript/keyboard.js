@@ -72,12 +72,15 @@ var keyboard = new QwertyHancock({
 
 //Only play notes when modals are closed
 var modalOpen = false;
+var analyser;
 //execute when piano key is pressed
 keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
         var currentNote = adjustNoteOctave(note);
         //play WAD corresponding to note
         WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 10 } });
+        analyser = WAD.input;
+        startVis();
     }
 };
 
@@ -427,3 +430,59 @@ midiMap = function (event) {
         console.log('pitch bend');
     }
 };
+
+/**** VISUALIZER ***
+ * 
+ * 
+*/
+
+var WIDTH = 640;
+var HEIGHT = 100;
+var canvas = document.querySelector('#myCanvas');
+var myCanvas = canvas.getContext("2d");
+var dataArray, bufferLength;
+
+// startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
+// startVis(currentSource, analyser, dataArray, bufferLength);
+// startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
+startVis();
+
+// function startVis(source, analyser, dataArray, bufferLength){
+function startVis(){
+    myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+    analyser.fftSize = 2048;
+    bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+    dataArray = new Uint8Array(bufferLength);
+    // draw(source, analyser, dataArray, bufferLength);
+    draw();
+}
+
+// function draw(source, analyser, dataArray, bufferLength){
+function draw(){
+	var drawVisual = requestAnimationFrame(draw);
+	analyser.getByteTimeDomainData(dataArray);
+
+	myCanvas.fillStyle = 'rgb(0, 0, 0)';
+	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+	myCanvas.lineWidth = 2;
+	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+
+	myCanvas.beginPath();
+	var sliceWidth = WIDTH * 1.0 / bufferLength;
+	var x = 0;
+
+	for (var i = 0; i < bufferLength; i++) {
+
+		var v = dataArray[i] / 128.0;
+		var y = v * HEIGHT / 2;
+
+		if (i === 0) {
+			myCanvas.moveTo(x, y);
+		} else {
+			myCanvas.lineTo(x, y);
+		}
+
+		x += sliceWidth;
+	}
+	myCanvas.stroke();
+}

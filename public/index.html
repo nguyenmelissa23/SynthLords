@@ -104,11 +104,9 @@
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
-                                midi
-                                <select class="selectpicker" data-style="btn-inverse">
-                                    <option>Select</option>
-                                </select>
-                                <br> octave
+                                <div class = "master-octave-label">
+                                     Octave
+                                </div>
                                 <select id="octave" class="setting selectpicker" data-style="btn-inverse">
                                     <option value="-2">-2</option>
                                     <option value="-1">-1</option>
@@ -116,12 +114,15 @@
                                     <option value="1">+1</option>
                                     <option value="2">+2</option>
                                 </select>
-                                <br> presets
+                                <br>
+                                <div class = "master-presets-label">
+                                     Presets
+                                </div>
                                 <select id="preset-picker" class="setting selectpicker" data-style="btn-inverse">
                                     <option value="" disabled selected>Select</option>
                                 </select>
                                 <br>
-                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#preset-modal">Save Preset</button>
+                                <button id="save-preset" type="button" class="btn btn-block text-center" data-toggle="modal" data-target="#preset-modal" style="width: 100%">Save Preset</button>
                             </div>
                         </div>
                     </div>
@@ -509,7 +510,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h3 class="modal-title">Save current settings as preset</h3>
+                        <h2 class="modal-title text-center">Save current settings as preset</h2>
                     </div>
                     <div class="modal-body">
                         <p>Your preset will be saved in our database so that others can try out your settings!</p>
@@ -521,9 +522,9 @@
                             <label for="pwd">Your Name (optional):</label>
                             <input type="text" class="form-control" id="preset-creator">
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="preset-save" data-dismiss="modal">Save Preset</button>
+                        <div class="form-group text-center">
+                            <button type="button" class="btn btn-default text-center" id="preset-save" data-dismiss="modal">Save Preset</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -546,14 +547,14 @@
 
     <!--JS Files-->
     <script type="text/javascript" src="./javascript/keyboard.js"></script>
-    <script type="text/javascript" src="./app/js/logic.js"></script>
+    <!--<script type="text/javascript" src="./app/js/logic.js"></script>-->
 
     <!--DRUM MACHINE-->
     <!--Buffer-loader.js Source-->
     <script type="text/javascript" src="./source-files/buffer-loader.js"></script>
     <!--Load all media files-->
     <!--<script type="text/javascript" src="./javascript/drum_machine/loadMediaFiles.js"></script>-->
-    <script src="./javascript/drum_machine/drum_v2.js"></script>
+    <!--<script src="./javascript/drum_v2.js"></script>-->
 
 
 
