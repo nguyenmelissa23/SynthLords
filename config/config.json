@@ -1,7 +1,3 @@
-# CBC-Project2
-
-Our config.json for clearDB:
-
 {
   "development": {
     "username": "be0a4d94f7ab2f",
