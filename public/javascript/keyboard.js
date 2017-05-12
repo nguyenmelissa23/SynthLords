@@ -4,9 +4,8 @@
  * 
  * TODO:
  * --- Must Have ---
- * Upload to hosting service with database (heroku/cleardb).
- * Drum Machine.
- * Visualizer
+ * Adjust drum machine buttons.
+ * Visualizer not working
  * TEST TEST TEST TEST TEST
  * 
  * --- Nice To Have ---
@@ -442,13 +441,10 @@ var canvas = document.querySelector('#myCanvas');
 var myCanvas = canvas.getContext("2d");
 var dataArray, bufferLength;
 
-// startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
-// startVis(currentSource, analyser, dataArray, bufferLength);
-// startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
-startVis();
 
 // function startVis(source, analyser, dataArray, bufferLength){
 function startVis(){
+    console.log("start vis");
     myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
     analyser.fftSize = 2048;
     bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization

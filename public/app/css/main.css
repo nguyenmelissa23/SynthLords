@@ -127,12 +127,17 @@ div#samplePlayerRow {
 button.drumBtn.btn.btn-default {
     background-color: black;
     color:  white;
-    height: 150px;
-    width: 150px;
+    text-align: center;
+    overflow-wrap: normal;
+    height: 100px;
+    width: 100px;
     margin-bottom: 25px;
-    margin-left: 75px;
+    margin-left: 36px;
+    margin-right: 36px;
     box-shadow: 0 0 20px 0px black;
+    box-sizing: border-box;
 }
+
 
 #tuna-container{
    background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');

@@ -298,7 +298,7 @@ function startTrack(){
                 gainNode.gain.value = $("#drum-track-gain").val();
                 currentSource_Track.start();
                 _isPlaying = true;
-                startVis();
+                // startVis();
             }
         });
     } 
@@ -333,7 +333,7 @@ var dataArray_Track, bufferLength_Track;
 // startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
 // startVis(currentSource, analyser, dataArray, bufferLength);
 // startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
-startVis();
+// startVis();
 
 // function startVis(source, analyser, dataArray, bufferLength){
 function startVis(){
