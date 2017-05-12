@@ -1,11 +1,7 @@
 {
   "development": {
     "username": "root",
-<<<<<<< HEAD
     "password": "Freezeray1!",
-=======
-    "password": "root",
->>>>>>> de879142dd75a0de981d1d75cddd5ccaba583153
     "database": "synth",
     "host": "127.0.0.1",
     "dialect": "mysql"
