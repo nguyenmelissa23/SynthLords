@@ -124,14 +124,16 @@
 
                         <div class="row">
                             <!--JUST ADDED THIS -->
-                            <button class="btn btn-primary" id="startTrack">Play</button>
-                            <button class="btn btn-danger" id="stopTrack">Stop</button>
+                            <img src="/source-files/playButton.png" id="startTrack">
+                            <img src="/source-files/stopButton.png" id="stopTrack">
                             <div class="trackList">
                                 <label for="trackList">Drum Loop</label>
                                 <select id="trackDropBar">
                                     <option selected="selected" disabled value="0">Loading Drum Tracks...</option>
                                 </select>
                             </div>
+
+
                         </div>
                         <!--END ADDING-->
 
@@ -139,18 +141,18 @@
                         <div class="drumSoundBtns row">
                         </div>
 
-                        <div class="row drum-effect">
-                            <label class="slider-label col-sm-3 text-center">
+                            <div class="row drum-effect">
+                                <label class="slider-label col-sm-3 text-center">
                                     <input class=" vertical-slider" id="drum-track-gain" max="1" min="0.0" orient="vertical" step="0.01" type="range" value="0.1">
                                     <br>
                                     Gain (track)
                             </label>
-                            <label class="slider-label col-sm-3 text-center">
+                                <label class="slider-label col-sm-3 text-center">
                                     <input class=" vertical-slider" id="drum-sound-gain" max="1" min="0.0" orient="vertical" step="0.1" type="range" value="0.1">
                                     <br>
                                     Gain (sound)
                             </label>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -168,8 +170,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h3 style="float: left; margin-right: 15px;">Filter</h3>
-                                            <div class = "led-box">
-                                                <div id="filter-bypass" class="setting selectpicker led-red" value = "1"> 
+                                            <div class="led-box">
+                                                <div id="filter-bypass" class="setting selectpicker led-red" value="1">
                                                 </div>
                                             </div>
 
@@ -215,8 +217,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Chorus</h4>
-                                            <div class = "led-box">
-                                                <div id="chorus-bypass" class="setting selectpicker led-red" value = "1">   
+                                            <div class="led-box">
+                                                <div id="chorus-bypass" class="setting selectpicker led-red" value="1">
                                                 </div>
                                             </div>
                                         </div>
@@ -252,8 +254,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Phaser</h4>
-                                            <div class = "led-box">
-                                                <div id="phaser-bypass" class="setting selectpicker led-red" value = "1">   
+                                            <div class="led-box">
+                                                <div id="phaser-bypass" class="setting selectpicker led-red" value="1">
                                                 </div>
                                             </div>
                                         </div>
@@ -369,8 +371,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Tremolo</h4>
-                                            <div class = "led-box">
-                                                <div id="tremolo-bypass" class="setting  selectpicker led-red" value = "1">   
+                                            <div class="led-box">
+                                                <div id="tremolo-bypass" class="setting  selectpicker led-red" value="1">
                                                 </div>
                                             </div>
                                         </div>
@@ -410,8 +412,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Bitcrusher</h4>
-                                            <div class = "led-box">
-                                                <div id="bitcrusher-bypass" class="setting selectpicker led-red" value = "1">   
+                                            <div class="led-box">
+                                                <div id="bitcrusher-bypass" class="setting selectpicker led-red" value="1">
                                                 </div>
                                             </div>
                                         </div>
