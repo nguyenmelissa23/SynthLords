@@ -77,7 +77,7 @@ keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
         var currentNote = adjustNoteOctave(note);
         //play WAD corresponding to note
-        WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 90 } });
+        WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 10 } });
     }
 };
 
