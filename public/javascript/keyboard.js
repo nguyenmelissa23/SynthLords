@@ -19,7 +19,7 @@
  * Tuna Convolver.
  * Add link to github and copyright at bottom or top of page
  */
-
+var _isPlayingKey = false;
 // localStorage.clear();
 //if first time page is loaded then use default settings
 var settings = localStorage.getItem("settings");
@@ -78,6 +78,7 @@ keyboard.keyDown = function (note, frequency) {
         var currentNote = adjustNoteOctave(note);
         //play WAD corresponding to note
         WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 10 } });
+        _isPlayingKey = true;
         analyser = WAD.input;
         startVis();
     }
@@ -88,6 +89,8 @@ keyboard.keyUp = function (note, frequency) {
     if (!modalOpen) {
         var currentNote = adjustNoteOctave(note);
         WAD.stop(currentNote);
+        _isPlayingKey = false;
+
     }
 };
 
@@ -442,43 +445,44 @@ var myCanvas = canvas.getContext("2d");
 var dataArray, bufferLength;
 
 
-// function startVis(source, analyser, dataArray, bufferLength){
 function startVis(){
     console.log("start vis");
     myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
     analyser.fftSize = 2048;
     bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
     dataArray = new Uint8Array(bufferLength);
-    // draw(source, analyser, dataArray, bufferLength);
     draw();
 }
 
-// function draw(source, analyser, dataArray, bufferLength){
 function draw(){
-	var drawVisual = requestAnimationFrame(draw);
-	analyser.getByteTimeDomainData(dataArray);
+    if (_isPlayingKey === true){
+        var drawVisual = requestAnimationFrame(draw);
+        analyser.getByteTimeDomainData(dataArray);
 
-	myCanvas.fillStyle = 'rgb(0, 0, 0)';
-	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
-	myCanvas.lineWidth = 2;
-	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+        myCanvas.fillStyle = 'rgb(0, 0, 0)';
+        myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+        myCanvas.lineWidth = 2;
+        myCanvas.strokeStyle = 'rgb(0, 255, 0)';
 
-	myCanvas.beginPath();
-	var sliceWidth = WIDTH * 1.0 / bufferLength;
-	var x = 0;
+        myCanvas.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var x = 0;
 
-	for (var i = 0; i < bufferLength; i++) {
+        for (var i = 0; i < bufferLength; i++) {
 
-		var v = dataArray[i] / 128.0;
-		var y = v * HEIGHT / 2;
+            var v = dataArray[i] / 128.0;
+            var y = v * HEIGHT / 2;
 
-		if (i === 0) {
-			myCanvas.moveTo(x, y);
-		} else {
-			myCanvas.lineTo(x, y);
-		}
+            if (i === 0) {
+                myCanvas.moveTo(x, y);
+            } else {
+                myCanvas.lineTo(x, y);
+            }
 
-		x += sliceWidth;
-	}
-	myCanvas.stroke();
+            x += sliceWidth;
+        }
+        myCanvas.stroke();
+    } else {
+        myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+    }
 }

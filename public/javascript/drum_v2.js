@@ -64,7 +64,7 @@ var App = {
 
     _loadFiles: function(context, callback){
         allowedStart = 1; 
-        //console.log("reload files, ok to play. allowedStart:", allowedStart);
+        console.clear();
         bufferLoader = new BufferLoader(
             context,
             sampleArray, 
@@ -75,12 +75,7 @@ var App = {
     }
 };
 
-
-// var drumSound = new DrumSound(audioContext, samples , sampleArray, sampleId);
-
-
 window.onload = App._checkBrowserSupport();
-
 
 function finishedLoading(sampleArray){
     sourceObj = {}; sourceArr = []; sourceObj_Track={};
@@ -118,11 +113,10 @@ function finishedLoading(sampleArray){
         'Drum14'       : sourceArr[18],
         'Drum15'       : sourceArr[19],
     }
-    ////console.log(sourceObj);
-//    if (sourceObj.length && sourceObj_Track.length){
-        _createOptionElement();
-        _createDrumSoundBtns();
-//    }
+
+     _createOptionElement();
+    _createDrumSoundBtns();
+
     
 }
 
@@ -236,7 +230,6 @@ $("#trackDropBar").on("input", function(){
 });
 
 $("#drum-track-gain").change(function(){
-    //console.log("changing the gain of drum");
     if (_isPlaying === true){
         stopTrack();
         //Set drum info to localStorage 
@@ -277,12 +270,11 @@ $("#drum-track-gain").change(function(){
         drum.source.loop = true;
         _isPlaying = drum._isPlaying;
     }
-    //console.log("_isPlaying", _isPlaying);    
 });
 
 function startTrack(){
+    // console.clear();
     allowedStart--; 
-    //console.log("_isPlaying", _isPlaying);
     var trackName = $("#trackDropBar").val();
     if (trackName == 'Select a drum track to start'){
         alert("Pick a drum track to start playing");
@@ -298,65 +290,47 @@ function startTrack(){
                 gainNode.gain.value = $("#drum-track-gain").val();
                 currentSource_Track.start();
                 _isPlaying = true;
-                // startVis();
+                startVis_drum();
             }
         });
     } 
-    //console.log("_isPlaying", _isPlaying);
-    
 }
 
-// else {allowedStart++};
-// //Error management: 
-// if (allowedStart === 1){App._loadFiles(audioContext, finishedLoading);}
+
 
 function stopTrack(){
-    // //console.log("_isPlaying", _isPlaying);
     if (_isPlaying === true ){
         currentSource_Track.stop(2);
+        currentSource_Track.disconnect(analyser_Track);
         _isPlaying = false;
     } 
-    //console.log("_isPlaying", _isPlaying);
 }
 /**** VISUALIZER ***
  * 
  * Tracks
 */
-
 var WIDTH = 640;
 var HEIGHT = 100;
 var canvas = document.querySelector('#myCanvas');
 var myCanvas = canvas.getContext("2d");
 var dataArray, bufferLength;
-var dataArray_Track, bufferLength_Track;
 
-// startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
-// startVis(currentSource, analyser, dataArray, bufferLength);
-// startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
-// startVis();
 
-// function startVis(source, analyser, dataArray, bufferLength){
-function startVis(){
-	// if ( source != undefined){
-    if (currentSource_Track != undefined){
-		myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
-		// source.connect(analyser);
-        currentSource_Track.connect(analyser_Track);
-        // analyser.fftSize = 2048;
-		analyser_Track.fftSize = 2048;
-		bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
-		dataArray = new Uint8Array(bufferLength);
+function startVis_drum(){
+    myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
 
-		// draw(source, analyser, dataArray, bufferLength);
-        draw();
-	} else {
-		//console.log("no current source yet");
-	}
+    currentSource_Track.connect(analyser_Track);
+
+    analyser_Track.fftSize = 2048;
+    bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+    dataArray = new Uint8Array(bufferLength);
+
+    draw_drum();
 }
 
 // function draw(source, analyser, dataArray, bufferLength){
-function draw(){
-	var drawVisual = requestAnimationFrame(draw);
+function draw_drum(){
+	var drawVisual = requestAnimationFrame(draw_drum);
 	analyser_Track.getByteTimeDomainData(dataArray);
 
 	myCanvas.fillStyle = 'rgb(0, 0, 0)';
@@ -384,68 +358,3 @@ function draw(){
 	myCanvas.stroke();
 }
 
-/**** VISUALIZER ***
- * 
- * Sounds
-*/
-
-// var WIDTH = 640;
-// var HEIGHT = 100;
-// var canvas = document.querySelector('#myCanvas');
-// var myCanvas = canvas.getContext("2d");
-// var dataArray, bufferLength;
-// var dataArray_Track, bufferLength_Track;
-
-// // startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
-// // startVis(currentSource, analyser, dataArray, bufferLength);
-// // startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
-// startVis();
-
-// // function startVis(source, analyser, dataArray, bufferLength){
-// function startVis(){
-// 	// if ( source != undefined){
-//     if (currentSource_Track != undefined){
-// 		myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
-// 		// source.connect(analyser);
-//         currentSource_Track.connect(analyser_Track);
-//         // analyser.fftSize = 2048;
-// 		analyser_Track.fftSize = 2048;
-// 		bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
-// 		dataArray = new Uint8Array(bufferLength);
-
-// 		// draw(source, analyser, dataArray, bufferLength);
-//         draw();
-// 	} else {
-// 		//console.log("no current source yet");
-// 	}
-// }
-
-// // function draw(source, analyser, dataArray, bufferLength){
-// function draw(){
-// 	var drawVisual = requestAnimationFrame(draw);
-// 	analyser_Track.getByteTimeDomainData(dataArray);
-
-// 	myCanvas.fillStyle = 'rgb(0, 0, 0)';
-// 	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
-// 	myCanvas.lineWidth = 2;
-// 	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
-
-// 	myCanvas.beginPath();
-// 	var sliceWidth = WIDTH * 1.0 / bufferLength;
-// 	var x = 0;
-
-// 	for (var i = 0; i < bufferLength; i++) {
-
-// 		var v = dataArray[i] / 128.0;
-// 		var y = v * HEIGHT / 2;
-
-// 		if (i === 0) {
-// 			myCanvas.moveTo(x, y);
-// 		} else {
-// 			myCanvas.lineTo(x, y);
-// 		}
-
-// 		x += sliceWidth;
-// 	}
-// 	myCanvas.stroke();
-// }
