@@ -8,7 +8,7 @@ body {
 select{
   background-color: red;
   color:white;
-	background-image: -webkit-linear-gradient(right, rgb(60, 60, 60),rgb(46.8%, 46.8%, 46.8%) 50%, rgb(34.3%, 34.3%, 34.3%) 100%);
+	background-image: -webkit-linear-gradient(right, rgb(15.2%, 15.2%, 15.2%),rgb(28.4%, 28.4%, 28.4%) 50%, rgb(15.2%, 15.2%, 15.2%) 100%);
 }
 
 h3, h4  {
@@ -24,7 +24,7 @@ h3, h4  {
 }
 
 div.setting-group {
-    background-image: url('http://www.aircraftpanel.com/gallery/black-textured-hires.jpg');
+    background-image: url('../img/black_texture.jpg');
     padding: 10px;
     margin-top: 20px;
     margin-left: -10px;
