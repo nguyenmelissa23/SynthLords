@@ -4,8 +4,6 @@
  * 
  * TODO:
  * --- Must Have ---
- * Upload to hosting service with database (heroku/cleardb).
- * Drum Machine.
  * Visualizer
  * TEST TEST TEST TEST TEST
  * 
@@ -28,18 +26,22 @@ if (!settings) {
     // console.log("First time loading page - loading default settings");
     //Initialize WAD
     var defaultSettings = getSettings();
-    var WAD = createWAD(defaultSettings);
+    //update LEDs to reflect settings
+    LEDChecker(defaultSettings.masterSettings.tuna);
     //store settings in local storage
     localStorage.setItem("settings", JSON.stringify(defaultSettings));
+
+    var WAD = createWAD(defaultSettings);
 }
 //if settings saved in local storage then use those
 else {
     // console.log("Using settings from localstorage");
     var storedSettings = localStorage.getItem("settings");
     storedSettings = JSON.parse(storedSettings);
-    var WAD = createWAD(storedSettings);
-    //TODO: update html corresponding to stored settings
+    LEDChecker(storedSettings.masterSettings.tuna);
     updateHtml(storedSettings);
+
+    var WAD = createWAD(storedSettings);
 }
 
 $(document).ready(function() {
@@ -132,13 +134,13 @@ function getSettings() {
                     Q: parseFloat($("#filter-q").val()), //0.001 to 100
                     gain: parseFloat($("#filter-gain").val()), //-40 to 40 (in decibels)
                     filterType: $("#filter-type").val().toLowerCase(), //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
-                    bypass: parseInt($("#filter-bypass").val())
+                    bypass: parseInt($("#filter-bypass").attr('value'))
                 },
                 Chorus: {
                     rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
                     feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
                     delay: parseFloat($("#chorus-delay").val()),     //0 to 1
-                    bypass: parseInt($("#chorus-bypass").val())         //the value 1 starts the effect as bypassed, 0 or 1
+                    bypass: parseInt($("#chorus-bypass").attr('value'))         //the value 1 starts the effect as bypassed, 0 or 1
                 },
                 Phaser: {
                     rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
@@ -146,7 +148,7 @@ function getSettings() {
                     feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
                     stereoPhase: 30, //0 to 180
                     baseModulationFrequency: 700, //500 to 1500
-                    bypass: parseInt($("#phaser-bypass").val())
+                    bypass: parseInt($("#phaser-bypass").attr('value'))
                 },
                 Overdrive: {
                     outputGain: 1, //0 to 1+
@@ -159,13 +161,13 @@ function getSettings() {
                     intensity: parseFloat($("#tremolo-intensity").val()), //0 to 1
                     rate: parseFloat($("#tremolo-rate").val()), //0.001 to 8
                     stereoPhase: parseFloat($("#tremolo-phase").val()), //0 to 180
-                    bypass: parseInt($("#tremolo-bypass").val())
+                    bypass: parseInt($("#tremolo-bypass").attr('value'))
                 },
                 Bitcrusher: {
                     bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16
                     normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
                     bufferSize: 256,  //256 to 16384
-                    bypass: parseInt($("#bitcrusher-bypass").val())
+                    bypass: parseInt($("#bitcrusher-bypass").attr('value'))
                 }
                 //FIXME: Error loading impulse
                 //     Convolver: {
@@ -326,9 +328,6 @@ $("#preset-save").click(function() {
 
 });
 
-/**** VISUALIZER ****/
-
-
 /** MIDI */
 //connect midi to global WAD
 Wad.midiInstrument = WAD;
@@ -377,3 +376,49 @@ midiMap = function(event) {
         console.log('pitch bend');
     }
 };
+
+/** LED */
+function LEDChecker(tunaSettings){
+    console.log("Filter bypass : " + tunaSettings.Filter.bypass);
+    if(parseInt(tunaSettings.Filter.bypass) == 0) {
+        $("#filter-bypass").addClass("led-red-on");
+        $("#filter-bypass").attr("value", 0);
+    }
+    if(parseInt(tunaSettings.Chorus.bypass) == 0) {
+        $("#chorus-bypass").addClass("led-red-on");
+        $("#chorus-bypass").attr("value", 0);
+    }
+    if(parseInt(tunaSettings.Phaser.bypass) == 0) {
+        $("#phaser-bypass").addClass("led-red-on");
+        $("#phaser-bypass").attr("value", 0);
+    }
+    if(tunaSettings.Tremolo.bypass == 0) {
+        $("#tremolo-bypass").addClass("led-red-on");
+        $("#tremolo-bypass").attr("value", 0);
+    }
+    if(tunaSettings.Bitcrusher.bypass == 0) {
+        $("#bitcrusher-bypass").addClass("led-red-on");
+        $("#bitcrusher-bypass").attr("value", 0);
+    }
+}
+
+$(".led-red").on("click", function(){
+    $(this).toggleClass("led-red-on");
+    switch (this.getAttribute("value")){
+        case ("0"):
+        this.setAttribute("value", 1);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+        case (null):
+        this.setAttribute("value", 1);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+        case ("1"):
+        this.setAttribute("value", 0);
+        localStorage.setItem("settings", JSON.stringify(getSettings()));
+        location.reload();
+        break;
+    }
+});
