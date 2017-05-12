@@ -442,22 +442,21 @@ var WIDTH = 640;
 var HEIGHT = 100;
 var canvas = document.querySelector('#myCanvas');
 var myCanvas = canvas.getContext("2d");
-var dataArray, bufferLength;
+var dataArray_key, bufferLength_key;
 
 
 function startVis(){
-    console.log("start vis");
     myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
     analyser.fftSize = 2048;
-    bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
-    dataArray = new Uint8Array(bufferLength);
+    bufferLength_key = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+    dataArray_key = new Uint8Array(bufferLength_key);
     draw();
 }
 
 function draw(){
     if (_isPlayingKey === true){
         var drawVisual = requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray);
+        analyser.getByteTimeDomainData(dataArray_key);
 
         myCanvas.fillStyle = 'rgb(0, 0, 0)';
         myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
@@ -465,12 +464,12 @@ function draw(){
         myCanvas.strokeStyle = 'rgb(0, 255, 0)';
 
         myCanvas.beginPath();
-        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var sliceWidth = WIDTH * 1.0 / bufferLength_key;
         var x = 0;
 
-        for (var i = 0; i < bufferLength; i++) {
+        for (var i = 0; i < bufferLength_key; i++) {
 
-            var v = dataArray[i] / 128.0;
+            var v = dataArray_key[i] / 128.0;
             var y = v * HEIGHT / 2;
 
             if (i === 0) {

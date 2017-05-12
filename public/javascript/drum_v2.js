@@ -24,6 +24,7 @@ var currentSource_Track, currentSampleId_Track;
 var list = [ 'Closed Hihat', 'Open Hihat', 'Kick', 'Snare','Tom']
 var pressedBtn;
 var _isPlaying = false;
+var _isPlaying_drum = false;
 var currentVol;
 
 //user can playing as many times 
@@ -31,7 +32,7 @@ var currentVol;
 var allowedStart = 1;
 
 var audioContext = new AudioContext();
-var analyser = audioContext.createAnalyser();
+var analyser_drum = audioContext.createAnalyser();
 var analyser_Track = audioContext.createAnalyser();
 var gainNode = audioContext.createGain();
 var App = {
@@ -143,60 +144,9 @@ $(document).on("keyup", function(keyEvent){
     } 
 });
 
-function startDrum(id){
-    // pressedBtn.addClass("drumlit");
-    currentSource = sourceObj[id];
-    currentSource.connect(audioContext.destination);
-    currentSource.start();
-     
-}
 
-function stopDrum(){
-    currentSource.stop(3);
-    App._loadFiles(audioContext, finishedLoading);
-    pressedBtn.removeClass("drumlit");
-}
 
-function _createOptionElement(){
-    $("#trackDropBar").html("");
-    //console.log("createOptionElement()");
-    var placeholder = "<option id='drumTrackplaceholder' disabled selected='selected' class='drumTrack'>Select a drum track to start</option>";
-    $("#trackDropBar").append(placeholder);
-    for (var i = 0; i < sampleId_Track.length; i++){
-        var optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
-        $("#trackDropBar").append(optionHTML);
-    }
-}
 
-function _afterloading_createOptionElement(currentTrack){
-    $("#trackDropBar").html("");
-    //console.log("createOptionElement()");
-    var placeholder = "<option id='drumTrackplaceholder' disabled class='drumTrack'>Select a drum track to start</option>";
-    $("#trackDropBar").append(placeholder);
-    for (var i = 0; i < sampleId_Track.length; i++){
-        var optionHTML;
-        if (sampleId_Track[i] === currentTrack){
-            optionHTML = "<option id='"+ sampleId_Track[i] +"' selected='selected' class='drumTrack'>" + sampleId_Track[i] + "</option>";
-        } else {
-            optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
-        }
-        $("#trackDropBar").append(optionHTML);
-    }
-}
-
-function _createDrumSoundBtns(){
-     $(".drumSoundBtns").html("");
-    //console.log('createDrumSoundBtns()');
-    for (var i = 0; i < sampleId.length; i++){
-        //console.log("sound in sourceObj", sampleId[i]);
-        var buttonHTML  = "<div class='drumBtnDiv'>";
-            buttonHTML += "<button id='" + sampleId[i] + "'";
-            buttonHTML += "class='drumBtn btn btn-default'>";
-            buttonHTML += list[i] + "</button></div><br>";
-        //console.log("buttonHTML",buttonHTML);
-        $(".drumSoundBtns").append(buttonHTML);
-    }
-}
 
 /**
  * 
@@ -220,13 +170,10 @@ $("#stopTrack").on("click", function(){
 });
 
 $("#trackDropBar").on("input", function(){
-	//console.log("changing track to", $("#trackDropBar").val());
 	if (_isPlaying === true){
 		stopTrack();
 		startTrack();
-    } else {
-        // startTrack();
-    }
+    } 
 });
 
 $("#drum-track-gain").change(function(){
@@ -272,8 +219,28 @@ $("#drum-track-gain").change(function(){
     }
 });
 
+/***
+ * FUNCTIONS
+ * **** */
+
+function startDrum(id){
+    // pressedBtn.addClass("drumlit");
+    currentSource = sourceObj[id];
+    currentSource.connect(audioContext.destination);
+    currentSource.start();
+    startVis_drum();
+    _isPlaying_drum = true;
+     
+}
+
+function stopDrum(){
+    currentSource.stop(3);
+    _isPlaying_drum= false;
+    App._loadFiles(audioContext, finishedLoading);
+    pressedBtn.removeClass("drumlit");
+}
+
 function startTrack(){
-    // console.clear();
     allowedStart--; 
     var trackName = $("#trackDropBar").val();
     if (trackName == 'Select a drum track to start'){
@@ -290,7 +257,7 @@ function startTrack(){
                 gainNode.gain.value = $("#drum-track-gain").val();
                 currentSource_Track.start();
                 _isPlaying = true;
-                startVis_drum();
+                startVis_track();
             }
         });
     } 
@@ -305,18 +272,57 @@ function stopTrack(){
         _isPlaying = false;
     } 
 }
+
+
+function _createOptionElement(){
+    $("#trackDropBar").html("");
+    //console.log("createOptionElement()");
+    var placeholder = "<option id='drumTrackplaceholder' disabled selected='selected' class='drumTrack'>Select a drum track to start</option>";
+    $("#trackDropBar").append(placeholder);
+    for (var i = 0; i < sampleId_Track.length; i++){
+        var optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        $("#trackDropBar").append(optionHTML);
+    }
+}
+
+function _afterloading_createOptionElement(currentTrack){
+    $("#trackDropBar").html("");
+    //console.log("createOptionElement()");
+    var placeholder = "<option id='drumTrackplaceholder' disabled class='drumTrack'>Select a drum track to start</option>";
+    $("#trackDropBar").append(placeholder);
+    for (var i = 0; i < sampleId_Track.length; i++){
+        var optionHTML;
+        if (sampleId_Track[i] === currentTrack){
+            optionHTML = "<option id='"+ sampleId_Track[i] +"' selected='selected' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        } else {
+            optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        }
+        $("#trackDropBar").append(optionHTML);
+    }
+}
+
+function _createDrumSoundBtns(){
+     $(".drumSoundBtns").html("");
+    //console.log('createDrumSoundBtns()');
+    for (var i = 0; i < sampleId.length; i++){
+        //console.log("sound in sourceObj", sampleId[i]);
+        var buttonHTML  = "<div class='drumBtnDiv'>";
+            buttonHTML += "<button id='" + sampleId[i] + "'";
+            buttonHTML += "class='drumBtn btn btn-default'>";
+            buttonHTML += list[i] + "</button></div><br>";
+        //console.log("buttonHTML",buttonHTML);
+        $(".drumSoundBtns").append(buttonHTML);
+    }
+}
 /**** VISUALIZER ***
  * 
  * Tracks
 */
-var WIDTH = 640;
-var HEIGHT = 100;
-var canvas = document.querySelector('#myCanvas');
-var myCanvas = canvas.getContext("2d");
+
 var dataArray, bufferLength;
 
 
-function startVis_drum(){
+function startVis_track(){
     myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
 
     currentSource_Track.connect(analyser_Track);
@@ -325,36 +331,93 @@ function startVis_drum(){
     bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
     dataArray = new Uint8Array(bufferLength);
 
+    draw_track();
+}
+
+// function draw(source, analyser, dataArray, bufferLength){
+function draw_track(){
+    if (_isPlaying = true){
+        var drawVisual = requestAnimationFrame(draw_track);
+        analyser_Track.getByteTimeDomainData(dataArray);
+
+        myCanvas.fillStyle = 'rgb(0, 0, 0)';
+        myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+        myCanvas.lineWidth = 2;
+        myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+
+        myCanvas.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var x = 0;
+
+        for (var i = 0; i < bufferLength; i++) {
+
+            var v = dataArray[i] / 128.0;
+            var y = v * HEIGHT / 2;
+
+            if (i === 0) {
+                myCanvas.moveTo(x, y);
+            } else {
+                myCanvas.lineTo(x, y);
+            }
+
+            x += sliceWidth;
+        }
+        myCanvas.stroke();
+    } else {
+        myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+    }
+}
+
+/**** VISUALIZER ***
+ * 
+ * Tracks
+*/
+
+var dataArray_drum, bufferLength_drum;
+
+
+function startVis_drum(){
+    myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+
+    currentSource.connect(analyser_drum);
+
+    analyser_drum.fftSize = 2048;
+    bufferLength_drum = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+    dataArray_drum = new Uint8Array(bufferLength_drum);
+
     draw_drum();
 }
 
 // function draw(source, analyser, dataArray, bufferLength){
 function draw_drum(){
-	var drawVisual = requestAnimationFrame(draw_drum);
-	analyser_Track.getByteTimeDomainData(dataArray);
+    if (_isPlaying_drum = true){
+        var drawVisual = requestAnimationFrame(draw_drum);
+        analyser_drum.getByteTimeDomainData(dataArray_drum);
+        // dataArray.push(currentDataArray);
+        myCanvas.fillStyle = 'rgb(0, 0, 0)';
+        myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+        myCanvas.lineWidth = 2;
+        myCanvas.strokeStyle = 'rgb(0, 255, 0)';
 
-	myCanvas.fillStyle = 'rgb(0, 0, 0)';
-	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
-	myCanvas.lineWidth = 2;
-	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+        myCanvas.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength_drum;
+        var x = 0;
 
-	myCanvas.beginPath();
-	var sliceWidth = WIDTH * 1.0 / bufferLength;
-	var x = 0;
+        for (var i = 0; i < bufferLength_drum; i++) {
 
-	for (var i = 0; i < bufferLength; i++) {
+            var v = dataArray_drum[i] / 128.0;
+            var y = v * HEIGHT / 2;
 
-		var v = dataArray[i] / 128.0;
-		var y = v * HEIGHT / 2;
+            if (i === 0) {
+                myCanvas.moveTo(x, y);
+            } else {
+                myCanvas.lineTo(x, y);
+            }
 
-		if (i === 0) {
-			myCanvas.moveTo(x, y);
-		} else {
-			myCanvas.lineTo(x, y);
-		}
-
-		x += sliceWidth;
-	}
-	myCanvas.stroke();
+            x += sliceWidth;
+        }
+        myCanvas.stroke();
+    } else {
+        myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+    }
 }
-
