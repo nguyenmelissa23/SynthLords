@@ -5,6 +5,12 @@ body {
   background-image: url('http://www.homedepot.com/catalog/productImages/1000/4c/4ca85dba-9792-4438-b892-0aeb67208667_1000.jpg');
 }
 
+select{
+  background-color: red;
+  color:white;
+	background-image: -webkit-linear-gradient(right, rgb(60, 60, 60),rgb(46.8%, 46.8%, 46.8%) 50%, rgb(34.3%, 34.3%, 34.3%) 100%);
+}
+
 h3, h4  {
 
   color:	#D5AD6D; /*if no support for background-clip*/
@@ -596,3 +602,36 @@ left: 21%;
   left: 37%;
 }
 
+#octave{
+  margin-bottom: 10px;
+}
+
+#preset-picker{
+  margin-bottom: 20px;
+  width: 100px;
+  text-overflow: ellipsis;
+}
+
+#save-preset{
+  font-size: 14px;
+  background: #aa0000;
+  color: white;
+  text-align: center;
+
+}
+#save-preset:hover{
+    color: white;
+    background-color: #e00021;
+    cursor: pointer;
+}
+
+#preset-save{
+  background: black;
+  color: white;
+  margin: 0 auto;
+}
+#preset-save:hover{
+  background: rgb(35.1%, 35.1%, 35.1%);
+  color: white;
+  cursor: pointer;
+}
