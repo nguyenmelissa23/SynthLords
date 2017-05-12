@@ -128,9 +128,9 @@ button.drumBtn.btn.btn-default {
     background-color: black;
     color:  white;
     text-align: center;
-    overflow-wrap: normal;
-    height: 100px;
-    width: 100px;
+    word-wrap: break-word;
+    height: 120px;
+    width: 120px;
     margin-bottom: 25px;
     margin-left: 36px;
     margin-right: 36px;

@@ -306,7 +306,9 @@ function _createDrumSoundBtns(){
     //console.log('createDrumSoundBtns()');
     for (var i = 0; i < sampleId.length; i++){
         //console.log("sound in sourceObj", sampleId[i]);
-        var buttonHTML  = "<div class='drumBtnDiv'>";
+        var buttonHTML;
+        if(i ===0) buttonHTML  = "<div class='drumBtnDiv col-md-2 col-md-offset-1'>";
+        else buttonHTML  = "<div class='drumBtnDiv col-md-2'>";
             buttonHTML += "<button id='" + sampleId[i] + "'";
             buttonHTML += "class='drumBtn btn btn-default'>";
             buttonHTML += list[i] + "</button></div><br>";

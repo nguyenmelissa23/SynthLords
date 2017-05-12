@@ -5,7 +5,6 @@
  * TODO:
  * --- Must Have ---
  * Adjust drum machine buttons.
- * Visualizer not working
  * TEST TEST TEST TEST TEST
  * 
  * --- Nice To Have ---
@@ -18,6 +17,9 @@
  * Arpeggiator.
  * Tuna Convolver.
  * Add link to github and copyright at bottom or top of page
+ * 
+ * @FIXME:
+ * Visualize turns off if multiple buttons are being pressed and then one is released
  */
 var _isPlayingKey = false;
 // localStorage.clear();
