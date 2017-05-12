@@ -32,11 +32,12 @@
                                 </select>
                                 <br>
                                 <!--<label class="slider-label text-center">-->
-                                    <input class="setting vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="50" min="-50" orient="vertical" step="1" type="range" value="0">
-                                    <br>
-                                    <div class = "osc1-detune-label">
+                                <input class="setting vertical-slider" data-program="osc1_detune" data-update="update_osc1_detune" id="osc1-detune" max="50"
+                                    min="-50" orient="vertical" step="1" type="range" value="0">
+                                <br>
+                                <div class="osc1-detune-label">
                                     Detune
-                                    </div>
+                                </div>
                                 <!--</label>-->
                                 <label class="slider-label text-center">
                                     <input class="setting vertical-slider" data-program="osc1_volume" data-update="update_osc1_volume" id="osc1-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
@@ -151,21 +152,22 @@
                         <!--END ADDING-->
 
                         <!--Dynamically generate drum sounds buttons-->
-                        <div class="drumSoundBtns row">
-                        </div>
-
-                            <div class="row drum-effect">
-                                <label class="slider-label col-sm-3 text-center">
+                        <div class="drum2 row">
+                            <label class="slider-label col-sm-2 text-center">
                                     <input class=" vertical-slider" id="drum-track-gain" max="1" min="0.0" orient="vertical" step="0.01" type="range" value="0.1">
                                     <br>
                                     Gain (track)
                             </label>
-                                <label class="slider-label col-sm-3 text-center">
+                            <div class="drumSoundBtns col-sm-8">
+                                
+                            </div>
+                            <label class="slider-label col-sm-2 text-center">
                                     <input class=" vertical-slider" id="drum-sound-gain" max="1" min="0.0" orient="vertical" step="0.1" type="range" value="0.1">
                                     <br>
                                     Gain (sound)
                             </label>
-                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -546,14 +548,14 @@
 
     <!--JS Files-->
     <script type="text/javascript" src="./javascript/keyboard.js"></script>
-    <script type="text/javascript" src="./app/js/logic.js"></script>
+
 
     <!--DRUM MACHINE-->
     <!--Buffer-loader.js Source-->
     <script type="text/javascript" src="./source-files/buffer-loader.js"></script>
     <!--Load all media files-->
     <!--<script type="text/javascript" src="./javascript/drum_machine/loadMediaFiles.js"></script>-->
-    <script src="./javascript/drum_machine/drum_v2.js"></script>
+    <script src="./javascript/drum_v2.js"></script>
 
 
 

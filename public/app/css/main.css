@@ -44,7 +44,7 @@ div.setting-group {
 
 label.slider-label {
       margin-top: 40px;
-      margin-right: 30px;
+      margin-right: 0px;
 }
 
 div#master.setting-group {
@@ -72,6 +72,7 @@ div#osc2.setting-group {
 div#drum-machine.setting-group {
  width: 100%;
  margin-left: 0px;
+ height: auto;
 }
 
 
@@ -112,23 +113,19 @@ div#samplePlayerRow {
     margin-top: 20px;
 }
 
-.drumSoundBtns.row {
+.drumSoundBtns.col-sm-8 {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  margin-top: -5px;
-  margin-left: -100px;
+  align-items: center;
   }
 
 button.drumBtn.btn.btn-default {
-    margin-left: 70px;
     background-color: black;
     color:  white;
     height: 150px;
     width: 150px;
+    margin-bottom: 25px;
+    margin-left: 75px;
     box-shadow: 0 0 20px 0px black;
-    
-
 }
 
 #tuna-container{
@@ -144,6 +141,14 @@ button.drumBtn.btn.btn-default {
 
 div.col-md-12.text-center {
   margin-left: 0px;
+}
+
+input#drum-track-gain {
+    margin-bottom: 90px;
+}
+
+input#drum-sound-gain {
+    margin-bottom: 90px;
 }
 
 
