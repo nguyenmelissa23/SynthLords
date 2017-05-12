@@ -28,23 +28,27 @@ if (!settings) {
     // console.log("First time loading page - loading default settings");
     //Initialize WAD
     var defaultSettings = getSettings();
-    var WAD = createWAD(defaultSettings);
+    //update LEDs to reflect settings
+    LEDChecker(defaultSettings.masterSettings.tuna);
     //store settings in local storage
     localStorage.setItem("settings", JSON.stringify(defaultSettings));
+
+    var WAD = createWAD(defaultSettings);
 }
 //if settings saved in local storage then use those
 else {
     // console.log("Using settings from localstorage");
     var storedSettings = localStorage.getItem("settings");
     storedSettings = JSON.parse(storedSettings);
-    var WAD = createWAD(storedSettings);
-    //TODO: update html corresponding to stored settings
+    LEDChecker(storedSettings.masterSettings.tuna);
     updateHtml(storedSettings);
+
+    var WAD = createWAD(storedSettings);
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     //when page loads get presets from synth db and add them to presets selector
-    $.get("/api/preset/all", function(data) {
+    $.get("/api/preset/all", function (data) {
         for (var preset in data) {
             $('#preset-picker').append($('<option>', {
                 value: data[preset].name,
@@ -58,7 +62,7 @@ $(document).ready(function() {
 var keyboard = new QwertyHancock({
     id: 'keyboard',
     width: $("#keyboard").width(),
-    height: $("#keyboard").width()/5,
+    height: $("#keyboard").width() / 5,
     octaves: 2,
     startNote: 'C3',
     whiteNotesColour: 'white',
@@ -69,24 +73,18 @@ var keyboard = new QwertyHancock({
 //Only play notes when modals are closed
 var modalOpen = false;
 //execute when piano key is pressed
-keyboard.keyDown = function(note, frequency) {
+keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
-        //Adjust the current note to the octave setting
-        var keyboardNoteOctave = parseInt(note[note.length - 1]);
-        var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
-        var currentNote = note.replace(/.$/, adjustedOctave);
+        var currentNote = adjustNoteOctave(note);
         //play WAD corresponding to note
-        WAD.play({ pitch: currentNote, label: currentNote });
+        WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 9001 } });
     }
 };
 
 //Stop playing note when key is released
-keyboard.keyUp = function(note, frequency) {
+keyboard.keyUp = function (note, frequency) {
     if (!modalOpen) {
-        //Adjust the current note to the octave setting
-        var keyboardNoteOctave = parseInt(note[note.length - 1]);
-        var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
-        var currentNote = note.replace(/.$/, adjustedOctave);
+        var currentNote = adjustNoteOctave(note);
         WAD.stop(currentNote);
     }
 };
@@ -98,7 +96,7 @@ function createWAD(settings) {
     var doubleOsc = new Wad.Poly(settings.masterSettings);
     //set master volume
     //TODO:
-    // doubleOsc.setVolume(parseFloat(settings.volume));
+    doubleOsc.setVolume(parseFloat(settings.volume));
     doubleOsc.add(osc1).add(osc2);
     return doubleOsc;
 }
@@ -132,13 +130,13 @@ function getSettings() {
                     Q: parseFloat($("#filter-q").val()), //0.001 to 100
                     gain: parseFloat($("#filter-gain").val()), //-40 to 40 (in decibels)
                     filterType: $("#filter-type").val().toLowerCase(), //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
-                    bypass: parseInt($("#filter-bypass").val())
+                    bypass: parseInt($("#filter-bypass").attr('value'))
                 },
                 Chorus: {
                     rate: parseFloat($("#chorus-rate").val()),         //0.01 to 8+
                     feedback: parseFloat($("#chorus-feedback").val()),     //0 to 1+
                     delay: parseFloat($("#chorus-delay").val()),     //0 to 1
-                    bypass: parseInt($("#chorus-bypass").val())         //the value 1 starts the effect as bypassed, 0 or 1
+                    bypass: parseInt($("#chorus-bypass").attr('value'))         //the value 1 starts the effect as bypassed, 0 or 1
                 },
                 Phaser: {
                     rate: parseFloat($("#phaser-rate").val()), //0.01 to 8 is a decent range, but higher values are possible
@@ -146,7 +144,7 @@ function getSettings() {
                     feedback: parseFloat($("#phaser-feedback").val()), //0 to 1+
                     stereoPhase: 30, //0 to 180
                     baseModulationFrequency: 700, //500 to 1500
-                    bypass: parseInt($("#phaser-bypass").val())
+                    bypass: parseInt($("#phaser-bypass").attr('value'))
                 },
                 Overdrive: {
                     outputGain: 1, //0 to 1+
@@ -159,13 +157,13 @@ function getSettings() {
                     intensity: parseFloat($("#tremolo-intensity").val()), //0 to 1
                     rate: parseFloat($("#tremolo-rate").val()), //0.001 to 8
                     stereoPhase: parseFloat($("#tremolo-phase").val()), //0 to 180
-                    bypass: parseInt($("#tremolo-bypass").val())
+                    bypass: parseInt($("#tremolo-bypass").attr('value'))
                 },
                 Bitcrusher: {
                     bits: parseFloat($("#bitcrusher-bits").val()),          //1 to 16
                     normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
                     bufferSize: 256,  //256 to 16384
-                    bypass: parseInt($("#bitcrusher-bypass").val())
+                    bypass: parseInt($("#bitcrusher-bypass").attr('value'))
                 }
                 //FIXME: Error loading impulse
                 //     Convolver: {
@@ -242,12 +240,21 @@ function updateHtml(settings) {
 
 // //store the current octave setting (default to 3)
 var octaveSetting = parseInt($("#octave").val());
+/** The Qwerty Hancock keyboard has predefined octaves
+ * so we need to adjust for our octave setting
+ */
+function adjustNoteOctave(note) {
+    var keyboardNoteOctave = parseInt(note[note.length - 1]);
+    var adjustedOctave = (octaveSetting + keyboardNoteOctave).toString();
+    var currentNote = note.replace(/.$/, adjustedOctave);
+    return currentNote;
+}
 
 /**
  * Detects when a synth setting is changed and updates the WAD settings.
  * If the changed setting was from tuna then the wads must be recreated
  */
-$(".setting").change(function() {
+$(".setting").change(function () {
     var id = $(this).attr('id');
     switch (id) {
         case 'octave':
@@ -280,7 +287,7 @@ $(".setting").change(function() {
         case 'preset-picker':
             var presetName = $(this).val().toString();
             var query = "/api/preset/" + presetName;
-            $.get(query, function(preset) {
+            $.get(query, function (preset) {
                 localStorage.setItem("settings", preset.settings);
                 location.reload();
             });
@@ -294,21 +301,21 @@ $(".setting").change(function() {
  * This is necessary because some settings such as TUNA requires the 
  * WADs to be recreated, which spikes the CPU usage unless the page is reloaded.
  */
-$(".tuna-setting").change(function() {
+$(".tuna-setting").change(function () {
     localStorage.setItem("settings", JSON.stringify(getSettings()));
     location.reload();
 });
 
 /** Toggle modalOpen when the modal loads so that notes aren't played on key presses */
-$("#preset-modal").on('shown.bs.modal', function() {
+$("#preset-modal").on('shown.bs.modal', function () {
     modalOpen = true;
 });
-$('#preset-modal').on('hidden.bs.modal', function() {
+$('#preset-modal').on('hidden.bs.modal', function () {
     modalOpen = false;
 });
 
 /** (in modal) Create new preset with current settings and post to synth db */
-$("#preset-save").click(function() {
+$("#preset-save").click(function () {
     var settings = getSettings();
     var currentSettings = JSON.stringify(settings);
     var newPreset = {
@@ -316,7 +323,7 @@ $("#preset-save").click(function() {
         settings: currentSettings,
         creator: $("#preset-creator").val().toString().trim()
     };
-    $.post("/api/preset", newPreset, function(preset) {
+    $.post("/api/preset", newPreset, function (preset) {
         //add preset to dropdown when done posting
         $('#preset-picker').append($("<option></option>")
             .attr("value", preset.name)
@@ -326,7 +333,50 @@ $("#preset-save").click(function() {
 
 });
 
-/**** VISUALIZER ****/
+/** LED */
+function LEDChecker(tunaSettings) {
+    if (parseInt(tunaSettings.Filter.bypass) == 0) {
+        $("#filter-bypass").addClass("led-red-on");
+        $("#filter-bypass").attr("value", 0);
+    }
+    if (parseInt(tunaSettings.Chorus.bypass) == 0) {
+        $("#chorus-bypass").addClass("led-red-on");
+        $("#chorus-bypass").attr("value", 0);
+    }
+    if (parseInt(tunaSettings.Phaser.bypass) == 0) {
+        $("#phaser-bypass").addClass("led-red-on");
+        $("#phaser-bypass").attr("value", 0);
+    }
+    if (tunaSettings.Tremolo.bypass == 0) {
+        $("#tremolo-bypass").addClass("led-red-on");
+        $("#tremolo-bypass").attr("value", 0);
+    }
+    if (tunaSettings.Bitcrusher.bypass == 0) {
+        $("#bitcrusher-bypass").addClass("led-red-on");
+        $("#bitcrusher-bypass").attr("value", 0);
+    }
+}
+
+$(".led-red").on("click", function () {
+    $(this).toggleClass("led-red-on");
+    switch (this.getAttribute("value")) {
+        case ("0"):
+            this.setAttribute("value", 1);
+            localStorage.setItem("settings", JSON.stringify(getSettings()));
+            location.reload();
+            break;
+        case (null):
+            this.setAttribute("value", 1);
+            localStorage.setItem("settings", JSON.stringify(getSettings()));
+            location.reload();
+            break;
+        case ("1"):
+            this.setAttribute("value", 0);
+            localStorage.setItem("settings", JSON.stringify(getSettings()));
+            location.reload();
+            break;
+    }
+});
 
 
 /** MIDI */
@@ -337,7 +387,7 @@ Wad.midiInstrument = WAD;
  * the if statement containing event.data[0] === 128 which is necessary for 
  * detecting when a MIDI key has been released and stopping the note
  */
-midiMap = function(event) {
+midiMap = function (event) {
     console.log(event.receivedTime, event.data);
     if (event.data[0] === 144) { // 144 means the midi message has note data
         if (event.data[2] === 0) { // noteOn velocity of 0 means this is actually a noteOff message
@@ -347,7 +397,7 @@ midiMap = function(event) {
         else if (event.data[2] > 0) {
             // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
             Wad.midiInstrument.play({
-                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function (that) {
                 }
             });
         }
@@ -361,7 +411,7 @@ midiMap = function(event) {
         else if (event.data[2] > 0) {
             // console.log('> playing note: ', Wad.pitchesArray[event.data[1] - 12]);
             Wad.midiInstrument.play({
-                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function(that) {
+                pitch: Wad.pitchesArray[event.data[1] - 12], label: Wad.pitchesArray[event.data[1] - 12], callback: function (that) {
                 }
             });
         }

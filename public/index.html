@@ -79,7 +79,7 @@
                         <div class="row">
                             <div class="col-md-4 text-center">
                                 <label class="slider-label text-center">
-                                    <input class="setting vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.5" min="0.0" orient="vertical" step="0.0001" type="range" value="0.27">
+                                    <input class="setting vertical-slider" data-program="master_volume" data-update="update_master_volume" id="master-volume" max="0.25" min="0.0" orient="vertical" step="0.0001" type="range" value="0.15">
                                     <br>
                                     Volume
                                 </label>
@@ -116,21 +116,20 @@
                 </div>
             </div>
 
-            <!--Row 2-->
             <div class="row">
                 <!--DRUM MACHINE-->
                 <div class="col-md-12">
                     <div class="setting-group" id="drum-machine">
                         <h3>Drum Machine</h3>
 
-                        <div class="row" id="samplePlayerRow">
+                        <div class="row">
                             <!--JUST ADDED THIS -->
                             <button class="btn btn-primary" id="startTrack">Play</button>
                             <button class="btn btn-danger" id="stopTrack">Stop</button>
                             <div class="trackList">
                                 <label for="trackList">Drum Loop</label>
                                 <select id="trackDropBar">
-                                    <option selected="selected" disabled value="0">Select a Drum Loop</option>
+                                    <option selected="selected" disabled value="0">Loading Drum Tracks...</option>
                                 </select>
                             </div>
                         </div>
@@ -140,11 +139,16 @@
                         <div class="drumSoundBtns row">
                         </div>
 
-                        <div class="row">
-                            <label id="drumVolume" class="slider-label text-center">
-                                    <input data-program="drum-track-volume" data-update="update-drum-track-volume" id="drum-track-volume" max="1.0" min="0.0" orient="vertical" step="0.015" type="range" value="1.0">
+                        <div class="row drum-effect">
+                            <label class="slider-label col-sm-3 text-center">
+                                    <input class=" vertical-slider" id="drum-track-gain" max="1" min="0.0" orient="vertical" step="0.01" type="range" value="0.1">
                                     <br>
-                                    Vol
+                                    Gain (track)
+                            </label>
+                            <label class="slider-label col-sm-3 text-center">
+                                    <input class=" vertical-slider" id="drum-sound-gain" max="1" min="0.0" orient="vertical" step="0.1" type="range" value="0.1">
+                                    <br>
+                                    Gain (sound)
                             </label>
                         </div>
                     </div>
@@ -164,10 +168,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h3 style="float: left; margin-right: 15px;">Filter</h3>
-                                            <select id="filter-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="filter-bypass" class="setting selectpicker led-red" value = "1"> 
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -211,10 +215,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Chorus</h4>
-                                            <select id="chorus-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="chorus-bypass" class="setting selectpicker led-red" value = "1">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -248,10 +252,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Phaser</h4>
-                                            <select id="phaser-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="phaser-bypass" class="setting selectpicker led-red" value = "1">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -365,10 +369,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Tremolo</h4>
-                                            <select id="tremolo-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="tremolo-bypass" class="setting  selectpicker led-red" value = "1">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -406,10 +410,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h4 style="float: left; margin-right: 15px;">Bitcrusher</h4>
-                                            <select id="bitcrusher-bypass" class="setting tuna-setting selectpicker" data-style="btn-inverse">
-                                                <option value="0">On</option>
-                                                <option selected="selected" value="1">Off</option>
-                                            </select>
+                                            <div class = "led-box">
+                                                <div id="bitcrusher-bypass" class="setting selectpicker led-red" value = "1">   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -494,7 +498,6 @@
 
     <!--JS Files-->
     <script type="text/javascript" src="./javascript/keyboard.js"></script>
-    <script type="text/javascript" src="./app/js/logic.js"></script>
 
     <!--DRUM MACHINE-->
     <!--Buffer-loader.js Source-->

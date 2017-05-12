@@ -25,13 +25,19 @@ var list = [ 'Closed Hihat', 'Open Hihat', 'Kick', 'Snare','Tom']
 var pressedBtn;
 var _isPlaying = false;
 var currentVol;
+
+//user can playing as many times 
+// without reloading the whole page, just the files
+var allowedStart = 1;
+
 var audioContext = new AudioContext();
 var analyser = audioContext.createAnalyser();
 var analyser_Track = audioContext.createAnalyser();
+var gainNode = audioContext.createGain();
 var App = {
     
     _checkBrowserSupport: function(){
-        console.log("check Browser Support");
+        //console.log("check Browser Support");
         try {
             // Fix up for prefixing
             window.Audiocontext = window.Audiocontext||window.webkitAudiocontext;
@@ -52,11 +58,13 @@ var App = {
             samples[id] = 'https://s3.amazonaws.com/drumsounds/' + id + '.mp3';
             sampleArray.push(samples[id]);
         });
-        console.log("sampleArray", sampleArray);
+        //console.log("sampleArray", sampleArray);
         this._loadFiles(audioContext, finishedLoading);
     }, 
 
     _loadFiles: function(context, callback){
+        allowedStart = 1; 
+        //console.log("reload files, ok to play. allowedStart:", allowedStart);
         bufferLoader = new BufferLoader(
             context,
             sampleArray, 
@@ -85,7 +93,7 @@ function finishedLoading(sampleArray){
 
     sourceObj_Track = {}; sourceArr_Track = [];
 
-    console.log("sourceArr", sourceArr);
+    //console.log("sourceArr", sourceArr);
     sourceObj ={
         'closed_hihat'  : sourceArr[0], 
         'open_hihat'    : sourceArr[1], 
@@ -110,10 +118,12 @@ function finishedLoading(sampleArray){
         'Drum14'       : sourceArr[18],
         'Drum15'       : sourceArr[19],
     }
-    //console.log(sourceObj);
-   
-    _createOptionElement();
-    _createDrumSoundBtns();
+    ////console.log(sourceObj);
+//    if (sourceObj.length && sourceObj_Track.length){
+        _createOptionElement();
+        _createDrumSoundBtns();
+//    }
+    
 }
 
 $(document).on("keydown", function(keyEvent){
@@ -123,13 +133,13 @@ $(document).on("keydown", function(keyEvent){
         case 54: $('#kick').addClass("drumlit");          startDrum('kick'); break;
         case 55: $('#snare').addClass("drumlit");         startDrum('snare'); break;
         case 56: $('#tom').addClass("drumlit");           startDrum('tom'); break;
-        default: console.log("Press key 4, 5, 6, 7, 8 to start playing.");
+        default: //console.log("Press key 4, 5, 6, 7, 8 to start playing.");
     }
    
 });
 
 $(document).on("keyup", function(keyEvent){
-    console.log(keyEvent.keyCode);
+    //console.log(keyEvent.keyCode);
     switch(keyEvent.keyCode ){
         case 52: $("#closed_hihat").removeClass("drumlit");  stopDrum('closed_hihat'); break;
         case 53: $('#open_hihat').removeClass("drumlit");    stopDrum('open_hihat'); break;
@@ -155,23 +165,41 @@ function stopDrum(){
 
 function _createOptionElement(){
     $("#trackDropBar").html("");
-    console.log("createOptionElement()");
+    //console.log("createOptionElement()");
+    var placeholder = "<option id='drumTrackplaceholder' disabled selected='selected' class='drumTrack'>Select a drum track to start</option>";
+    $("#trackDropBar").append(placeholder);
     for (var i = 0; i < sampleId_Track.length; i++){
-        var optionHTML = "<option class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        var optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        $("#trackDropBar").append(optionHTML);
+    }
+}
+
+function _afterloading_createOptionElement(currentTrack){
+    $("#trackDropBar").html("");
+    //console.log("createOptionElement()");
+    var placeholder = "<option id='drumTrackplaceholder' disabled class='drumTrack'>Select a drum track to start</option>";
+    $("#trackDropBar").append(placeholder);
+    for (var i = 0; i < sampleId_Track.length; i++){
+        var optionHTML;
+        if (sampleId_Track[i] === currentTrack){
+            optionHTML = "<option id='"+ sampleId_Track[i] +"' selected='selected' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        } else {
+            optionHTML = "<option id='"+ sampleId_Track[i] +"' class='drumTrack'>" + sampleId_Track[i] + "</option>";
+        }
         $("#trackDropBar").append(optionHTML);
     }
 }
 
 function _createDrumSoundBtns(){
      $(".drumSoundBtns").html("");
-    console.log('createDrumSoundBtns()');
+    //console.log('createDrumSoundBtns()');
     for (var i = 0; i < sampleId.length; i++){
-        console.log("sound in sourceObj", sampleId[i]);
+        //console.log("sound in sourceObj", sampleId[i]);
         var buttonHTML  = "<div class='drumBtnDiv'>";
             buttonHTML += "<button id='" + sampleId[i] + "'";
             buttonHTML += "class='drumBtn btn btn-default'>";
             buttonHTML += list[i] + "</button></div><br>";
-        console.log("buttonHTML",buttonHTML);
+        //console.log("buttonHTML",buttonHTML);
         $(".drumSoundBtns").append(buttonHTML);
     }
 }
@@ -183,75 +211,80 @@ function _createDrumSoundBtns(){
 */ 
 
 $("#startTrack").on("click", function(){
-	startTrack();
+    if (allowedStart === 1){
+        startTrack();
+    } else {
+        App._loadFiles(audioContext, finishedLoading);
+    }
 });
 
 $("#stopTrack").on("click", function(){
 	stopTrack();
+    if (allowedStart < 1){
+        App._loadFiles(audioContext, finishedLoading);
+    }
 });
 
 $("#trackDropBar").on("input", function(){
-	console.log("changing track to", $("#trackDropBar").val());
+	//console.log("changing track to", $("#trackDropBar").val());
 	if (_isPlaying === true){
 		stopTrack();
 		startTrack();
-    } 
+    } else {
+        // startTrack();
+    }
 });
 
-
-//FIXME: VOLMUE STUFFS 
-
-// $("#drum-track-volume").change(function(){
-//     if (_isPlaying === true){
-//         currentSource_Track.stop(3);
-//         console.log("volume", volume);
-//         localStorage.setItem("drumTrack", JSON.stringify({
-//             'drumTrackVol': $("#drum-track-volume").val(), 
-//             'currentSource_Track': currentSource_Track, 
-//             '_isPlaying': _isPlaying
-//             }));
-        
-//         location.reload();
-
-//         var savedDrumInfo = localStorage.getItem("drumTrack");
-//         savedDrumInfo = JSON.parse(savedDrumInfo);
-//         var currentVol = savedDrumInfo.drumTrackVol;
-//         $("#drum-track-volume").val() = currentVol;
-//         currentSource_Track = savedDrumInfo.currentSource_Track;
-//         console.log("currentVol", currentVol);
-//         currentSource_Track.connect(currentSource_Track.destination);
-//         currentSource_Track.volume = currentVol;
-//         currentSource_Track.loop = true;
-//         currentSource_Track.start();
-//         startVis();
-//         _isPlaying = true;
-
-//     } else {
-//         var volume = $("#drum-track-volume").val();
-//         console.log("volume", volume);
-//         localStorage.setItem("drumTrack", JSON.stringify({
-//             'drumTrackVol': volume,
-//             'currentSource_Track': currentSource_Track, 
-//             '_isPlaying': _isPlaying
-//             }));
-        
-//         location.reload();
-
-//         var savedDrumInfo = localStorage.getItem("drumTrack");
-//         savedDrumInfo = JSON.parse(savedDrumInfo);
-//         var currentVol = savedDrumInfo.drumTrackVol;
-//         currentSource_Track = savedDrumInfo.currentSource_Track;
-//         console.log("currentVol", currentVol);
-//         currentSource_Track.connect(currentSource_Track.destination);
-//         currentSource_Track.volume = currentVol;
-//         currentSource_Track.loop = true;
-//     }
-// });
+$("#drum-track-gain").change(function(){
+    //console.log("changing the gain of drum");
+    if (_isPlaying === true){
+        stopTrack();
+        //Set drum info to localStorage 
+        localStorage.setItem("drumTrack", JSON.stringify
+                        ({
+                            'name': $("#trackDropBar").val(),
+                            'source': currentSource_Track, 
+                            'gain': $("#drum-track-gain").val(), 
+                            '_isPlaying': true
+                        }));
+        App._loadFiles(audioContext, finishedLoading);
+        //Get drum info
+        var drum = localStorage.getItem("drumTrack");
+        drum = JSON.parse(drum);
+        //FIXME: remember and select the drum track again: 
+        _afterloading_createOptionElement(drum.name);
+        drum.source.connect(audioContext.destination);
+        drum.source.gain.value = drum.gain;
+        drum.source.loop = true;
+        _isPlaying = drum._isPlaying;
+        startTrack();
+    } else {
+        localStorage.setItem("drumTrack", JSON.stringify
+                        ({
+                            'name': $("#trackDropBar").val(),
+                            'source': currentSource_Track, 
+                            'gain': $("#drum-track-gain").val(), 
+                            '_isPlaying': true
+                        }));
+        App._loadFiles(audioContext, finishedLoading);
+        //Get drum info
+        var drum = localStorage.getItem("drumTrack");
+        drum = JSON.parse(drum);
+        //FIXME: remember and select the drum track again: 
+        _afterloading_createOptionElement(drum.name);
+        drum.source.connect(drum.source.destination);
+        drum.source.gain.value = drum.gain;
+        drum.source.loop = true;
+        _isPlaying = drum._isPlaying;
+    }
+    //console.log("_isPlaying", _isPlaying);    
+});
 
 function startTrack(){
-    console.log("_isPlaying", _isPlaying);
+    allowedStart--; 
+    //console.log("_isPlaying", _isPlaying);
     var trackName = $("#trackDropBar").val();
-    if (trackName == 0){
+    if (trackName == 'Select a drum track to start'){
         alert("Pick a drum track to start playing");
         return;
     } 
@@ -259,30 +292,36 @@ function startTrack(){
         sampleId_Track.forEach(function(name){
             if ( name == trackName){
                 currentSource_Track = sourceObj_Track[name];
-                // console.log("currentSource_Track", currentSampleId_Track);
-                currentSource_Track.connect(audioContext.destination);
-                currentSource_Track.volume = $("#drum-track-volume").val();
-                console.log("currentSource volume", currentSource_Track.volume);
                 currentSource_Track.loop = true;
+                currentSource_Track.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.value = $("#drum-track-gain").val();
                 currentSource_Track.start();
+                _isPlaying = true;
                 startVis();
             }
-        })
-    }
-    _isPlaying = true;
-    // console.log("_isPlaying", _isPlaying);
+        });
+    } 
+    //console.log("_isPlaying", _isPlaying);
+    
 }
 
+// else {allowedStart++};
+// //Error management: 
+// if (allowedStart === 1){App._loadFiles(audioContext, finishedLoading);}
 
 function stopTrack(){
-    // console.log("_isPlaying", _isPlaying);
+    // //console.log("_isPlaying", _isPlaying);
     if (_isPlaying === true ){
         currentSource_Track.stop(2);
         _isPlaying = false;
     } 
-    // console.log("_isPlaying", _isPlaying);
+    //console.log("_isPlaying", _isPlaying);
 }
-/**** VISUALIZER ****/
+/**** VISUALIZER ***
+ * 
+ * Tracks
+*/
 
 var WIDTH = 640;
 var HEIGHT = 100;
@@ -311,7 +350,7 @@ function startVis(){
 		// draw(source, analyser, dataArray, bufferLength);
         draw();
 	} else {
-		console.log("no current source yet");
+		//console.log("no current source yet");
 	}
 }
 
@@ -344,3 +383,69 @@ function draw(){
 	}
 	myCanvas.stroke();
 }
+
+/**** VISUALIZER ***
+ * 
+ * Sounds
+*/
+
+// var WIDTH = 640;
+// var HEIGHT = 100;
+// var canvas = document.querySelector('#myCanvas');
+// var myCanvas = canvas.getContext("2d");
+// var dataArray, bufferLength;
+// var dataArray_Track, bufferLength_Track;
+
+// // startVis(currentSource_Track, analyser_Track, dataArray_Track, bufferLength_Track);
+// // startVis(currentSource, analyser, dataArray, bufferLength);
+// // startVis(dataArrayDS, bufferLengthDS, currentSourceDS);
+// startVis();
+
+// // function startVis(source, analyser, dataArray, bufferLength){
+// function startVis(){
+// 	// if ( source != undefined){
+//     if (currentSource_Track != undefined){
+// 		myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+// 		// source.connect(analyser);
+//         currentSource_Track.connect(analyser_Track);
+//         // analyser.fftSize = 2048;
+// 		analyser_Track.fftSize = 2048;
+// 		bufferLength = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+// 		dataArray = new Uint8Array(bufferLength);
+
+// 		// draw(source, analyser, dataArray, bufferLength);
+//         draw();
+// 	} else {
+// 		//console.log("no current source yet");
+// 	}
+// }
+
+// // function draw(source, analyser, dataArray, bufferLength){
+// function draw(){
+// 	var drawVisual = requestAnimationFrame(draw);
+// 	analyser_Track.getByteTimeDomainData(dataArray);
+
+// 	myCanvas.fillStyle = 'rgb(0, 0, 0)';
+// 	myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+// 	myCanvas.lineWidth = 2;
+// 	myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+
+// 	myCanvas.beginPath();
+// 	var sliceWidth = WIDTH * 1.0 / bufferLength;
+// 	var x = 0;
+
+// 	for (var i = 0; i < bufferLength; i++) {
+
+// 		var v = dataArray[i] / 128.0;
+// 		var y = v * HEIGHT / 2;
+
+// 		if (i === 0) {
+// 			myCanvas.moveTo(x, y);
+// 		} else {
+// 			myCanvas.lineTo(x, y);
+// 		}
+
+// 		x += sliceWidth;
+// 	}
+// 	myCanvas.stroke();
+// }
