@@ -17,7 +17,7 @@ var currentSource, currentSampleId;
 /**
  * sourceArr_Track , sourceObj_Track, sampleId_Track contain only TRACKS
  */
-var sampleId_Track = ['Drum1', 'Drum2', 'Drum3', 'Drum4', 'Drum5', 'Drum6', 'Drum7', 'Drum8', 'Drum9', 'Drum10', 'Drum11', 'Drum12', 'Drum13', 'Drum14', 'Drum15'];
+var sampleId_Track = ['Drum1', 'Drum2', 'Drum3', 'Drum4', 'Drum5', 'Drum6', 'Drum7', 'Drum8', 'Drum9', 'Drum10', 'Drum11', 'Drum12', 'Drum13', 'Drum14', 'Drum15', 'TakeOnMe'];
 var sourceObj_Track = {}; sourceArr_Track = [];
 var currentSource_Track, currentSampleId_Track;
 
@@ -113,6 +113,7 @@ function finishedLoading(sampleArray){
         'Drum13'       : sourceArr[17],
         'Drum14'       : sourceArr[18],
         'Drum15'       : sourceArr[19],
+        'TakeOnMe'     : sourceArr[20]
     }
 
      _createOptionElement();
