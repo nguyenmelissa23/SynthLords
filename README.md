@@ -1,10 +1,17 @@
 # Synth-Lord
 
+[Project Presentation](https://docs.google.com/presentation/d/1e0f7rKEAZPsIJwfGvYbfDLbZQKeuijjZumg1z4KRRHw/edit?usp=sharing)
+
+[Project Webpage](Synth-lord.herokuapp.com)
+
 ## Description
 
 
 ## Usage
 
+The keys start with keyboard line qwerty and asdfg.
+
+Drum keys are 45678.
 
 ## Tools used
 
@@ -20,7 +27,9 @@
 
 ### CORS configuration: 
 
-Upload audio files to AWS S3 and created a bucket. Go to Permissions > CORS configuration and modified the code in the CORS configuration editor with this code:
+Go to AWS S3 and create a bucket. Upload your file here.
+
+Go to Permissions > CORS configuration and modified the code in the CORS configuration editor with this code:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -46,12 +55,14 @@ To get the file link, click on the file and a board should popup with the file's
 ### Visualizer with WAD.js 
 
 The AnalyserNode is created within the WAD.js and the challenge here is to actually find this node in your WAD object. 
+
 Do NOT create another AnalyserNode since this would most likely override the current one that already exists. 
 
 
 
 ## Our config.json for clearDB:
 
+```json
 {
   "development": {
     "username": "be0a4d94f7ab2f",
@@ -75,3 +86,4 @@ Do NOT create another AnalyserNode since this would most likely override the cur
     "dialect": "mysql"
   }
 }
+```
