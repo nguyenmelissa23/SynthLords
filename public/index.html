@@ -105,8 +105,8 @@
                                 </label>
                             </div>
                             <div class="col-md-4 text-center">
-                                <div class = "master-octave-label">
-                                     Octave
+                                <div class="master-octave-label">
+                                    Octave
                                 </div>
                                 <select id="octave" class="setting selectpicker" data-style="btn-inverse">
                                     <option value="-2">-2</option>
@@ -116,59 +116,17 @@
                                     <option value="2">+2</option>
                                 </select>
                                 <br>
-                                <div class = "master-presets-label">
-                                     Presets
+                                <div class="master-presets-label">
+                                    Presets
                                 </div>
                                 <select id="preset-picker" class="setting selectpicker" data-style="btn-inverse">
                                     <option value="" disabled selected>Select</option>
                                 </select>
                                 <br>
-                                <button id="save-preset" type="button" class="btn btn-block text-center" data-toggle="modal" data-target="#preset-modal" style="width: 100%">Save Preset</button>
+                                <button id="save-preset" type="button" class="btn btn-block text-center" data-toggle="modal" data-target="#preset-modal"
+                                    style="width: 100%">Save Preset</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--Row 2-->
-            <div class="row">
-                <!--DRUM MACHINE-->
-                <div class="col-md-12">
-                    <div class="setting-group" id="drum-machine">
-                        <h3>Drum Machine</h3>
-
-                        <div class="row">
-                            <!--JUST ADDED THIS -->
-                            <img src="./app/img/playButton.png" id="startTrack">
-                            <img src="./app/img/stopButton.png" id="stopTrack">
-                            <div class="trackList">
-                                <label for="trackList">Drum Loop</label>
-                                <select id="trackDropBar">
-                                    <option selected="selected" disabled value="0">Loading Drum Tracks...</option>
-                                </select>
-                            </div>
-
-
-                        </div>
-                        <!--END ADDING-->
-
-                        <!--Dynamically generate drum sounds buttons-->
-                        <div class="drum2 row">
-                            <label class="slider-label col-sm-2 text-center">
-                                    <input class=" vertical-slider" id="drum-track-gain" max="1" min="0.0" orient="vertical" step="0.01" type="range" value="0.1">
-                                    <br>
-                                    Gain (track)
-                            </label>
-                            <div class="drumSoundBtns col-sm-8 text-center">
-                                
-                            </div>
-                            <label class="slider-label col-sm-2 text-center">
-                                    <input class=" vertical-slider" id="drum-sound-gain" max="1" min="0.0" orient="vertical" step="0.1" type="range" value="0.1">
-                                    <br>
-                                    Gain (sound)
-                            </label>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -447,10 +405,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--Canvas-->
-                            <div class="col-md-6">
-                                <canvas class="visualizer" id="myCanvas" width="640" height="100"></canvas>
-                            </div>
                             <!--BITCRUSHER-->
                             <div class="col-md-3">
                                 <div class="setting-group" id="bitcrusher-container">
@@ -489,11 +443,62 @@
                     </div>
                 </div>
             </div>
+
+            <!--Row 2-->
+            <div class="row">
+                <!--DRUM MACHINE-->
+                <div class="col-md-12">
+                    <div class="setting-group" id="drum-machine">
+                        <h3>Drum Machine</h3>
+
+                        <div class="row">
+                            <!--JUST ADDED THIS -->
+                            <img src="./app/img/playButton.png" id="startTrack">
+                            <img src="./app/img/stopButton.png" id="stopTrack">
+                            <div class="trackList">
+                                <label for="trackList">Drum Loop</label>
+                                <select id="trackDropBar">
+                                    <option selected="selected" disabled value="0">Loading Drum Tracks...</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <!--END ADDING-->
+
+                        <!--Dynamically generate drum sounds buttons-->
+                        <div class="drum2 row">
+                            <label class="slider-label col-sm-2 text-center">
+                                    <input class=" vertical-slider" id="drum-track-gain" max="1" min="0.0" orient="vertical" step="0.01" type="range" value="0.1">
+                                    <br>
+                                    Gain (track)
+                            </label>
+                            <div class="drumSoundBtns col-sm-8 text-center">
+
+                            </div>
+                            <label class="slider-label col-sm-2 text-center">
+                                    <input class=" vertical-slider" id="drum-sound-gain" max="1" min="0.0" orient="vertical" step="0.1" type="range" value="0.1">
+                                    <br>
+                                    Gain (sound)
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
 
         <!--Visualizer-->
-
+        <!--Canvas-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="visualizer-container">
+                    <canvas class="visualizer" id="myCanvas" width="1200" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+        
 
 
         <!--KEYBOARD GOES HERE-->

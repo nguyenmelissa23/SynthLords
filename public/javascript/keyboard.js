@@ -440,8 +440,11 @@ midiMap = function (event) {
  * 
 */
 
-var WIDTH = 640;
-var HEIGHT = 100;
+
+$("#myCanvas").width = $("#myCanvas").offsetWidth;
+$("#myCanvas").height = $("#myCanvas").offsetHeight;
+var WIDTH = $("#myCanvas").width();
+var HEIGHT = $("#myCanvas").height();
 var canvas = document.querySelector('#myCanvas');
 var myCanvas = canvas.getContext("2d");
 var dataArray_key, bufferLength_key;
