@@ -179,7 +179,8 @@ function getSettings() {
                     dryLevel: parseFloat($("#convolver-dry").val()), //0 to 1+
                     wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
                     level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
-                    impulse: "http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
+                    impulse: "https://s3.amazonaws.com/synthlord/convolver-impulse.wav",
+                    //"http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
                     bypass: parseInt($("#convolver-bypass").val())
                 }
             }
