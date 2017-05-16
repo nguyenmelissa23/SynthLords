@@ -171,17 +171,17 @@ function getSettings() {
                     normfreq: parseFloat($("#bitcrusher-normfreq").val()),    //0 to 1
                     bufferSize: 256,  //256 to 16384
                     bypass: parseInt($("#bitcrusher-bypass").attr('value'))
-                }
+                },
                 //FIXME: Error loading impulse
-                //     Convolver: {
-                //     highCut: parseFloat($("#convolver-high").val()), //20 to 22050
-                //     lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
-                //     dryLevel: parseFloat($("#convolver-dry").val()), //0 to 1+
-                //     wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
-                //     level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
-                //     impulse: "http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
-                //     bypass: parseInt($("#convolver-bypass").val())
-                // }
+                Convolver: {
+                    highCut: parseFloat($("#convolver-high").val()), //20 to 22050
+                    lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
+                    dryLevel: parseFloat($("#convolver-dry").val()), //0 to 1+
+                    wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
+                    level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
+                    impulse: "http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
+                    bypass: parseInt($("#convolver-bypass").val())
+                }
             }
         }
     };
@@ -240,6 +240,13 @@ function updateHtml(settings) {
     $("#bitcrusher-bits").val(settings.masterSettings.tuna.Bitcrusher.bits);
     $("#bitcrusher-normfreq").val(settings.masterSettings.tuna.Bitcrusher.normfreq);
     $("#bitcrusher-bypass").val(settings.masterSettings.tuna.Bitcrusher.bypass);
+    //convolver
+    $("#convolver-high").val(settings.masterSettings.tuna.Convolver.highCut);
+    $("#convolver-low").val(settings.masterSettings.tuna.Convolver.lowCut);
+    $("#convolver-dry").val(settings.masterSettings.tuna.Convolver.dryLevel);
+    $("#convolver-wet").val(settings.masterSettings.tuna.Convolver.wetLevel);
+    $("#convolver-level").val(settings.masterSettings.tuna.Convolver.level);
+    $("#convolver-bypass").val(settings.masterSettings.tuna.Convolver.bypass);
 }
 
 
@@ -362,6 +369,10 @@ function LEDChecker(tunaSettings) {
         $("#bitcrusher-bypass").addClass("led-red-on");
         $("#bitcrusher-bypass").attr("value", 0);
     }
+    if (tunaSettings.Convolver.bypass == 0) {
+        $("#convolver-bypass").addClass("led-red-on");
+        $("#convolver-bypass").attr("value", 0);
+    }
 }
 
 $(".led-red").on("click", function () {
@@ -450,7 +461,7 @@ var myCanvas = canvas.getContext("2d");
 var dataArray_key, bufferLength_key;
 
 
-function startVis(){
+function startVis() {
     myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
     analyser.fftSize = 2048;
     bufferLength_key = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
@@ -458,8 +469,8 @@ function startVis(){
     draw();
 }
 
-function draw(){
-    if (_isPlayingKey === true){
+function draw() {
+    if (_isPlayingKey === true) {
         var drawVisual = requestAnimationFrame(draw);
         analyser.getByteTimeDomainData(dataArray_key);
 

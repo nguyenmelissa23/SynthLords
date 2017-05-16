@@ -13,6 +13,24 @@
 </head>
 
 <body>
+    <!--Title-->
+    <div id="header-container">
+        <div class="row">
+            <div class="offset-md-4 col-md-4 text-center">
+                <h2 id="synth-lord">Synth Lord</h2>
+            </div>
+            <div class="offset-md-1 col-md-3 text-center links align-middle">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="https://github.com/nguyenmelissa23/SynthLords">Github</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/samples">Samples</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div class="settings-board">
@@ -439,6 +457,69 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--CONVOLVER-->
+                            <div class="col-md-6">
+                                <div class="setting-group" id="convolver-container">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4 style="float: left; margin-right: 15px;">Reverb</h4>
+                                            <div class="led-box">
+                                                <div id="convolver-bypass" class="setting selectpicker led-red" value="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="offset-md-1 col-md-2 text-center">
+                                            <label class="slider-label text-center">
+                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_low" data-update="update_convolver_low" id="convolver-low" max="22050" min="20" orient="vertical" step="0.0001" type="range" value="20">
+                                                <br>
+                                                <div class = "convolver-low-label">
+                                                Low
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <label class="slider-label text-center">
+                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_high" data-update="update_convolver_high" id="convolver-high" max="22050" min="20" orient="vertical" step="0.0001" type="range" value="22050">
+                                                <br>
+                                                <div class = "convolver-high-label">
+                                                High
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <label class="slider-label text-center">
+                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_dry" data-update="update_convolver_dry" id="convolver-dry" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
+                                                <br>
+                                                <div class = "convolver-dry-label">
+                                                Dry
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <label class="slider-label text-center">
+                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_wet" data-update="update_convolver_wet" id="convolver-wet" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
+                                                <br>
+                                                <div class = "convolver-wet-label">
+                                                Wet
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <label class="slider-label text-center">
+                                                <input class="setting tuna-setting vertical-slider" data-program="convolver_level" data-update="update_convolver_level" id="convolver-level" max="1" min="0" orient="vertical" step="0.0001" type="range" value="1">
+                                                <br>
+                                                <div class = "convolver-level-label">
+                                                Level
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -498,7 +579,7 @@
                 </div>
             </div>
         </div>
-        
+
 
 
         <!--KEYBOARD GOES HERE-->
