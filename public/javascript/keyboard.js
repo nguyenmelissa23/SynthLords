@@ -3,7 +3,6 @@
  * The PolyWad is stopped when the key is released.
  * 
  * TODO:
- * --- Must Have ---
  * Recording
  * Adjust drum machine buttons.
  * Documentation in README

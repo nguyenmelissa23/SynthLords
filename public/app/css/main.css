@@ -13,19 +13,28 @@
   font-family: '8-bit-font';
   color: red;
 }
-a{
+a, a:visited{
   color: red;
   font-size: 12px; 
+  text-decoration: none;
 }
-a:hover{
+a:active, a:hover, a:visited:hover{
   color: rgb(69.1%, 0%, 0%);
-}
-a:visited{
-  color: red;
+  text-decoration: none;
 }
 
 #synth-lord{
   padding: 10px;
+}
+
+.linkContainer { 
+    height: 55px; 
+    line-height: 55px;
+}
+
+.linkContainer a,h2 {
+    vertical-align: middle;
+    display: inline-block;
 }
 
 body {
