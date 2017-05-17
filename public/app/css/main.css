@@ -6,6 +6,7 @@
     src: url('../../source-files/8-bit-font/PressStart2P.ttf'); /*URL to font*/
 }
 
+
 #header-container{
   background: black;
   opacity: 0.7;
@@ -206,75 +207,25 @@ input#drum-sound-gain {
 
 /*======RED LED CSS================*/
 .led-red-on{
-  -webkit-animation: blinkRed 2s infinite;
-  -moz-animation: blinkRed 2s infinite;
-  -ms-animation: blinkRed 2s infinite;
-  -o-animation: blinkRed 2s infinite;
-  animation: blinkRed 2s infinite;
-}
-
-  @-webkit-keyframes blinkRed {
-  from {
-    background-color: #F00;
-  }
-  50% {
-    background-color: #A00;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
-  }
-  to {
-    background-color: #F00;
-  }
-}
-
-@-moz-keyframes blinkRed {
-  from {
-    background-color: #F00;
-  }
-  50% {
-    background-color: #A00;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
-  }
-  to {
-    background-color: #F00;
-  }
-}
-
-@-ms-keyframes blinkRed {
-  from {
-    background-color: #F00;
-  }
-  50% {
-    background-color: #A00;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
-  }
-  to {
-    background-color: #F00;
-  }
-}
-
-@-o-keyframes blinkRed {
-  from {
-    background-color: #F00;
-  }
-  50% {
-    background-color: #A00;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
-  }
-  to {
-    background-color: #F00;
-  }
+  -webkit-animation: blinkRed 1.5s infinite;
+  -moz-animation: blinkRed 1.5s infinite;
+  -ms-animation: blinkRed 1.5s infinite;
+  -o-animation: blinkRed 1.5s infinite;
+  animation: blinkRed 1.5s infinite;
 }
 
 @keyframes blinkRed {
   from {
-    background-color: #F00;
+    background-color: rgb(0, 255, 0);
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset rgb(5.2%, 33.5%, 0%) 0 -1px 9px, rgb(6.7%, 42.9%, 0%) 0 2px 0;
   }
   50% {
-    background-color: #A00;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    background-color: rgb(10.5%, 68.3%, 0%);
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset rgb(5.2%, 33.5%, 0%) 0 -1px 9px, rgb(6.7%, 42.9%, 0%) 0 2px 0;
   }
   to {
-    background-color: #F00;
+    background-color: rgb(0, 255, 0);
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset rgb(5.2%, 33.5%, 0%) 0 -1px 9px, rgb(6.7%, 42.9%, 0%) 0 2px 0;
   }
 }
 
@@ -287,7 +238,7 @@ input#drum-sound-gain {
     box-shadow: #000 0 -1px 7px 1px, inset #600 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
   /*background-color: #F00;*/
   border-radius: 50%;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+  /*box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;*/
 
 }
 
