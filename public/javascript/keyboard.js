@@ -4,15 +4,16 @@
  * 
  * TODO:
  * Recording
- * Adjust drum machine buttons.
+ * Samples page
  * Documentation in README
- * Record and download tracks.
- * Upload your own audio files to play in drum machine.
- * Add link to github and copyright at bottom or top of page
- * Visualize turns off if multiple buttons are being pressed and then one is released
- * get MIDI working with deployment
- * Clean code
+ * Clean/re-organize code
  * Deploy with google
+ * get MIDI working with deployment
+ * Slider placement w/ bootstrap
+ * 
+ * Adjust drum machine buttons.
+ * Upload your own audio files to play in drum machine.
+ * Visualize turns off if multiple buttons are being pressed and then one is released
  */
 var _isPlayingKey = false;
 // localStorage.clear();
