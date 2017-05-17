@@ -4,16 +4,16 @@
  * 
  * TODO:
  * --- Must Have ---
+ * Recording
  * Adjust drum machine buttons.
- * TEST TEST TEST TEST TEST
  * Documentation in README
- * Validation for preset name input
  * Record and download tracks.
  * Upload your own audio files to play in drum machine.
  * Add link to github and copyright at bottom or top of page
- * 
- * @FIXME:
  * Visualize turns off if multiple buttons are being pressed and then one is released
+ * get MIDI working with deployment
+ * Clean code
+ * Deploy with google
  */
 var _isPlayingKey = false;
 // localStorage.clear();
@@ -96,7 +96,6 @@ function createWAD(settings) {
     //combine the oscillators
     var doubleOsc = new Wad.Poly(settings.masterSettings);
     //set master volume
-    //TODO:
     doubleOsc.setVolume(parseFloat(settings.volume));
     doubleOsc.add(osc1).add(osc2);
     return doubleOsc;
@@ -315,6 +314,7 @@ $(".tuna-setting").change(function () {
 
 /** Toggle modalOpen when the modal loads so that notes aren't played on key presses */
 $("#preset-modal").on('shown.bs.modal', function () {
+    $('#preset-name').focus();
     modalOpen = true;
 });
 $('#preset-modal').on('hidden.bs.modal', function () {
@@ -323,10 +323,14 @@ $('#preset-modal').on('hidden.bs.modal', function () {
 
 /** (in modal) Create new preset with current settings and post to synth db */
 $("#preset-save").click(function () {
+    var name = $("#preset-name").val().toString().trim();
+    //Cannot have '/' or '\' in name
+    name = name.replace('/', '-');
+    name = name.replace(String.fromCharCode(92), '-');
     var settings = getSettings();
     var currentSettings = JSON.stringify(settings);
     var newPreset = {
-        name: $("#preset-name").val().toString().trim(),
+        name: name,
         settings: currentSettings,
         creator: $("#preset-creator").val().toString().trim()
     };
@@ -337,7 +341,6 @@ $("#preset-save").click(function () {
             .attr("id", preset.name)
             .text(preset.name));
     });
-
 });
 
 /** LED */
@@ -439,12 +442,7 @@ midiMap = function (event) {
     }
 };
 
-/**** VISUALIZER ***
- * 
- * 
-*/
-
-
+/**** VISUALIZER ****/
 $("#myCanvas").width = $("#myCanvas").offsetWidth;
 $("#myCanvas").height = $("#myCanvas").offsetHeight;
 var WIDTH = $("#myCanvas").width();
