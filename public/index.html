@@ -7,7 +7,6 @@
     <link rel="shortcut icon" href="https://d30y9cdsu7xlg0.cloudfront.net/png/27637-200.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
     <link rel="stylesheet" href="./app/css/main.css">
 
 </head>
@@ -143,9 +142,8 @@
                 </div>
             </div>
 
-            <!--ROW 4-->
+            <!--TUNA (Row 2)-->
             <div class="row">
-                <!--TUNA-->
                 <div class="col-md-12">
                     <div id="tuna-container">
                         <h3 class="text-center">TUNA</h3>
@@ -466,13 +464,11 @@
                 </div>
             </div>
 
-            <!--Row 2-->
+            <!--DRUM MACHINE (Row 3)-->
             <div class="row">
-                <!--DRUM MACHINE-->
                 <div class="col-md-12">
                     <div class="setting-group" id="drum-machine">
                         <h3>Drum Machine</h3>
-
                         <div class="row">
                             <!--JUST ADDED THIS -->
                             <img src="./app/img/playButton.png" id="startTrack">
@@ -483,11 +479,7 @@
                                     <option selected="selected" disabled value="0">Loading Drum Tracks...</option>
                                 </select>
                             </div>
-
-
                         </div>
-                        <!--END ADDING-->
-
                         <!--Dynamically generate drum sounds buttons-->
                         <div class="drum2 row">
                             <label class="slider-label col-sm-2 text-center">
@@ -504,15 +496,12 @@
                                     Gain (sound)
                             </label>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <!--Visualizer-->
-        <!--Canvas-->
+        <!--Visualizer (Row 4)-->
         <div class="row">
             <div class="col-md-12">
                 <div class="visualizer-container">
@@ -521,9 +510,7 @@
             </div>
         </div>
 
-
-
-        <!--KEYBOARD GOES HERE-->
+        <!--KEYBOARD (Row 5)-->
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="text-center" id="keyboard"></div>
@@ -532,7 +519,6 @@
 
 
         <!--PRESET MODAL-->
-        <!-- Modal -->
         <div id="preset-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -559,35 +545,24 @@
             </div>
         </div>
 
-
     </div>
 
 
     <!--audio libraries-->
     <script src="./source-files/web-audio-daw/build/wad.min.js"></script>
     <script src="./source-files/qwerty-hancock.min.js"></script>
-
     <!--jquery/bootstrap-->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
-
-    <!--JS Files-->
-    <script type="text/javascript" src="./javascript/keyboard.js"></script>
-
-    <!--DRUM MACHINE-->
+    <!--Synth-->
+    <script type="text/javascript" src="./app/javascript/synth.js"></script>
     <!--Buffer-loader.js Source-->
     <script type="text/javascript" src="./source-files/buffer-loader.js"></script>
-    <!--Load all media files-->
-    <!--<script type="text/javascript" src="./javascript/drum_machine/loadMediaFiles.js"></script>-->
-
-    <script src="./javascript/drum_v2.js"></script>
-
-
-
-
+    <!--DRUM MACHINE-->
+    <script src="./app/javascript/drum_v2.js"></script>
 </body>
 
 </html>

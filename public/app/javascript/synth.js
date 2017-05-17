@@ -3,7 +3,6 @@
  * The PolyWad is stopped when the key is released.
  * 
  * TODO:
- * Recording
  * Samples page
  * Documentation in README
  * Clean/re-organize code
