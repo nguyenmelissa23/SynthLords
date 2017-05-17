@@ -6,16 +6,10 @@
  * --- Must Have ---
  * Adjust drum machine buttons.
  * TEST TEST TEST TEST TEST
- * 
- * --- Nice To Have ---
  * Documentation in README
- * Unit Tests
- * Sustain notes until key is lifted up
  * Validation for preset name input
  * Record and download tracks.
  * Upload your own audio files to play in drum machine.
- * Arpeggiator.
- * Tuna Convolver.
  * Add link to github and copyright at bottom or top of page
  * 
  * @FIXME:
@@ -172,7 +166,6 @@ function getSettings() {
                     bufferSize: 256,  //256 to 16384
                     bypass: parseInt($("#bitcrusher-bypass").attr('value'))
                 },
-                //FIXME: Error loading impulse
                 Convolver: {
                     highCut: parseFloat($("#convolver-high").val()), //20 to 22050
                     lowCut: parseFloat($("#convolver-low").val()), //20 to 22050
@@ -180,8 +173,7 @@ function getSettings() {
                     wetLevel: parseFloat($("#convolver-wet").val()), //0 to 1+
                     level: parseFloat($("#convolver-level").val()), //0 to 1+, adjusts total output of both wet and dry
                     impulse: "https://s3.amazonaws.com/synthlord/convolver-impulse.wav",
-                    //"http://www.openairlib.net/sites/default/files/auralization/data/olivermcintyre/tvisongur-sound-sculpture-iceland-model/stereo/source1domefareceiver2domelabinaural.wav", //the path to your impulse response
-                    bypass: parseInt($("#convolver-bypass").val())
+                    bypass: parseInt($("#convolver-bypass").attr('value'))
                 }
             }
         }
