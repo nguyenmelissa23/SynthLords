@@ -5,7 +5,6 @@
  * TODO:
  * Samples page
  * Documentation in README
- * Clean/re-organize code
  * Deploy with google
  * get MIDI working with deployment
  * Slider placement w/ bootstrap
@@ -13,32 +12,17 @@
  * Adjust drum machine buttons.
  * Upload your own audio files to play in drum machine.
  * Visualize turns off if multiple buttons are being pressed and then one is released
+ * 
+ * FIXME:
+ * Sliders uncentered on windows (arrange with bootstrap)
+ * Drum buttons spike CPU usage
+ * Tracks stop playing when page is reloaded after setting change
  */
-var _isPlayingKey = false;
-// localStorage.clear();
-//if first time page is loaded then use default settings
-var settings = localStorage.getItem("settings");
-if (!settings) {
-    // console.log("First time loading page - loading default settings");
-    //Initialize WAD
-    var defaultSettings = getSettings();
-    //update LEDs to reflect settings
-    LEDChecker(defaultSettings.masterSettings.tuna);
-    //store settings in local storage
-    localStorage.setItem("settings", JSON.stringify(defaultSettings));
 
-    var WAD = createWAD(defaultSettings);
-}
-//if settings saved in local storage then use those
-else {
-    // console.log("Using settings from localstorage");
-    var storedSettings = localStorage.getItem("settings");
-    storedSettings = JSON.parse(storedSettings);
-    LEDChecker(storedSettings.masterSettings.tuna);
-    updateHtml(storedSettings);
-
-    var WAD = createWAD(storedSettings);
-}
+//Only play notes when modals are closed
+var modalOpen = false;
+//declare global analyser for visualizer
+var analyser;
 
 $(document).ready(function () {
     //when page loads get presets from synth db and add them to presets selector
@@ -64,16 +48,35 @@ var keyboard = new QwertyHancock({
     hoverColour: '#f3e939'
 });
 
-//Only play notes when modals are closed
-var modalOpen = false;
-var analyser;
+//if first time page is loaded then use default settings
+var settings = localStorage.getItem("settings");
+if (!settings) {
+    var defaultSettings = getSettings();
+    //update LEDs to reflect settings
+    LEDChecker(defaultSettings.masterSettings.tuna);
+    //store settings in local storage
+    localStorage.setItem("settings", JSON.stringify(defaultSettings));
+    //Initialize WAD with default settings
+    var WAD = createWAD(defaultSettings);
+}
+//if settings saved in local storage then use those
+else {
+    var storedSettings = localStorage.getItem("settings");
+    storedSettings = JSON.parse(storedSettings);
+    LEDChecker(storedSettings.masterSettings.tuna);
+    //update the html to reflect the storedSettings
+    updateHtml(storedSettings);
+    //Initialize WAD with stored settings
+    var WAD = createWAD(storedSettings);
+}
+
 //execute when piano key is pressed
 keyboard.keyDown = function (note, frequency) {
     if (!modalOpen) {
+        //adjust the default Qwerty Hancock note to match the octave setting
         var currentNote = adjustNoteOctave(note);
         //play WAD corresponding to note
         WAD.play({ pitch: currentNote, label: currentNote, env: { hold: 10 } });
-        _isPlayingKey = true;
         analyser = WAD.input;
         startVis();
     }
@@ -84,11 +87,15 @@ keyboard.keyUp = function (note, frequency) {
     if (!modalOpen) {
         var currentNote = adjustNoteOctave(note);
         WAD.stop(currentNote);
-        _isPlayingKey = false;
-
     }
 };
 
+/**
+ * Creates a new Wad object from the Web Audio DAW library that is used to
+ * generate sound when keys are pressed
+ * @param settings - an object containing settings that effects the output from the Wad
+ * @returns doubleOsc - the global Wad object containing the AudioContext
+ */
 function createWAD(settings) {
     var osc1 = new Wad(settings.osc1Settings);
     var osc2 = new Wad(settings.osc2Settings);
@@ -242,8 +249,7 @@ function updateHtml(settings) {
 
 
 /************ EVENT LISTENERS FOR CHANGING SETTINGS ************/
-
-// //store the current octave setting (default to 3)
+//store the current octave setting (default to 3)
 var octaveSetting = parseInt($("#octave").val());
 /** The Qwerty Hancock keyboard has predefined octaves
  * so we need to adjust for our octave setting
@@ -255,10 +261,7 @@ function adjustNoteOctave(note) {
     return currentNote;
 }
 
-/**
- * Detects when a synth setting is changed and updates the WAD settings.
- * If the changed setting was from tuna then the wads must be recreated
- */
+/** Detects when a synth setting is changed and updates the WAD settings */
 $(".setting").change(function () {
     var id = $(this).attr('id');
     switch (id) {
@@ -288,7 +291,7 @@ $(".setting").change(function () {
         case 'master-volume':
             WAD.setVolume($(this).val().toString());
             break;
-        /** when a new preset is selected get it's settings from db and reload page */
+        // when a new preset is selected get it's settings from db and reload page
         case 'preset-picker':
             var presetName = $(this).val().toString();
             var query = "/api/preset/" + presetName;
@@ -342,7 +345,7 @@ $("#preset-save").click(function () {
     });
 });
 
-/** LED */
+/** Toggles the LED lights on or off based on the Tuna settings passed in */
 function LEDChecker(tunaSettings) {
     if (parseInt(tunaSettings.Filter.bypass) == 0) {
         $("#filter-bypass").addClass("led-red-on");
@@ -370,6 +373,9 @@ function LEDChecker(tunaSettings) {
     }
 }
 
+/** Updates the bypass values for the Tuna settings so the 
+ * new setting must be stored in localstorage and the page must reload
+ */
 $(".led-red").on("click", function () {
     $(this).toggleClass("led-red-on");
     switch (this.getAttribute("value")) {
@@ -392,7 +398,52 @@ $(".led-red").on("click", function () {
 });
 
 
-/** MIDI */
+/**** VISUALIZER ****/
+$("#myCanvas").width = $("#myCanvas").offsetWidth;
+$("#myCanvas").height = $("#myCanvas").offsetHeight;
+var WIDTH = $("#myCanvas").width();
+var HEIGHT = $("#myCanvas").height();
+var canvas = document.querySelector('#myCanvas');
+var myCanvas = canvas.getContext("2d");
+var dataArray_key, bufferLength_key;
+
+
+function startVis() {
+    myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
+    analyser.fftSize = 2048;
+    bufferLength_key = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
+    dataArray_key = new Uint8Array(bufferLength_key);
+    draw();
+}
+
+function draw() {
+        var drawVisual = requestAnimationFrame(draw);
+        analyser.getByteTimeDomainData(dataArray_key);
+
+        myCanvas.fillStyle = 'rgb(0, 0, 0)';
+        myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
+        myCanvas.lineWidth = 2;
+        myCanvas.strokeStyle = 'rgb(0, 255, 0)';
+
+        myCanvas.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength_key;
+        var x = 0;
+
+        for (var i = 0; i < bufferLength_key; i++) {
+            var v = dataArray_key[i] / 128.0;
+            var y = v * HEIGHT / 2;
+            if (i === 0) {
+                myCanvas.moveTo(x, y);
+            } else {
+                myCanvas.lineTo(x, y);
+            }
+            x += sliceWidth;
+        }
+        myCanvas.stroke();
+}
+
+
+/**** MIDI ****/
 //connect midi to global WAD
 Wad.midiInstrument = WAD;
 
@@ -440,54 +491,3 @@ midiMap = function (event) {
         console.log('pitch bend');
     }
 };
-
-/**** VISUALIZER ****/
-$("#myCanvas").width = $("#myCanvas").offsetWidth;
-$("#myCanvas").height = $("#myCanvas").offsetHeight;
-var WIDTH = $("#myCanvas").width();
-var HEIGHT = $("#myCanvas").height();
-var canvas = document.querySelector('#myCanvas');
-var myCanvas = canvas.getContext("2d");
-var dataArray_key, bufferLength_key;
-
-
-function startVis() {
-    myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
-    analyser.fftSize = 2048;
-    bufferLength_key = analyser.frequencyBinCount; //an unsigned long value half that of the FFT size. This generally equates to the number of data values you will have to play with for the visualization
-    dataArray_key = new Uint8Array(bufferLength_key);
-    draw();
-}
-
-function draw() {
-    if (_isPlayingKey === true) {
-        var drawVisual = requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray_key);
-
-        myCanvas.fillStyle = 'rgb(0, 0, 0)';
-        myCanvas.fillRect(0, 0, WIDTH, HEIGHT);
-        myCanvas.lineWidth = 2;
-        myCanvas.strokeStyle = 'rgb(0, 255, 0)';
-
-        myCanvas.beginPath();
-        var sliceWidth = WIDTH * 1.0 / bufferLength_key;
-        var x = 0;
-
-        for (var i = 0; i < bufferLength_key; i++) {
-
-            var v = dataArray_key[i] / 128.0;
-            var y = v * HEIGHT / 2;
-
-            if (i === 0) {
-                myCanvas.moveTo(x, y);
-            } else {
-                myCanvas.lineTo(x, y);
-            }
-
-            x += sliceWidth;
-        }
-        myCanvas.stroke();
-    } else {
-        myCanvas.clearRect(0, 0, WIDTH, HEIGHT);
-    }
-}

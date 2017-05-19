@@ -1,29 +1,40 @@
 # Synth-Lord
-
-[Project Presentation](https://docs.google.com/presentation/d/1e0f7rKEAZPsIJwfGvYbfDLbZQKeuijjZumg1z4KRRHw/edit?usp=sharing)
-
-[Project Webpage](Synth-lord.herokuapp.com)
+[synth-lord.herokuapp.com](Synth-lord.herokuapp.com)
 
 ## Description
+Synth Lord is a web based synthesizer with MIDI support. Heroku currently does not support MIDI so in order to use your MIDI controller you must run the app locally by following the steps below.
 
+## Installation
+1. Download the master repository.
+
+2. Change directory to the project folder in terminal.
+
+3. Run 'npm install'
+
+4. Run 'node server.js'
+
+5. Open 'http://localhost:8000/' in browser.
 
 ## Usage
 
-The keys start with keyboard line qwerty and asdfg.
+The piano keys start with asdfg.
 
 Drum keys are 45678.
 
-## Tools used
+## Technologies
+[Qwerty Hancock](https://stuartmemo.com/qwerty-hancock/) - used to generate a responsive keyboard for playing notes.
 
-### Web Audio API 
+[Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) - used for sound manipulation and visualization.
 
+[Web Audio DAW](https://github.com/rserota/wad#configuring-reverb) - a library that utilizes the Web Audio API to help with sound manipulation.
 
-### WAD.js
+[Amazon Web Services](https://aws.amazon.com/free/?sc_channel=PS&sc_campaign=acquisition_US&sc_publisher=google&sc_medium=cloud_computing_b&sc_content=aws_spell_e_control_q32016&sc_detail=amazon%20website%20service&sc_category=cloud_computing&sc_segment=102882717762&sc_matchtype=e&sc_country=US&s_kwcid=AL!4422!3!102882717762!e!!g!!amazon%20website%20service&ef_id=WMYwPAAAAHECYGL8:20170519072809:s) - used to store our drum tracks.
 
+## Screenshots
+![Screenshot 1](/public/app/img/screen-shot-1.png)
 
+![Screenshot 2](/public/app/img/screen-shot-2.png)
 
-
-## Issues and Fixes
 
 ### CORS configuration: 
 

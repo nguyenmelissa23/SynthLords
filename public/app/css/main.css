@@ -6,7 +6,6 @@
     src: url('../../source-files/8-bit-font/PressStart2P.ttf'); /*URL to font*/
 }
 
-
 #header-container{
   background: black;
   opacity: 0.7;
@@ -220,7 +219,7 @@ input#drum-sound-gain {
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset rgb(5.2%, 33.5%, 0%) 0 -1px 9px, rgb(6.7%, 42.9%, 0%) 0 2px 0;
   }
   50% {
-    background-color: rgb(10.5%, 68.3%, 0%);
+    background-color: rgb(6.2%, 39.8%, 0%);
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset rgb(5.2%, 33.5%, 0%) 0 -1px 9px, rgb(6.7%, 42.9%, 0%) 0 2px 0;
   }
   to {
@@ -598,6 +597,11 @@ left: 21%;
   bottom: -219%;
   left: 37%;
 }
+
+/*Styling for reverb sliders*/
+#convolver-low{
+}
+
 
 #octave{
   margin-bottom: 10px;
