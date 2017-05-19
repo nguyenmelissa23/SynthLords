@@ -1,6 +1,8 @@
 # Synth-Lord
 [synth-lord.herokuapp.com](Synth-lord.herokuapp.com)
 
+[Project Presentation](https://docs.google.com/presentation/d/1e0f7rKEAZPsIJwfGvYbfDLbZQKeuijjZumg1z4KRRHw/edit#slide=id.p)
+
 ## Description
 Synth Lord is a web based synthesizer with MIDI support. Heroku currently does not support MIDI so in order to use your MIDI controller you must run the app locally by following the steps below.
 
@@ -29,6 +31,8 @@ Drum keys are 45678.
 [Web Audio DAW](https://github.com/rserota/wad#configuring-reverb) - a library that utilizes the Web Audio API to help with sound manipulation.
 
 [Amazon Web Services](https://aws.amazon.com/free/?sc_channel=PS&sc_campaign=acquisition_US&sc_publisher=google&sc_medium=cloud_computing_b&sc_content=aws_spell_e_control_q32016&sc_detail=amazon%20website%20service&sc_category=cloud_computing&sc_segment=102882717762&sc_matchtype=e&sc_country=US&s_kwcid=AL!4422!3!102882717762!e!!g!!amazon%20website%20service&ef_id=WMYwPAAAAHECYGL8:20170519072809:s) - used to store our drum tracks.
+
+MySQL - used to store global presets that all users have access to.
 
 ## Screenshots
 ![Screenshot 1](/public/app/img/screen-shot-1.png)
