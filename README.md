@@ -6,6 +6,8 @@
 ## Description
 Synth Lord is a web based synthesizer with MIDI support. Heroku currently does not support MIDI so in order to use your MIDI controller you must run the app locally by following the steps below.
 
+NOTE: Synth Lord has only been tested for Google Chrome compatibility so other browsers may not function as expected.
+
 ## Installation
 1. Download the master repository.
 
